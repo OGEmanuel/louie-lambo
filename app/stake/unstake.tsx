@@ -30,12 +30,9 @@ const FormSchema = z.object({
       }
       return val;
     }),
-  duration: z.string().min(2, {
-    message: 'Duration must be at least 2 characters.',
-  }),
 });
 
-const Stake = () => {
+const UnStake = () => {
   return (
     <div className="flex w-full gap-8">
       <StakeForm />
@@ -44,14 +41,13 @@ const Stake = () => {
   );
 };
 
-export default Stake;
+export default UnStake;
 
 const StakeForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
-      duration: '14-days',
     },
   });
 
@@ -86,23 +82,6 @@ const StakeForm = () => {
             />
           )}
         />
-        <FormField
-          control={form.control}
-          name="duration"
-          render={({ field }) => (
-            <RadioInput
-              label="Duration"
-              field={field}
-              options={[
-                { label: '7 days', value: '7-days' },
-                { label: '14 days', value: '14-days' },
-                { label: '1 month', value: '1-month' },
-                { label: '3 months', value: '3-months' },
-                { label: '6 months', value: '6-months' },
-              ]}
-            />
-          )}
-        />
         <p className="rounded-lg bg-[var(--color-bg)] px-[10px] py-[11px] leading-[20.83px] text-[var(--color-black)]">
           Early withdrawal will result in{' '}
           <span className="font-medium">50%</span> loss of staked $LAMBO tokens
@@ -126,14 +105,14 @@ const StakeSummary = () => {
     <div className="flex w-[36.4705882353%] flex-col justify-between rounded-[20px] bg-white p-12">
       <div className="flex flex-col gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
         <p className="leading-[20.83px]">{'How much you’ll get'}</p>
-        <p className="text-[28px] leading-[36.46px]">250 $LAMBO</p>
+        <p className="text-[28px] leading-[36.46px]">250 XRP</p>
       </div>
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
         <div className="flex flex-col gap-3">
           <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            Annual percentage profit (APY rate)
+            Accumulated XRP rewards
           </p>
-          <p className="text-2xl font-medium leading-[31.25px]">4.33%</p>
+          <p className="text-2xl font-medium leading-[31.25px]">500 XRP</p>
         </div>
         <hr />
         <div className="flex flex-col gap-3">
@@ -141,13 +120,6 @@ const StakeSummary = () => {
             Current tier
           </p>
           <p className="text-2xl font-medium leading-[31.25px]">Tier 1</p>
-        </div>
-        <hr />
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            $LAMBO supply
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">1B</p>
         </div>
       </div>
     </div>

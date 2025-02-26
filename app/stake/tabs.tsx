@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Stake from './stake';
+import UnStake from './unstake';
 
 const StakeTabs = () => {
   return (
@@ -11,7 +12,9 @@ const StakeTabs = () => {
       <TabsContent value="stake" className="w-full">
         <Stake />
       </TabsContent>
-      <TabsContent value="unstake">Change your password here.</TabsContent>
+      <TabsContent value="unstake" className="w-full">
+        <UnStake />
+      </TabsContent>
     </Tabs>
   );
 };
