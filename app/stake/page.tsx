@@ -1,8 +1,11 @@
+import SectionCard from '@/components/section-card';
+import StakeTabs from './tabs';
+
 const Stake = () => {
   return (
-    <div>
-      <p>Stake</p>
-    </div>
+    <SectionCard className="border-none bg-[var(--color-bg)]">
+      <StakeTabs />
+    </SectionCard>
   );
 };
 
