@@ -127,3 +127,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+.grid-template-stack {
+  grid-template-areas: 'stack';
+}
+
+.grid-area-stack {
+  grid-area: stack;
+}

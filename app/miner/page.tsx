@@ -1,8 +1,11 @@
+import SectionCard from '@/components/section-card';
+import MinerTabs from './tabs';
+
 const Miner = () => {
   return (
-    <div>
-      <p>Miner</p>
-    </div>
+    <SectionCard className="border-none bg-[var(--color-bg)]">
+      <MinerTabs />
+    </SectionCard>
   );
 };
 
