@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { cn } from '@/lib/utils';
 import { FormControl, FormItem, FormLabel, FormMessage } from './form';
 import { RadioGroup, RadioGroupItem } from './radio-group';

@@ -1,4 +1,6 @@
-import { ComponentProps, ReactNode, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import { ComponentProps } from 'react';
 import {
   FormControl,
   FormDescription,
@@ -8,9 +10,6 @@ import {
 } from './form';
 import { Input } from './input';
 import { ControllerRenderProps } from 'react-hook-form';
-import { Label } from './label';
-import { cn } from '@/lib/utils';
-import searchIcon from '@/assets/icons/search-02.svg';
 import { Button } from './button';
 
 interface TextInputProps extends ComponentProps<'input'> {

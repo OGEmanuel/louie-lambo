@@ -1,4 +1,4 @@
-import { Form, FormField, useFormField } from '@/components/ui/form';
+import { Form, FormField } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import TransactionDetails from './transaction-details';
@@ -44,9 +44,9 @@ const MinerForm = (props: { type: string }) => {
     // toast({
     //   title: 'You submitted the following values:',
     //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    //     </pre>
+    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+      <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+    </pre>;
     //   ),
     // });
   }
