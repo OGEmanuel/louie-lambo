@@ -1,26 +1,29 @@
-const LamboLogo = (props: { className: string }) => {
+const LamboLogoSmall = (props: { className: string }) => {
   return (
     <svg
       className={props.className}
-      width="270"
-      height="60"
-      viewBox="0 0 270 60"
+      width="117"
+      height="26"
+      viewBox="0 0 117 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
-      <rect width="270" height="60" fill="url(#pattern0_4_10)" />
+      <rect width="117" height="26" fill="url(#pattern0_189_1071)" />
       <defs>
         <pattern
-          id="pattern0_4_10"
+          id="pattern0_189_1071"
           patternContentUnits="objectBoundingBox"
           width="1"
           height="1"
         >
-          <use xlinkHref="#image0_4_10" transform="scale(0.00222222 0.01)" />
+          <use
+            xlinkHref="#image0_189_1071"
+            transform="scale(0.00222222 0.01)"
+          />
         </pattern>
         <image
-          id="image0_4_10"
+          id="image0_189_1071"
           width="450"
           height="100"
           preserveAspectRatio="none"
@@ -31,4 +34,4 @@ const LamboLogo = (props: { className: string }) => {
   );
 };
 
-export default LamboLogo;
+export default LamboLogoSmall;

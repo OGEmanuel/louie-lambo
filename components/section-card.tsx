@@ -5,7 +5,7 @@ const SectionCard = (props: { className?: string; children: ReactNode }) => {
   return (
     <section
       className={cn(
-        'w-full rounded-[20px] border border-[var(--color-stroke)] p-8',
+        'w-full rounded-[20px] border-[var(--color-stroke)] sm:border sm:p-8',
         props.className,
       )}
     >

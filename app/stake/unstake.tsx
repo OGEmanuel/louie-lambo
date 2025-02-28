@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import TransactionDetails from './transaction-details';
 import { ButtonLoading } from '@/components/ui/button-loading';
+import { Summary } from './tabs';
 
 const FormSchema = z.object({
   amount: z
@@ -35,7 +36,7 @@ const UnStake = () => {
   return (
     <div className="flex w-full gap-8">
       <StakeForm />
-      <StakeSummary />
+      <Summary tab="unstake" />
     </div>
   );
 };
@@ -96,31 +97,5 @@ const StakeForm = () => {
         />
       </form>
     </Form>
-  );
-};
-
-const StakeSummary = () => {
-  return (
-    <div className="flex w-[36.4705882353%] flex-col justify-between rounded-[20px] bg-white p-12">
-      <div className="flex flex-col gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <p className="leading-[20.83px]">{'How much you’ll get'}</p>
-        <p className="text-[28px] leading-[36.46px]">250 XRP</p>
-      </div>
-      <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            Accumulated XRP rewards
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">500 XRP</p>
-        </div>
-        <hr />
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            Current tier
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">Tier 1</p>
-        </div>
-      </div>
-    </div>
   );
 };

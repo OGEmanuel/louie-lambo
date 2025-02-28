@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import TransactionDetails from './transaction-details';
 import { ButtonLoading } from '@/components/ui/button-loading';
+import { Summary } from './tabs';
 
 const FormSchema = z.object({
   amount: z
@@ -39,7 +40,8 @@ const Stake = () => {
   return (
     <div className="flex w-full gap-8">
       <StakeForm />
-      <StakeSummary />
+      <Summary tab="stake" />
+      {/* <StakeSummary /> */}
     </div>
   );
 };
@@ -123,19 +125,12 @@ const StakeForm = () => {
 
 const StakeSummary = () => {
   return (
-    <div className="flex w-[36.4705882353%] flex-col justify-between rounded-[20px] bg-white p-12">
+    <div className="flex w-[36.4705882353%] flex-col gap-[76px] rounded-[20px] bg-white p-12">
       <div className="flex flex-col gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <p className="leading-[20.83px]">{'How much you’ll get'}</p>
-        <p className="text-[28px] leading-[36.46px]">250 $LAMBO</p>
+        <p className="leading-[20.83px]">Annual percentage profit (APY rate)</p>
+        <p className="text-[28px] leading-[36.46px]">4.33%</p>
       </div>
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            Annual percentage profit (APY rate)
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">4.33%</p>
-        </div>
-        <hr />
         <div className="flex flex-col gap-3">
           <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
             Current tier

@@ -17,16 +17,18 @@ import RibbonSecondSelect from './components/icons/ribbon-second-select';
 import RibbonThirdSelect from './components/icons/ribbon-third-select';
 import RibbonFourthSelect from './components/icons/ribbon-fourth-select';
 import ArrowDown from './components/icons/arrow-down';
+import RibbonSelectMobile from './components/icons/ribbon-select-mobile';
+import { Separator } from '@/components/ui/separator';
 
 const OverviewMain = () => {
   return (
-    <div className="flex flex-col gap-[61px]">
-      <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-12 sm:gap-[61px] lg:max-xl:gap-6">
+      <div className="flex items-center justify-between max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
         <TierSelector />
         <Balance />
       </div>
       <div className="flex flex-col gap-[13px]">
-        <p className="flex items-center gap-2 px-[10px] py-[10.5px] text-[18px] leading-[23.44px] text-[var(--color-black)]">
+        <p className="items-center px-[10px] py-[10.5px] text-sm leading-[18.23px] text-[var(--color-black)] sm:text-[18px] sm:leading-[23.44px] md:gap-2 xl:flex">
           Refer & earn: Earn additional <span className="font-bold">XRP</span>{' '}
           upon all referals.{' '}
           <Link href="/" className="flex items-center font-semibold text-black">
@@ -46,11 +48,12 @@ const TierSelector = () => {
   const [value, setValue] = useState('Tier 1');
   const [open, setOpen] = useState(false);
   return (
-    <div className="flex flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-6">
+    <div className="flex flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
       <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger className="flex w-max items-center gap-[11px]">
-          <span className="flex items-center gap-[14px]">
-            <RibbonFirst />
+          <span className="flex items-center gap-[14px] text-[18px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
+            <RibbonFirst className="hidden sm:block" />
+            <RibbonSelectMobile className="sm:hidden" />
             {value}
           </span>
           <ArrowDown />
@@ -89,21 +92,24 @@ const TierSelector = () => {
 
 const Balance = () => {
   return (
-    <div className="flex w-2/5 justify-between">
-      <div className="flex flex-col gap-6 pb-[26px] pt-3 text-center">
-        <p className="text-xl leading-[26.04px] text-[var(--color-gray)]">
+    <div className="flex w-full gap-[18.5px] sm:max-md:justify-center md:w-2/5 md:justify-between lg:max-xl:w-full">
+      <div className="flex flex-col gap-3 pb-[26px] pt-3 text-center max-xl:basis-full sm:gap-6">
+        <p className="text-sm leading-[18.23px] text-[var(--color-gray)] sm:text-xl sm:leading-[26.04px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           XRP balance
         </p>
-        <p className="text-[28px] font-medium leading-[36.46px] text-[var(--color-black)]">
+        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           250 XRP
         </p>
       </div>
-      <div className="w-[1px] border-l border-[var(--color-stroke)]"></div>
-      <div className="flex flex-col gap-6 pb-[26px] pt-3 text-center">
-        <p className="text-xl leading-[26.04px] text-[var(--color-gray)]">
+      <Separator
+        className="my-2 h-auto bg-[var(--color-stroke)] md:max-lg:my-0"
+        orientation="vertical"
+      />
+      <div className="flex flex-col gap-3 pb-[26px] pt-3 text-center max-xl:basis-full sm:gap-6">
+        <p className="text-sm leading-[18.23px] text-[var(--color-gray)] sm:text-xl sm:leading-[26.04px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           XRP pooled
         </p>
-        <p className="text-[28px] font-medium leading-[36.46px] text-[var(--color-black)]">
+        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           240,000 XRP
         </p>
       </div>
@@ -113,32 +119,40 @@ const Balance = () => {
 
 const WalletSummary = () => {
   return (
-    <div className="flex justify-center rounded-[20px] border border-[var(--color-stroke)] pb-8 pt-[73px]">
-      <div className="flex w-3/4 justify-between">
-        <div className="flex w-full max-w-[139px] flex-col gap-6 self-center pb-[26px] pt-3 text-center">
-          <p className="text-xl leading-[26.04px] text-[var(--color-gray)]">
+    <div className="flex justify-center rounded-[20px] border border-[var(--color-stroke)] py-12 sm:py-8">
+      <div className="flex justify-between max-md:gap-12 max-sm:max-w-[175px] max-sm:flex-col sm:w-3/4 lg:max-xl:gap-6">
+        <div className="flex w-full max-w-[139px] flex-col gap-4 self-center text-center sm:gap-6 sm:pb-[26px] sm:pt-3 lg:max-xl:basis-full">
+          <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
             $LAMBO Token Holdings
           </p>
-          <p className="text-[28px] font-medium leading-[36.46px] text-[var(--color-black)]">
+          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
             500,000
           </p>
         </div>
-        <div className="w-[1px] border-l border-[var(--color-stroke)]"></div>
-        <div className="flex max-w-[139px] flex-col gap-6 self-center pb-[26px] pt-3 text-center">
-          <p className="text-xl leading-[26.04px] text-[var(--color-gray)]">
+        <Separator
+          className="my-2 hidden h-auto bg-[var(--color-stroke)] sm:block"
+          orientation="vertical"
+        />
+        <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] sm:hidden" />
+        <div className="flex w-full max-w-[139px] flex-col gap-4 self-center text-center sm:gap-6 sm:pb-[26px] sm:pt-3 lg:max-xl:basis-full">
+          <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
             Staked Wallets
           </p>
-          <p className="text-[28px] font-medium leading-[36.46px] text-[var(--color-black)]">
+          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
             1,200
           </p>
         </div>
-        <div className="w-[1px] border-l border-[var(--color-stroke)]"></div>
-        <div className="flex w-full max-w-[192px] flex-col gap-6 self-center pb-[26px] pt-3 text-center">
-          <p className="text-xl leading-[26.04px] text-[var(--color-gray)]">
+        <Separator
+          className="my-2 hidden h-auto bg-[var(--color-stroke)] sm:block"
+          orientation="vertical"
+        />
+        <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] sm:hidden" />
+        <div className="flex w-full max-w-[139px] flex-col gap-4 self-center text-center sm:gap-6 sm:pb-[26px] sm:pt-3 lg:max-xl:basis-full">
+          <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
             XRP <br />
             Rewards Distributed
           </p>
-          <p className="text-[28px] font-medium leading-[36.46px] text-[var(--color-black)]">
+          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
             75,000 XRP
           </p>
         </div>

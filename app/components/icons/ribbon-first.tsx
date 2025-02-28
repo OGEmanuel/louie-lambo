@@ -1,6 +1,7 @@
-const RibbonFirst = () => {
+const RibbonFirst = (props: { className: string }) => {
   return (
     <svg
+      className={props.className}
       width="46"
       height="46"
       viewBox="0 0 46 46"

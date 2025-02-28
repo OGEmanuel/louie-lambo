@@ -49,7 +49,7 @@ const Balance = () => {
       <div className="w-[1px] border-l border-[var(--color-stroke)]"></div>
       <div className="flex flex-col gap-6 pb-[26px] pt-3 text-center">
         <p className="text-xl leading-[26.04px] text-[var(--color-gray)]">
-          Lamboo balance
+          Lambo balance
         </p>
         <p className="text-[28px] font-medium leading-[36.46px] text-[var(--color-black)]">
           450 Lambo
