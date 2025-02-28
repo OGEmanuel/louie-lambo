@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { cn } from '@/lib/utils';
-import { FormControl, FormItem, FormLabel, FormMessage } from './form';
+import {
+  FormControl,
+  FormDescription,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from './form';
 import { RadioGroup, RadioGroupItem } from './radio-group';
 import { ComponentProps } from 'react';
 import { ControllerRenderProps } from 'react-hook-form';
@@ -10,10 +16,11 @@ interface RadioInputProps extends ComponentProps<'input'> {
   field: ControllerRenderProps<any, any>;
   label?: string;
   options: { label: string; value: string }[];
+  description?: string;
 }
 
 const RadioInput = (props: RadioInputProps) => {
-  const { field, label, options } = props;
+  const { field, label, options, description } = props;
   return (
     <FormItem className="space-y-4">
       <FormLabel className="text-[18px] font-medium leading-[23.44px]">
@@ -43,6 +50,11 @@ const RadioInput = (props: RadioInputProps) => {
           ))}
         </RadioGroup>
       </FormControl>
+      {description && (
+        <FormDescription className="font-medium leading-[20.83px] text-[var(--color-gray)]">
+          {description}
+        </FormDescription>
+      )}
       <FormMessage />
     </FormItem>
   );

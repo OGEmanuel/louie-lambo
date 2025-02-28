@@ -1,11 +1,10 @@
-import { Form, FormField } from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import TransactionDetails from './transaction-details';
-import NumberInput from '@/components/ui/number-input';
-import { useForm } from 'react-hook-form';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { Dispatch, SetStateAction } from 'react';
+import { Form, FormField } from '@/components/ui/form';
+import NumberInput from '@/components/ui/number-input';
+import RadioInput from '@/components/ui/radio-input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const FormSchema = z.object({
   amount: z
@@ -28,20 +27,21 @@ const FormSchema = z.object({
       }
       return val;
     }),
+  duration: z.string().min(2, {
+    message: 'Duration must be at least 2 characters.',
+  }),
 });
 
-const MinerForm = (props: {
-  type: string;
-  setIsSuccess: Dispatch<SetStateAction<boolean>>;
-}) => {
+const CalculatorForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
+      duration: '14-days',
     },
   });
 
-  const balance = 280;
+  const balance = 25;
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // toast({
@@ -50,15 +50,19 @@ const MinerForm = (props: {
     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
     </pre>;
-    props.setIsSuccess(true);
     //   ),
     // });
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[46px]">
-        <TransactionDetails balance={balance} />
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8"
+      >
+        <p className="text-2xl leading-[31.25px] text-[var(--color-black)]">
+          Estimate your returns
+        </p>
         <FormField
           control={form.control}
           name="amount"
@@ -66,7 +70,24 @@ const MinerForm = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
-              description={`Projected yield: APY 4.5%`}
+              field={field}
+            />
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="duration"
+          render={({ field }) => (
+            <RadioInput
+              label="Duration"
+              description="Projected yield: APY 4.5%"
+              options={[
+                { label: '7 days', value: '7-days' },
+                { label: '14 days', value: '14-days' },
+                { label: '1 month', value: '1-month' },
+                { label: '3 months', value: '3-months' },
+                { label: '6 months', value: '6-months' },
+              ]}
               field={field}
             />
           )}
@@ -75,7 +96,7 @@ const MinerForm = (props: {
           className="w-full"
           variant={'secondary'}
           type="submit"
-          label={`${props.type} XRP`}
+          label="Calculate rewards"
           isPending={false}
         />
       </form>
@@ -83,4 +104,4 @@ const MinerForm = (props: {
   );
 };
 
-export default MinerForm;
+export default CalculatorForm;
