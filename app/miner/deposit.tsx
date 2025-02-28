@@ -2,10 +2,8 @@
 
 import Summary from './summary';
 import MinerForm from './form';
-import MinerSuccess from '../components/icons/miner-success';
 import HowItWorks from './how-it-works';
-import { Button } from '@/components/ui/button';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import SuccessPage from './success';
 
 const Deposit = () => {

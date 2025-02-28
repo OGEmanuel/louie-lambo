@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 
 export type Assets = {
