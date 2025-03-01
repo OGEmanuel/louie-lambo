@@ -1,4 +1,4 @@
-const LamboLogoSmall = (props: { className: string }) => {
+const LamboLogoSmall = (props: { className?: string }) => {
   return (
     <svg
       className={props.className}
