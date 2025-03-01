@@ -1,3 +1,5 @@
+'use client';
+
 import { ButtonLoading } from '@/components/ui/button-loading';
 import {
   Form,
@@ -26,8 +28,8 @@ export const Referral = () => {
       </div>
       <div className="flex flex-col gap-[13px] leading-[20.83px]">
         <p className="">Referral link</p>
-        <div className="flex max-2xl:flex-col max-2xl:gap-2 2xl:items-center 2xl:justify-between">
-          <p className="text-[var(--color-gray)]">
+        <div className="flex max-2xl:flex-col max-2xl:gap-2 max-xl:flex-row max-xl:items-center max-xl:justify-between 2xl:items-center 2xl:justify-between">
+          <p className="text-[var(--color-gray)] max-2xl:line-clamp-1 max-2xl:text-ellipsis">
             https://xrpthestan.....34xcvsk5
           </p>
           <div className="flex items-center gap-1">
@@ -89,7 +91,7 @@ const ReferralForm = () => {
         <ButtonLoading
           type="submit"
           label="Refer"
-          className="w-full text-base font-normal leading-[20.83px]"
+          className="w-full text-base font-normal leading-[20.83px] max-lg:h-[49px]"
           isPending={false}
         />
       </form>

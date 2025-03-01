@@ -1,7 +1,6 @@
 import { Form, FormField } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import TransactionDetails from './transaction-details';
 import NumberInput from '@/components/ui/number-input';
 import { useForm } from 'react-hook-form';
 import { ButtonLoading } from '@/components/ui/button-loading';
@@ -57,7 +56,10 @@ const MinerForm = (props: {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-[46px]">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-[46px] max-lg:space-y-6"
+      >
         <TransactionDetails balance={balance} />
         <FormField
           control={form.control}
@@ -84,3 +86,18 @@ const MinerForm = (props: {
 };
 
 export default MinerForm;
+
+const TransactionDetails = (props: { balance: number }) => {
+  return (
+    <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
+      <div className="flex items-center justify-between">
+        <p className="text-[var(--color-gray)]">XRP Balance</p>
+        <p className="font-medium">{props.balance} XRP</p>
+      </div>
+      <div className="flex items-center justify-between">
+        <p className="text-[var(--color-gray)]">XRP Deposited</p>
+        <p className="font-medium">28 XRP</p>
+      </div>
+    </div>
+  );
+};

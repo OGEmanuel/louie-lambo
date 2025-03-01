@@ -6,9 +6,8 @@ import RadioInput from '@/components/ui/radio-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import TransactionDetails from './transaction-details';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { EarlyWithdrawal, Summary } from './tabs';
+import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
 
 const FormSchema = z.object({
