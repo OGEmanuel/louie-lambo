@@ -24,7 +24,7 @@ const NumberInput = (props: TextInputProps) => {
 
   return (
     <FormItem className="w-full space-y-[18px]">
-      <FormLabel className="text-[18px] font-medium leading-[23.44px] text-[var(--color-black)]">
+      <FormLabel className="text-lg font-medium leading-[23.44px] text-[var(--color-black)] max-lg:text-base">
         {label}
       </FormLabel>
       <div className="flex flex-col gap-3">
@@ -32,7 +32,7 @@ const NumberInput = (props: TextInputProps) => {
           <div className="relative">
             <Input
               type="text"
-              className="h-[78px] w-full rounded-2xl border border-[var(--color-lambo-green)] bg-[var(--color-bg)] px-[21px] font-medium leading-[41.66px] text-[var(--color-black)] shadow-none focus-visible:ring-0 md:text-[2rem]"
+              className="h-[78px] w-full rounded-2xl border border-[var(--color-lambo-green)] bg-[var(--color-bg)] px-[21px] text-[2rem] font-medium leading-[41.66px] text-[var(--color-black)] shadow-none focus-visible:ring-0"
               inputMode="numeric"
               placeholder={placeholder}
               {...field}
@@ -54,7 +54,7 @@ const NumberInput = (props: TextInputProps) => {
           </div>
         </FormControl>
         {description && (
-          <FormDescription className="font-medium leading-[20.83px] text-[var(--color-gray)]">
+          <FormDescription className="text-base font-medium leading-[20.83px] text-[var(--color-gray)] max-lg:text-sm max-lg:leading-[18.23px]">
             {description}
           </FormDescription>
         )}

@@ -4,13 +4,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Stake from './stake';
 import UnStake from './unstake';
 import { useState } from 'react';
+import Apy from '../components/icons/apy';
 
 const StakeTabs = () => {
   const [value, setValue] = useState('stake');
 
   return (
-    <Tabs onValueChange={setValue} value={value}>
-      <TabsList>
+    <Tabs onValueChange={setValue} value={value} className="">
+      <TabsList className="">
         <TabsTrigger value="stake">Stake</TabsTrigger>
         <TabsTrigger value="unstake">Unstake</TabsTrigger>
       </TabsList>
@@ -28,14 +29,17 @@ export default StakeTabs;
 
 export const Summary = (props: { tab: string }) => {
   return (
-    <div className="flex w-[36.4705882353%] flex-col gap-[76px] rounded-[20px] bg-white p-12">
-      <div className="flex flex-col gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <p className="leading-[20.83px]">Annual percentage profit (APY rate)</p>
+    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+      <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
+        <div className="flex items-center gap-1">
+          <p className="leading-[20.83px]">APY rate</p>
+          <Apy className="lg:hidden" />
+        </div>
         <p className="text-[28px] leading-[36.46px]">4.33%</p>
       </div>
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
         <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
+          <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
             Current tier
           </p>
           <p className="text-2xl font-medium leading-[31.25px]">Tier 1</p>
@@ -44,7 +48,7 @@ export const Summary = (props: { tab: string }) => {
           <>
             <hr />
             <div className="flex flex-col gap-3">
-              <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
+              <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
                 $LAMBO balance
               </p>
               <p className="text-2xl font-medium leading-[31.25px]">
@@ -55,5 +59,14 @@ export const Summary = (props: { tab: string }) => {
         )}
       </div>
     </div>
+  );
+};
+
+export const EarlyWithdrawal = () => {
+  return (
+    <p className="rounded-lg bg-[var(--color-bg)] p-3 leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.23px]">
+      Early withdrawal will result in <span className="font-medium">50%</span>{' '}
+      loss of staked $LAMBO tokens
+    </p>
   );
 };

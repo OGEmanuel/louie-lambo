@@ -4,10 +4,12 @@ import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] py-[9px] pl-[14px] pr-[9px] md:rounded-[30px] md:px-[33px] md:py-[19px]">
-      <LamboLogo className="hidden md:block" />
-      <LamboLogoSmall className="md:hidden" />
-      <Button>Connect Wallet</Button>
+    <nav className="max-2xl:px-[120px] max-lg:px-6">
+      <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] py-[9px] pl-[14px] pr-[9px] md:rounded-[30px] md:px-[33px] md:py-[19px]">
+        <LamboLogo className="hidden md:block" />
+        <LamboLogoSmall className="md:hidden" />
+        <Button>Connect Wallet</Button>
+      </div>
     </nav>
   );
 };

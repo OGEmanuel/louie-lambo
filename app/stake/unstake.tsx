@@ -7,7 +7,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import TransactionDetails from './transaction-details';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { Summary } from './tabs';
+import { EarlyWithdrawal, Summary } from './tabs';
+import { Separator } from '@/components/ui/separator';
 
 const FormSchema = z.object({
   amount: z
@@ -34,8 +35,8 @@ const FormSchema = z.object({
 
 const UnStake = () => {
   return (
-    <div className="flex w-full gap-8">
-      <StakeForm />
+    <div className="flex w-full gap-8 max-xl:flex-col">
+      <UnstakeForm />
       <Summary tab="unstake" />
     </div>
   );
@@ -43,7 +44,7 @@ const UnStake = () => {
 
 export default UnStake;
 
-const StakeForm = () => {
+const UnstakeForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -68,7 +69,7 @@ const StakeForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8"
+        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
       >
         <FormField
           control={form.control}
@@ -82,11 +83,8 @@ const StakeForm = () => {
             />
           )}
         />
-        <p className="rounded-lg bg-[var(--color-bg)] px-[10px] py-[11px] leading-[20.83px] text-[var(--color-black)]">
-          Early withdrawal will result in{' '}
-          <span className="font-medium">50%</span> loss of staked $LAMBO tokens
-        </p>
-        <hr className="border border-[var(--color-stroke)]" />
+        <EarlyWithdrawal />
+        <Separator className="my-4 bg-[var(--color-stroke)]" />
         <TransactionDetails />
         <ButtonLoading
           className="w-full"

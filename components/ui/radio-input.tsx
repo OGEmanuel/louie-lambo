@@ -23,23 +23,23 @@ const RadioInput = (props: RadioInputProps) => {
   const { field, label, options, description } = props;
   return (
     <FormItem className="space-y-4">
-      <FormLabel className="text-[18px] font-medium leading-[23.44px]">
+      <FormLabel className="text-lg font-medium leading-[23.44px] max-lg:text-base max-lg:leading-[20.83px]">
         {label}
       </FormLabel>
       <FormControl>
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
-          className="grid grid-cols-4 gap-[22px] 2xl:grid-cols-5"
+          className="grid flex-wrap gap-[22px] max-lg:gap-3 max-lg:gap-y-6 max-md:flex md:grid-cols-5 lg:grid-cols-4 2xl:grid-cols-5"
         >
           {options.map(option => (
-            <FormItem className="basis-full" key={option.label}>
+            <FormItem className="lg:basis-full" key={option.label}>
               <FormControl className="hidden">
                 <RadioGroupItem value={option.value} />
               </FormControl>
               <FormLabel
                 className={cn(
-                  `text-nowrap rounded-lg border border-[var(--color-stroke)] px-5 py-[10px] leading-[20.83px] text-[var(--color-black)]`,
+                  `text-nowrap rounded-lg border border-[var(--color-stroke)] px-5 py-[10px] leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.3px]`,
                   field.value === option.value &&
                     'border-[1.5px] border-[var(--color-lambo-green)] bg-[var(--color-lambo-black)] text-white',
                 )}

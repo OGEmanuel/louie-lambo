@@ -8,7 +8,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import TransactionDetails from './transaction-details';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { Summary } from './tabs';
+import { EarlyWithdrawal, Summary } from './tabs';
+import { Separator } from '@/components/ui/separator';
 
 const FormSchema = z.object({
   amount: z
@@ -38,10 +39,9 @@ const FormSchema = z.object({
 
 const Stake = () => {
   return (
-    <div className="flex w-full gap-8">
+    <div className="flex w-full gap-8 max-xl:flex-col">
       <StakeForm />
       <Summary tab="stake" />
-      {/* <StakeSummary /> */}
     </div>
   );
 };
@@ -74,7 +74,7 @@ const StakeForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8"
+        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
       >
         <FormField
           control={form.control}
@@ -105,11 +105,16 @@ const StakeForm = () => {
             />
           )}
         />
-        <p className="rounded-lg bg-[var(--color-bg)] px-[10px] py-[11px] leading-[20.83px] text-[var(--color-black)]">
-          Early withdrawal will result in{' '}
-          <span className="font-medium">50%</span> loss of staked $LAMBO tokens
-        </p>
-        <hr className="border border-[var(--color-stroke)]" />
+        <EarlyWithdrawal />
+        <div className="flex items-center justify-between text-[var(--text-black)]">
+          <p className="text-lg leading-[23.44px] max-lg:text-sm max-lg:leading-[18.23px]">
+            {'How much you’ll get'}
+          </p>
+          <p className="text-xl font-medium leading-[26.04px] max-lg:text-base max-lg:leading-[20.83px]">
+            $250 LAMBO
+          </p>
+        </div>
+        <Separator className="my-4 bg-[var(--color-stroke)]" />
         <TransactionDetails />
         <ButtonLoading
           className="w-full"
@@ -120,31 +125,5 @@ const StakeForm = () => {
         />
       </form>
     </Form>
-  );
-};
-
-const StakeSummary = () => {
-  return (
-    <div className="flex w-[36.4705882353%] flex-col gap-[76px] rounded-[20px] bg-white p-12">
-      <div className="flex flex-col gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <p className="leading-[20.83px]">Annual percentage profit (APY rate)</p>
-        <p className="text-[28px] leading-[36.46px]">4.33%</p>
-      </div>
-      <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            Current tier
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">Tier 1</p>
-        </div>
-        <hr />
-        <div className="flex flex-col gap-3">
-          <p className="text-[18px] leading-[23.44px] text-[var(--color-gray)]">
-            $LAMBO supply
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">1B</p>
-        </div>
-      </div>
-    </div>
   );
 };

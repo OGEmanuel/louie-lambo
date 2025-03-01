@@ -16,7 +16,7 @@ export const ButtonLoading = (props: ButtonLoadingProps) => {
       type={type}
       variant={variant ? variant : 'default'}
       className={cn(
-        'grid-stack grid w-max gap-0 overflow-hidden max-sm:w-full',
+        'grid-stack max-lg: grid w-max gap-0 overflow-hidden max-lg:text-lg max-lg:leading-[23.44px] max-md:h-[60px] max-md:py-4 max-sm:w-full',
         className,
       )}
     >

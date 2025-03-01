@@ -25,7 +25,7 @@ export default function RootLayout({
       <body className={`${dmSans.variable} flex justify-center`}>
         <section className="flex w-full max-w-[1728px] justify-center">
           <QueryProvider>
-            <div className="flex w-full max-w-[1488px] flex-col gap-6 pb-[30px] pt-6 max-2xl:px-[120px] max-lg:px-6 md:gap-10 md:pt-[25px]">
+            <div className="flex w-full max-w-[1488px] flex-col gap-6 pb-[30px] pt-6 md:gap-10 md:pt-[25px]">
               <Navbar />
               <div className="flex items-start gap-10">
                 <Sidenav />

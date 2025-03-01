@@ -7,7 +7,7 @@ import { ComponentProps } from 'react';
 
 const Sidenav = () => {
   return (
-    <aside className="max-lg:hidden">
+    <aside className="max-2xl:pl-[120px] max-lg:hidden">
       <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] p-6 text-[18px] font-semibold leading-[23.44px] text-[var(--color-black)] xl:[&>li]:w-[238px]">
         <li>
           <NavLink href="/">Overview</NavLink>
