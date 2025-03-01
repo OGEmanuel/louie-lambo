@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 import {
   ColumnDef,
   flexRender,
@@ -18,10 +19,11 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  className?: string;
 }
 
 const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
-  const { columns, data } = props;
+  const { columns, data, className } = props;
 
   const table = useReactTable({
     data,
@@ -30,7 +32,7 @@ const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
   });
 
   return (
-    <div className="overflow-hidden rounded-t-[14px] border">
+    <div className={cn('overflow-hidden rounded-t-[14px] border', className)}>
       <Table>
         <TableHeader className="bg-[var(--color-off-white)]">
           {table.getHeaderGroups().map(headerGroup => (

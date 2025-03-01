@@ -1,6 +1,7 @@
-const SecurityCard = () => {
+const SecurityCard = (props: { className: string }) => {
   return (
     <svg
+      className={props.className}
       width="52"
       height="52"
       viewBox="0 0 52 52"

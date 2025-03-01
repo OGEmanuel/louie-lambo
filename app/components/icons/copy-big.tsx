@@ -1,6 +1,7 @@
-const CopyBig = () => {
+const CopyBig = (props: { className: string }) => {
   return (
     <svg
+      className={props.className}
       width="21"
       height="24"
       viewBox="0 0 21 24"

@@ -6,6 +6,7 @@ import { Referral } from '../referral';
 import { Separator } from '@/components/ui/separator';
 import { Dispatch, SetStateAction } from 'react';
 import MinerSuccess from '../components/icons/miner-success';
+import Apy from '../components/icons/apy';
 
 const MinerTabs = () => {
   return (
@@ -29,8 +30,11 @@ export default MinerTabs;
 export const Summary = () => {
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
-      <div className="flex flex-col gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <p className="leading-[20.83px]">XRP mined</p>
+      <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
+        <div className="flex items-center gap-1">
+          <p className="leading-[20.83px]">XRP mined</p>
+          <Apy className="lg:hidden" />
+        </div>
         <p className="text-[28px] leading-[36.46px]">150 XRP</p>
       </div>
       <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
