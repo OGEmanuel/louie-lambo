@@ -1,3 +1,5 @@
+'use client';
+
 import { Form, FormField } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';

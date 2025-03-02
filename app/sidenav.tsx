@@ -9,17 +9,19 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { MenuIcon } from 'lucide-react';
+import { MenuIcon, MoonIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ComponentProps, useState } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
 import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { Separator } from '@/components/ui/separator';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const Sidenav = () => {
   return (
-    <aside className="max-2xl:pl-[120px] max-lg:hidden">
-      <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] p-6 text-[18px] font-semibold leading-[23.44px] text-[var(--color-black)] xl:[&>li]:w-[238px]">
+    <aside className="flex flex-col gap-8 max-2xl:pl-[120px] max-lg:hidden">
+      <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] p-6 text-[18px] font-semibold leading-[23.44px] xl:[&>li]:w-[238px]">
         <li>
           <NavLink href="/">Overview</NavLink>
         </li>
@@ -36,6 +38,7 @@ const Sidenav = () => {
           <NavLink href="/calculator">APY Calculator</NavLink>
         </li>
       </ul>
+      <ThemeSwitch />
     </aside>
   );
 };
@@ -49,7 +52,7 @@ export const MobileSidenav = () => {
       <SheetTrigger>
         <MenuIcon className="hidden h-7 w-7 text-white max-lg:block" />
       </SheetTrigger>
-      <SheetContent className="px-0">
+      <SheetContent className="flex flex-col gap-8 px-0">
         <SheetHeader className="sr-only">
           <SheetTitle>Side Navigation</SheetTitle>
           <SheetDescription>
@@ -60,7 +63,7 @@ export const MobileSidenav = () => {
           <LamboLogoSmall />
         </div>
         <Separator />
-        <ul className="relative mt-[37px] flex flex-col gap-3 rounded-[20px] p-6 text-[18px] font-semibold leading-[23.44px] text-[var(--color-black)] xl:[&>li]:w-[238px]">
+        <ul className="relative mt-[37px] flex flex-col gap-3 rounded-[20px] p-6 text-[18px] font-semibold leading-[23.44px] xl:[&>li]:w-[238px]">
           <li onClick={() => setOpen(false)}>
             <NavLink href="/">Overview</NavLink>
           </li>
@@ -77,8 +80,54 @@ export const MobileSidenav = () => {
             <NavLink href="/calculator">APY Calculator</NavLink>
           </li>
         </ul>
+        <ThemeSwitch />
       </SheetContent>
     </Sheet>
+  );
+};
+
+const ThemeSwitch = () => {
+  // Initialize with a default value
+  const [isDark, setIsDark] = useState(false);
+
+  // Check the theme after the component mounts (client-side only)
+  useEffect(() => {
+    const darkTheme =
+      localStorage.theme === 'dark' ||
+      (!('theme' in localStorage) &&
+        window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    setIsDark(darkTheme);
+  }, []);
+
+  // Sync the dark class with localStorage state
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDark);
+  }, [isDark]);
+
+  const toggleTheme = () => {
+    const newIsDark = !isDark;
+    setIsDark(newIsDark);
+
+    // Persist the preference
+    localStorage.theme = newIsDark ? 'dark' : 'light';
+  };
+
+  return (
+    <div className="flex items-center justify-between rounded-[18px] border border-[var(--color-stroke)] p-6 dark:border-[#2B2B34]">
+      <Label
+        htmlFor="theme-switch"
+        className="flex items-center gap-[6px] dark:text-[#8A8A8A]"
+      >
+        <MoonIcon className="h-[18px] w-[18px]" />
+        {isDark ? 'Dark' : 'Light'} Mode
+      </Label>
+      <Switch
+        checked={!isDark}
+        onCheckedChange={toggleTheme}
+        id="theme-switch"
+      />
+    </div>
   );
 };
 
@@ -90,8 +139,9 @@ export const NavLink = (
     <Link
       {...props}
       className={cn(
-        'block text-nowrap rounded-xl p-4 transition-all',
-        pathname === props.href && 'bg-[var(--color-off-white)]',
+        'block text-nowrap rounded-xl p-4 text-[var(--color-black)] transition-all dark:text-[#8A8A8A]',
+        pathname === props.href &&
+          'bg-[var(--color-off-white)] dark:bg-[#42434B] dark:text-[var(--color-lambo-green)]',
       )}
     />
   );

@@ -29,10 +29,12 @@ export default StakeTabs;
 
 export const Summary = (props: { tab: string }) => {
   return (
-    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
         <div className="flex items-center gap-1">
-          <p className="leading-[20.83px]">APY rate</p>
+          <p className="leading-[20.83px] text-[var(--color-black)]">
+            APY rate
+          </p>
           <Apy className="lg:hidden" />
         </div>
         <p className="text-[28px] leading-[36.46px]">4.33%</p>
@@ -76,11 +78,13 @@ export const TransactionDetails = () => {
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">Transaction cost</p>
-        <p className="font-medium">0.24 XRP</p>
+        <p className="font-medium text-[var(--color-black)]">0.24 XRP</p>
       </div>
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">Exchange rate</p>
-        <p className="font-medium">1 $LAMBO = 1.2 XRP</p>
+        <p className="font-medium text-[var(--color-black)]">
+          1 $LAMBO = 1.2 XRP
+        </p>
       </div>
     </div>
   );

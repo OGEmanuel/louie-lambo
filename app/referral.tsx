@@ -19,20 +19,22 @@ export const Referral = () => {
     <>
       <div className="flex flex-col gap-[46px]">
         <div className="flex flex-col gap-[7px] text-center">
-          <p className="text-2xl leading-[31.25px]">Refer & Earn</p>
-          <p className="leading-[20.83px] text-[var(--color-gray)]">
+          <p className="text-2xl leading-[31.25px] text-[var(--color-black)]">
+            Refer & Earn
+          </p>
+          <p className="leading-[20.83px] text-[var(--color-gray)] dark:text-white">
             Earn free XRP bonus from referrals
           </p>
         </div>
         <ReferralForm />
       </div>
       <div className="flex flex-col gap-[13px] leading-[20.83px]">
-        <p className="">Referral link</p>
+        <p className="text-[var(--text-black)]">Referral link</p>
         <div className="flex max-2xl:flex-col max-2xl:gap-2 max-xl:flex-row max-xl:items-center max-xl:justify-between 2xl:items-center 2xl:justify-between">
           <p className="text-[var(--color-gray)] max-2xl:line-clamp-1 max-2xl:text-ellipsis">
             https://xrpthestan.....34xcvsk5
           </p>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 text-[var(--color-black)]">
             <Copy />
             <p>Copy</p>
           </div>

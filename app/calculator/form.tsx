@@ -1,3 +1,5 @@
+'use client';
+
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { Form, FormField } from '@/components/ui/form';
 import NumberInput from '@/components/ui/number-input';
@@ -58,7 +60,7 @@ const CalculatorForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
+        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
       >
         <p className="text-2xl leading-[31.25px] text-[var(--color-black)]">
           Estimate your returns

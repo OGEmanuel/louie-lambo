@@ -12,7 +12,7 @@ const HowItWorks = () => {
         value="item-1"
         className="rounded-xl border-none bg-[var(--color-bg)]"
       >
-        <AccordionTrigger className="p-4 hover:no-underline">
+        <AccordionTrigger className="p-4 text-[var(--color-black)] hover:no-underline">
           How Lambo Miner works
         </AccordionTrigger>
         <AccordionContent className="p-4">

@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Dispatch, SetStateAction } from 'react';
 import MinerSuccess from '../components/icons/miner-success';
 import Apy from '../components/icons/apy';
+import MinerSuccessDark from '../components/icons/miner-success-dark';
 
 const MinerTabs = () => {
   return (
@@ -29,9 +30,9 @@ export default MinerTabs;
 
 export const Summary = () => {
   return (
-    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 text-[var(--color-black)]">
           <p className="leading-[20.83px]">XRP mined</p>
           <Apy className="lg:hidden" />
         </div>
@@ -60,13 +61,18 @@ export const SuccessPage = (props: {
 }) => {
   return (
     <div className="flex flex-col items-center justify-center">
-      <MinerSuccess />
+      <MinerSuccess className="dark:hidden" />
+      <MinerSuccessDark className="hidden dark:block" />
       <div className="py-[23.5px]"></div>
       <p className="text-[28px] font-semibold leading-[36.46px] text-[var(--color-black)]">
         Congratulations!
       </p>
       <div className="py-[10.5px]"></div>
-      <p>You have successfully {props.type} 25 XRP to your wallet</p>
+      <p className="text-[var(--color-black)]">
+        You have successfully {props.type}{' '}
+        <span className="text-black dark:text-white">25 XRP</span> to your
+        wallet
+      </p>
       <div className="py-[17.5px]"></div>
       <Button
         onClick={() => props.setIsSuccess(false)}
