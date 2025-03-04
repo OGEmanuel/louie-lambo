@@ -5,7 +5,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 leading-[15.62px] md:leading-[23.44px] text-[var(--color-black)] text-xs md:text-lg whitespace-nowrap rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-95 transition-transform duration-200',
+  'inline-flex items-center justify-center gap-2 leading-[15.62px] md:leading-[23.44px] dark:text-[var(--color-lambo-black)] text-[var(--color-black)] text-xs md:text-lg whitespace-nowrap rounded-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-95 transition-transform duration-200',
   {
     variants: {
       variant: {
@@ -14,12 +14,12 @@ const buttonVariants = cva(
         destructive:
           'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
         outline:
-          'border text-base leading-[20.83px] border-[var(--color-stroke)] bg-white',
+          'border text-base leading-[20.83px] bg-transparent dark:text-[var(--color-black)] border-[var(--color-stroke)]',
         secondary:
-          'bg-[var(--color-lambo-black)] text-[var(--color-lambo-green)] border border-[var(--color-lambo-green)] shadow-sm hover:bg-[var(--color-lambo-black)]/80',
+          'bg-[var(--color-lambo-black)] text-[var(--color-lambo-green)] border border-[var(--color-lambo-green)] shadow-sm hover:bg-[var(--color-lambo-black)]/80 dark:bg-[var(--color-lambo-green)]',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        max: 'text-[var(--color-black)] rounded-lg bg-white max-lg:text-lg',
+        max: 'text-[var(--color-black)] rounded-lg bg-white max-lg:text-lg dark:bg-[var(--color-lambo-black)] dark:text-white',
       },
       size: {
         default: 'h-[36px] px-4 py-2 sm:h-[51px]',

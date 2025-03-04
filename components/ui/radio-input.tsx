@@ -23,7 +23,7 @@ const RadioInput = (props: RadioInputProps) => {
   const { field, label, options, description } = props;
   return (
     <FormItem className="space-y-4">
-      <FormLabel className="text-lg font-medium leading-[23.44px] max-lg:text-base max-lg:leading-[20.83px]">
+      <FormLabel className="text-lg font-medium leading-[23.44px] text-[var(--color-black)] max-lg:text-base max-lg:leading-[20.83px]">
         {label}
       </FormLabel>
       <FormControl>
@@ -39,9 +39,9 @@ const RadioInput = (props: RadioInputProps) => {
               </FormControl>
               <FormLabel
                 className={cn(
-                  `text-nowrap rounded-lg border border-[var(--color-stroke)] px-5 py-[10px] leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.3px]`,
+                  `text-nowrap rounded-lg border border-[var(--color-stroke)] px-5 py-[10px] leading-[20.83px] text-[var(--color-black)] dark:border-[var(--color-stroke)] max-lg:text-sm max-lg:leading-[18.3px]`,
                   field.value === option.value &&
-                    'border-[1.5px] border-[var(--color-lambo-green)] bg-[var(--color-lambo-black)] text-white',
+                    'border-[1.5px] border-[var(--color-lambo-green)] bg-[var(--color-lambo-black)] text-white dark:border-[var(--color-lambo-green)]',
                 )}
               >
                 {option.label}

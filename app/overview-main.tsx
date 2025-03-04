@@ -29,9 +29,13 @@ const OverviewMain = () => {
       </div>
       <div className="flex flex-col gap-[13px]">
         <p className="items-center px-[10px] py-[10.5px] text-sm leading-[18.23px] text-[var(--color-black)] sm:text-[18px] sm:leading-[23.44px] md:gap-2 xl:flex">
-          Refer & earn: Earn additional <span className="font-bold">XRP</span>{' '}
-          upon all referals.{' '}
-          <Link href="/" className="flex items-center font-semibold text-black">
+          Refer & earn: Earn additional{' '}
+          <span className="font-bold dark:text-white">XRP</span> upon all
+          referals.{' '}
+          <Link
+            href="/"
+            className="flex items-center font-semibold text-black dark:text-white"
+          >
             Refer now
             <ChevronRight className="h-6 w-6" />
           </Link>
@@ -58,7 +62,7 @@ const TierSelector = () => {
           </span>
           <ArrowDown />
         </PopoverTrigger>
-        <PopoverContent className="w-full rounded-[18px] p-[42px]">
+        <PopoverContent className="w-full rounded-[18px] p-[42px] dark:bg-[var(--color-lambo-black)]">
           <RadioGroup
             defaultValue={value}
             onValueChange={setValue}
@@ -80,7 +84,7 @@ const TierSelector = () => {
           </RadioGroup>
         </PopoverContent>
       </Popover>
-      <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-gray)]">
+      <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-gray)] dark:text-[var(--color-gray)]">
         {value === 'Tier 1' && <Tier1 />}
         {value === 'Tier 2' && <Tier2 />}
         {value === 'Tier 3' && <Tier3 />}
@@ -97,7 +101,7 @@ const Balance = () => {
         <p className="text-sm leading-[18.23px] text-[var(--color-gray)] sm:text-xl sm:leading-[26.04px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           XRP balance
         </p>
-        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
+        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] dark:text-white sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           250 XRP
         </p>
       </div>
@@ -109,7 +113,7 @@ const Balance = () => {
         <p className="text-sm leading-[18.23px] text-[var(--color-gray)] sm:text-xl sm:leading-[26.04px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           XRP pooled
         </p>
-        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
+        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] dark:text-white sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
           240,000 XRP
         </p>
       </div>
@@ -125,7 +129,7 @@ const WalletSummary = () => {
           <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
             $LAMBO Token Holdings
           </p>
-          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
+          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
             500,000
           </p>
         </div>
@@ -138,7 +142,7 @@ const WalletSummary = () => {
           <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
             Staked Wallets
           </p>
-          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
+          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
             1,200
           </p>
         </div>
@@ -152,7 +156,7 @@ const WalletSummary = () => {
             XRP <br />
             Rewards Distributed
           </p>
-          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
+          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
             75,000 XRP
           </p>
         </div>
@@ -187,7 +191,7 @@ const TierItem = (props: {
             </p>
           </div>
           {props.tier === props.value && (
-            <p className="rounded-lg bg-[var(--color-lambo-black)] px-2 py-1 text-sm font-medium leading-[26px] text-[var(--color-lambo-green)]">
+            <p className="rounded-lg border border-transparent bg-[var(--color-lambo-black)] px-2 py-1 text-sm font-medium leading-[26px] text-[var(--color-lambo-green)] dark:border-[var(--color-lambo-green)]">
               Current Tier
             </p>
           )}

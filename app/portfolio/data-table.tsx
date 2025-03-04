@@ -62,7 +62,7 @@ const DataTable = <TData, TValue>(props: DataTableProps<TData, TValue>) => {
                 {row.getVisibleCells().map(cell => (
                   <TableCell
                     key={cell.id}
-                    className="h-16 px-6 py-0 text-sm font-light leading-[18.23px] text-[#333333] 2xl:pl-[54.43px]"
+                    className="h-16 px-6 py-0 text-sm font-light leading-[18.23px] text-[#333333] dark:text-[var(--color-black)] 2xl:pl-[54.43px]"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
