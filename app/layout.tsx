@@ -37,10 +37,10 @@ export default function RootLayout({
           }}
         />
       </Head>
-      <body
-        className={`${dmSans.variable} flex justify-center dark:bg-[var(--color-lambo-black)]`}
-      >
-        <ThemeProvider>
+      <ThemeProvider>
+        <body
+          className={`${dmSans.variable} flex justify-center dark:bg-[var(--color-lambo-black)]`}
+        >
           <section className="flex w-full max-w-[1728px] justify-center">
             <QueryProvider>
               <div className="flex w-full max-w-[1488px] flex-col gap-6 pb-[30px] pt-6 md:gap-10 md:pt-[25px]">
@@ -52,8 +52,8 @@ export default function RootLayout({
               </div>
             </QueryProvider>
           </section>
-        </ThemeProvider>
-      </body>
+        </body>
+      </ThemeProvider>
     </html>
   );
 }
