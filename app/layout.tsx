@@ -39,7 +39,7 @@ export default function RootLayout({
       </Head>
       <ThemeProvider>
         <body
-          className={`${dmSans.variable} flex justify-center dark:bg-[var(--color-lambo-black)]`}
+          className={`${dmSans.className} flex justify-center dark:bg-[var(--color-lambo-black)]`}
         >
           <section className="flex w-full max-w-[1728px] justify-center">
             <QueryProvider>
