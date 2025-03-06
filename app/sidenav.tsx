@@ -17,6 +17,13 @@ import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  variable: '--font-poppins',
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+});
 
 const Sidenav = () => {
   return (
@@ -114,7 +121,9 @@ const ThemeSwitch = () => {
   };
 
   return (
-    <div className="flex items-center justify-between rounded-[18px] border border-[var(--color-stroke)] p-6 dark:border-[#2B2B34]">
+    <div
+      className={`flex items-center justify-between rounded-[18px] border border-[var(--color-stroke)] p-6 dark:border-[#2B2B34] ${poppins.className}`}
+    >
       <Label
         htmlFor="theme-switch"
         className="flex items-center gap-[6px] dark:text-[#8A8A8A]"
