@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 import RibbonFirst from './components/icons/ribbon-first';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
@@ -19,6 +19,7 @@ import RibbonFourthSelect from './components/icons/ribbon-fourth-select';
 import ArrowDown from './components/icons/arrow-down';
 import RibbonSelectMobile from './components/icons/ribbon-select-mobile';
 import { Separator } from '@/components/ui/separator';
+import { AppContext } from '@/context/AppContext';
 
 const OverviewMain = () => {
   return (
@@ -95,6 +96,8 @@ const TierSelector = () => {
 };
 
 const Balance = () => {
+  const appContext = useContext(AppContext);
+
   return (
     <div className="flex w-full gap-[18.5px] sm:max-md:justify-center md:w-2/5 md:justify-between lg:max-xl:w-full">
       <div className="flex flex-col gap-3 pb-[26px] pt-3 text-center max-xl:basis-full sm:gap-6">
@@ -102,7 +105,7 @@ const Balance = () => {
           XRP balance
         </p>
         <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] dark:text-white sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
-          250 XRP
+          {appContext.xrpBalance} XRP
         </p>
       </div>
       <Separator
