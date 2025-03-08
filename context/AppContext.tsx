@@ -3,6 +3,8 @@
 import {
   LAMBO_TOKEN_CODE,
   LAMBO_TOKEN_ISSUER,
+  Tier,
+  tiers,
   XRP_MAINNET_RPC,
 } from '@/lib/constants';
 import { AppContextInterface } from '@/lib/types';
@@ -15,7 +17,11 @@ import xrpl from 'xrpl';
 export const AppContext = createContext<AppContextInterface>({
   error: '',
   success: '',
+  userTier: tiers[0],
   tokenBalance: '0',
+  poolXrpBalance: '',
+  stakedWallets: 0,
+  xrpRewardsDistributed: 0,
   setError: () => {},
   setSuccess: () => {},
   walletAddress: '',
@@ -34,6 +40,11 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [xrpBalance, setXrpBalance] = useState<number>(0);
   const [tokenBalance, setTokenBalance] = useState<string>('0');
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [poolXrpBalance, setPoolXrpBalance] = useState<string>('0');
+  const [stakedWallets, setStakedWallets] = useState<number>(0);
+  const [xrpRewardsDistributed, setXrpRewardsDistributed] = useState<number>(0);
+  const [value, setValue] = useState<Tier>(tiers[0]);
+
   const [cookies] = useCookies(['walley']);
 
   useEffect(() => {
@@ -68,13 +79,27 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         LAMBO_TOKEN_ISSUER,
         LAMBO_TOKEN_CODE,
       );
-      setTokenBalance(tbalance);
+      setTokenBalance(Number(tbalance).toFixed(1));
+      await fetchOverview();
     };
 
     if (walletAddress) {
       fetchBalance();
     }
   }, [walletAddress]);
+
+  useEffect(() => {
+    const tiersList = tiers;
+
+    for (const tier of tiersList) {
+      if (
+        tokenBalance >= tier.maximumTokensHeld.toFixed(1) &&
+        tokenBalance <= tier.minimumTokensHeld.toFixed(1)
+      ) {
+        setValue(tier);
+      }
+    }
+  }, [tokenBalance]);
 
   const getXrpBalance = async (address: string): Promise<number> => {
     try {
@@ -100,13 +125,31 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         method: 'POST',
         body: JSON.stringify({ address, platform }),
       });
-      const data = await response.json();
+      await response.json();
       handleSuccess('Login Successful');
-      console.log(data);
     } catch (error) {
       console.error('Error logging in:', error);
       handleError("Couldn't complete login");
       throw new Error('Failed to login');
+    }
+  };
+
+  const fetchOverview = async () => {
+    try {
+      const response = await fetch('/api/users/overview');
+      const data: {
+        poolXrpBalance: string;
+        stakedWallets: number;
+        xrpRewardsDistributed: number;
+      } = await response.json();
+
+      setPoolXrpBalance(data.poolXrpBalance);
+      setStakedWallets(data.stakedWallets);
+      setXrpRewardsDistributed(data.xrpRewardsDistributed);
+    } catch (error) {
+      console.error('Error fetching overview:', error);
+      handleError('Error fetching overview');
+      throw new Error('Failed to fetch overview');
     }
   };
 
@@ -131,6 +174,10 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         success,
         isMobile,
         setWalletAddress,
+        poolXrpBalance,
+        stakedWallets,
+        userTier: value,
+        xrpRewardsDistributed,
         walletAddress,
         xrpBalance,
         tokenBalance,

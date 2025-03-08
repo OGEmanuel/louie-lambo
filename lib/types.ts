@@ -1,7 +1,13 @@
+import { Tier } from './constants';
+
 export interface AppContextInterface {
   walletAddress: string;
   xrpBalance: number;
+  userTier: Tier;
   tokenBalance: string;
+  poolXrpBalance: string;
+  stakedWallets: number;
+  xrpRewardsDistributed: number;
   error: string;
   success: string;
   isMobile: boolean;

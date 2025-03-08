@@ -6,6 +6,8 @@ export interface MineI extends Document {
   stake: ObjectId;
   tokensAmount: number;
   stakingDurationInDays: number;
+  expectedAmount: number;
+  rewardsEarned: number;
   unlockDate: Date;
 }
 
@@ -16,6 +18,8 @@ const MineSchema = new Schema<MineI>(
     stake: { type: Schema.Types.ObjectId, ref: 'Stake', required: true },
     tokensAmount: { type: Number, required: true },
     stakingDurationInDays: { type: Number, required: true, default: 7 },
+    expectedAmount: { type: Number, required: true },
+    rewardsEarned: { type: Number, default: 0 },
     unlockDate: { type: Date, required: true },
   },
   { timestamps: true },

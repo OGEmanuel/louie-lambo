@@ -3,8 +3,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Stake from './stake';
 import UnStake from './unstake';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Apy from '../components/icons/apy';
+import { AppContext } from '@/context/AppContext';
 
 const StakeTabs = () => {
   const [value, setValue] = useState('stake');
@@ -28,23 +29,32 @@ const StakeTabs = () => {
 export default StakeTabs;
 
 export const Summary = (props: { tab: string }) => {
+  const [apy, setApy] = useState<number>(0);
+  const appContext = useContext(AppContext);
+  useEffect(() => {
+    const userTier = appContext.userTier;
+
+    setApy(userTier.maxXrpMineable);
+  }, [appContext.userTier]);
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
         <div className="flex items-center gap-1">
           <p className="leading-[20.83px] text-[var(--color-black)]">
-            APY rate
+            Max XRP Mineable
           </p>
           <Apy className="lg:hidden" />
         </div>
-        <p className="text-[28px] leading-[36.46px]">4.33%</p>
+        <p className="text-[28px] leading-[36.46px]">{apy} XRP</p>
       </div>
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
         <div className="flex flex-col gap-3">
           <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
             Current tier
           </p>
-          <p className="text-2xl font-medium leading-[31.25px]">Tier 1</p>
+          <p className="text-2xl font-medium leading-[31.25px]">
+            {appContext.userTier.name}
+          </p>
         </div>
         {props.tab === 'stake' && (
           <>
@@ -54,7 +64,7 @@ export const Summary = (props: { tab: string }) => {
                 $LAMBO balance
               </p>
               <p className="text-2xl font-medium leading-[31.25px]">
-                250 $LAMBO
+                {appContext.tokenBalance} $LAMBO
               </p>
             </div>
           </>

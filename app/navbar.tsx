@@ -7,18 +7,9 @@ import { MobileSidenav } from './sidenav';
 import Link from 'next/link';
 import { useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer';
-import Image from 'next/image';
-import { Skeleton } from '@/components/ui/skeleton';
 import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
+import WalletScanDrawer from '@/components/walletScanDrawer';
 
 const Navbar = () => {
   const [qrcode, setQrcode] = useState<string>('');
@@ -29,6 +20,7 @@ const Navbar = () => {
   const appContext = useContext(AppContext);
 
   const getQrCode = async () => {
+    setDrawerOpen(open => !open);
     const payload = await fetch('/api/auth/xumm/createPayload');
     const data = await payload.json();
 
@@ -76,42 +68,13 @@ const Navbar = () => {
           ) : (
             <>
               {' '}
-              <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-                <DrawerTrigger className="" onClick={getQrCode}>
-                  <Button>Connect Wallet</Button>
-                </DrawerTrigger>
-                <DrawerContent className="bg-white p-4">
-                  <DrawerHeader className="flex flex-col items-center">
-                    <DrawerTitle>
-                      Scann this qr code to sign in with xaman!
-                    </DrawerTitle>
-                  </DrawerHeader>
-                  <DrawerDescription className="flex flex-col items-center">
-                    {qrcode !== '' ? (
-                      <Image
-                        src={qrcode}
-                        alt="xaman qr code"
-                        width={200}
-                        height={200}
-                      />
-                    ) : (
-                      <div className="flex flex-col space-y-3">
-                        <Skeleton className="h-[250px] w-[250px] rounded-xl bg-gray-300" />
-                      </div>
-                    )}
-                    {jumpLink !== '' && (
-                      <Button
-                        className="mt-4"
-                        onClick={() => {
-                          window.open(jumpLink, '_blank');
-                        }}
-                      >
-                        Open in Xaman
-                      </Button>
-                    )}
-                  </DrawerDescription>
-                </DrawerContent>
-              </Drawer>
+              <Button onClick={() => getQrCode()}>Connect Wallet</Button>
+              <WalletScanDrawer
+                drawerOpen={drawerOpen}
+                jumpLink={jumpLink}
+                qrcode={qrcode}
+                setDrawerOpen={setDrawerOpen}
+              />
             </>
           )}
 

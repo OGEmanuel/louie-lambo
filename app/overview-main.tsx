@@ -50,46 +50,63 @@ const OverviewMain = () => {
 export default OverviewMain;
 
 const TierSelector = () => {
-  const [value, setValue] = useState('Tier 1');
   const [open, setOpen] = useState(false);
+
+  const appContext = useContext(AppContext);
+
   return (
-    <div className="flex flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
+    <div className="flex flex-col gap-5 rounded-[18px] border border-green-400 p-4 sm:p-6">
       <Popover onOpenChange={setOpen} open={open}>
         <PopoverTrigger className="flex w-max items-center gap-[11px]">
           <span className="flex items-center gap-[14px] text-[18px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
             <RibbonFirst className="hidden sm:block" />
             <RibbonSelectMobile className="sm:hidden" />
-            {value}
+            {appContext.userTier.name}
           </span>
           <ArrowDown />
         </PopoverTrigger>
         <PopoverContent className="w-full rounded-[18px] p-[42px] dark:bg-[var(--color-lambo-black)]">
           <RadioGroup
-            defaultValue={value}
-            onValueChange={setValue}
-            value={value}
+            defaultValue={appContext.userTier.name}
+            value={appContext.userTier.name}
             className="grid grid-cols-2 gap-[42px]"
           >
-            <TierItem tier="Tier 1" icon={<RibbonFirstSelect />} value={value}>
+            <TierItem
+              tier="T1 Max"
+              icon={<RibbonFirstSelect />}
+              value={appContext.userTier.name}
+            >
               <Tier1 />
             </TierItem>
-            <TierItem tier="Tier 2" icon={<RibbonSecondSelect />} value={value}>
+            <TierItem
+              tier="T2 Max"
+              icon={<RibbonSecondSelect />}
+              value={appContext.userTier.name}
+            >
               <Tier2 />
             </TierItem>
-            <TierItem tier="Tier 3" icon={<RibbonThirdSelect />} value={value}>
+            <TierItem
+              tier="T3 Max"
+              icon={<RibbonThirdSelect />}
+              value={appContext.userTier.name}
+            >
               <Tier3 />
             </TierItem>
-            <TierItem tier="Tier 4" icon={<RibbonFourthSelect />} value={value}>
+            <TierItem
+              tier="T4 Max"
+              icon={<RibbonFourthSelect />}
+              value={appContext.userTier.name}
+            >
               <Tier4 />
             </TierItem>
           </RadioGroup>
         </PopoverContent>
       </Popover>
       <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-gray)] dark:text-[var(--color-gray)]">
-        {value === 'Tier 1' && <Tier1 />}
-        {value === 'Tier 2' && <Tier2 />}
-        {value === 'Tier 3' && <Tier3 />}
-        {value === 'Tier 4' && <Tier4 />}
+        {appContext.userTier.name === 'T1 Max' && <Tier1 />}
+        {appContext.userTier.name === 'T2 Max' && <Tier2 />}
+        {appContext.userTier.name === 'T3 Max' && <Tier3 />}
+        {appContext.userTier.name === 'T4 Max' && <Tier4 />}
       </ul>
     </div>
   );
@@ -117,7 +134,7 @@ const Balance = () => {
           XRP pooled
         </p>
         <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] dark:text-white sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
-          240,000 XRP
+          {appContext.poolXrpBalance} XRP
         </p>
       </div>
     </div>
@@ -148,7 +165,7 @@ const WalletSummary = () => {
             Staked Wallets
           </p>
           <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
-            1,200
+            {appContext.stakedWallets}
           </p>
         </div>
         <Separator
@@ -162,7 +179,7 @@ const WalletSummary = () => {
             Rewards Distributed
           </p>
           <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
-            75,000 XRP
+            {appContext.xrpRewardsDistributed} XRP
           </p>
         </div>
       </div>

@@ -4,6 +4,8 @@ export interface UserI extends Document {
   walletAddress: string;
   tier: string;
   platform: string;
+  staked: boolean;
+  mined: boolean;
   referredBy: string;
   rewardsRevoked: boolean;
 }
@@ -18,6 +20,14 @@ const UserSchema = new Schema<UserI>(
     tier: {
       type: String,
       required: true,
+    },
+    staked: {
+      type: Boolean,
+      default: false,
+    },
+    mined: {
+      type: Boolean,
+      default: false,
     },
     platform: {
       type: String,

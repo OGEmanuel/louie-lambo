@@ -9,6 +9,8 @@ import { z } from 'zod';
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
+import { useContext } from 'react';
+import { AppContext } from '@/context/AppContext';
 
 const FormSchema = z.object({
   amount: z
@@ -40,7 +42,6 @@ const Stake = () => {
   return (
     <div className="flex w-full gap-8 max-xl:flex-col">
       <StakeForm />
-      <Summary tab="stake" />
     </div>
   );
 };
@@ -55,8 +56,9 @@ const StakeForm = () => {
       duration: '14-days',
     },
   });
+  const appContext = useContext(AppContext);
 
-  const balance = 25;
+  const balance = appContext.tokenBalance;
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // toast({
@@ -70,59 +72,64 @@ const StakeForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
-      >
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <NumberInput
-              label="Amount"
-              onSetMax={() => form.setValue('amount', balance)}
-              description={`Balance: ${balance} XRP`}
-              field={field}
-            />
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="duration"
-          render={({ field }) => (
-            <RadioInput
-              label="Duration"
-              field={field}
-              options={[
-                { label: '7 days', value: '7-days' },
-                { label: '14 days', value: '14-days' },
-                { label: '1 month', value: '1-month' },
-                { label: '3 months', value: '3-months' },
-                { label: '6 months', value: '6-months' },
-              ]}
-            />
-          )}
-        />
-        <EarlyWithdrawal />
-        <div className="flex items-center justify-between text-[var(--text-black)]">
-          <p className="text-lg leading-[23.44px] max-lg:text-sm max-lg:leading-[18.23px]">
-            {'How much you’ll get'}
-          </p>
-          <p className="text-xl font-medium leading-[26.04px] max-lg:text-base max-lg:leading-[20.83px]">
-            $250 LAMBO
-          </p>
-        </div>
-        <Separator className="my-4 bg-[var(--color-stroke)]" />
-        <TransactionDetails />
-        <ButtonLoading
-          className="w-full"
-          variant={'secondary'}
-          type="submit"
-          label="Stake LAMBO"
-          isPending={false}
-        />
-      </form>
-    </Form>
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
+        >
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <NumberInput
+                label="Amount"
+                onSetMax={() =>
+                  form.setValue('amount', Math.round(Number(balance) - 10))
+                }
+                description={`Balance: ${balance} LAMBO`}
+                field={field}
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="duration"
+            render={({ field }) => (
+              <RadioInput
+                label="Duration"
+                field={field}
+                options={[
+                  { label: '7 days', value: '7-days' },
+                  { label: '14 days', value: '14-days' },
+                  { label: '1 month', value: '1-month' },
+                  { label: '3 months', value: '3-months' },
+                  { label: '6 months', value: '6-months' },
+                ]}
+              />
+            )}
+          />
+          <EarlyWithdrawal />
+          {/* <div className="flex items-center justify-between text-[var(--text-black)]">
+            <p className="text-lg leading-[23.44px] max-lg:text-sm max-lg:leading-[18.23px]">
+              {'How much you’ll get'}
+            </p>
+            <p className="text-xl font-medium leading-[26.04px] max-lg:text-base max-lg:leading-[20.83px]">
+              $250 LAMBO
+            </p>
+          </div> */}
+          <Separator className="my-4 bg-[var(--color-stroke)]" />
+          <TransactionDetails />
+          <ButtonLoading
+            className="w-full"
+            variant={'secondary'}
+            type="submit"
+            label="Stake LAMBO"
+            isPending={false}
+          />
+        </form>
+      </Form>
+      <Summary tab="stake" />
+    </>
   );
 };
