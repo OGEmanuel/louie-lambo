@@ -1,8 +1,7 @@
 'use server';
 
 import mongoose from 'mongoose';
-
-const MONGOURI = process.env.MONGOURI;
+import { MONGOURI } from './constants';
 
 const connectDB = async () => {
   const connectionState = mongoose.connection.readyState;
@@ -15,4 +14,14 @@ const connectDB = async () => {
     console.log('Connecting...');
     return;
   }
+
+  try {
+    await mongoose.connect(MONGOURI, { bufferCommands: true });
+    console.log('MongoDB Connected');
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Error: ${error}`);
+  }
 };
+
+export default connectDB;

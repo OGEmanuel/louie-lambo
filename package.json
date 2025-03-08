@@ -36,6 +36,7 @@
     "react-cookie": "^7.2.2",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
+    "react-toastify": "^11.0.5",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",

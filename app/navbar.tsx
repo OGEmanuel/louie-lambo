@@ -51,6 +51,7 @@ const Navbar = () => {
         const hex = payloadJson.payload.response.hex;
         const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
         const checkSignJson = await checkSign.json();
+        await appContext.loginUser(checkSignJson.xrpAddress, 'xaman');
         appContext.setWalletAddress(checkSignJson.xrpAddress);
         setCookie('walley', checkSignJson.token, { path: '/' });
         setDrawerOpen(false);

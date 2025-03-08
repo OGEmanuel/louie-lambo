@@ -125,6 +125,8 @@ const Balance = () => {
 };
 
 const WalletSummary = () => {
+  const appContext = useContext(AppContext);
+
   return (
     <div className="flex justify-center rounded-[20px] border border-[var(--color-stroke)] py-12 sm:py-8">
       <div className="flex justify-between max-md:gap-12 max-sm:max-w-[175px] max-sm:flex-col sm:w-3/4 lg:max-xl:gap-6">
@@ -133,7 +135,7 @@ const WalletSummary = () => {
             $LAMBO Token Holdings
           </p>
           <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
-            500,000
+            {appContext.tokenBalance} LAMBO
           </p>
         </div>
         <Separator
