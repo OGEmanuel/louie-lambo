@@ -28,6 +28,7 @@ export const AppContext = createContext<AppContextInterface>({
   isMobile: false,
   setWalletAddress: () => {},
   loginUser: () => {},
+  createStakeRecord: () => {},
   xrpBalance: 0,
 });
 
@@ -134,6 +135,27 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const createStakeRecord = async (
+    address: string,
+    amount: number,
+    duration: number,
+  ) => {
+    try {
+      const response = await fetch('/api/stake/record', {
+        method: 'POST',
+        body: JSON.stringify({ address, amount, duration, tier: value.name }),
+      });
+      await response.json();
+      const newTokenBalance = Number(tokenBalance) - amount;
+      setTokenBalance(String(newTokenBalance));
+      handleSuccess('Staked tokens✅');
+    } catch (error) {
+      console.error('Error staking tokens', error);
+      handleError("Couldn't stake tokens");
+      throw new Error('Failed to stake tokens');
+    }
+  };
+
   const fetchOverview = async () => {
     try {
       const response = await fetch('/api/users/overview');
@@ -183,6 +205,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         tokenBalance,
         setError: handleError,
         loginUser,
+        createStakeRecord,
         setSuccess: handleSuccess,
       }}
     >

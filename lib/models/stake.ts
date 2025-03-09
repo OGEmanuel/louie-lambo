@@ -1,19 +1,27 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
+
+export enum StakeStatus {
+  ACTIVE = 'active',
+  CANCELLED = 'cancelled',
+  ENDED = 'ended',
+}
 
 export interface StakeI extends Document {
-  user: ObjectId;
-  tier: ObjectId;
+  userId: string;
+  tier: string;
   tokensAmount: number;
   stakingDurationInDays: number;
+  status: string;
   unlockDate: Date;
 }
 
 const StakeSchema = new Schema<StakeI>(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    tier: { type: Schema.Types.ObjectId, ref: 'Tier', required: true },
+    userId: { type: String, required: true },
+    tier: { type: String, required: true },
     tokensAmount: { type: Number, required: true },
     stakingDurationInDays: { type: Number, required: true, default: 7 },
+    status: { type: String, required: true },
     unlockDate: { type: Date, required: true },
   },
   { timestamps: true },

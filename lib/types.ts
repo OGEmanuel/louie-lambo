@@ -15,4 +15,9 @@ export interface AppContextInterface {
   setError: (text: string) => void;
   setSuccess: (text: string) => void;
   loginUser: (address: string, platform: string) => void;
+  createStakeRecord: (
+    address: string,
+    amount: number,
+    duration: number,
+  ) => void;
 }

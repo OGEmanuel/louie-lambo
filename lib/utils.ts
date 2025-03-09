@@ -13,3 +13,20 @@ export function truncateXrpAddress(
   if (address.length <= startLength + endLength) return address;
   return `${address.slice(0, startLength)}...${address.slice(-endLength)}`;
 }
+
+export const getDurationInDays = (duration: string): number => {
+  switch (duration) {
+    case '7-days':
+      return 7;
+    case '14-days':
+      return 14;
+    case '1-month':
+      return 30;
+    case '3-months':
+      return 90;
+    case '6-months':
+      return 180;
+    default:
+      throw new Error('Invalid duration');
+  }
+};

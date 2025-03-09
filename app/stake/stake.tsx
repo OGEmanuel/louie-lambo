@@ -9,8 +9,10 @@ import { z } from 'zod';
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
+import WalletScanDrawer from '@/components/walletScanDrawer';
+import { getDurationInDays } from '@/lib/utils';
 
 const FormSchema = z.object({
   amount: z
@@ -56,20 +58,65 @@ const StakeForm = () => {
       duration: '14-days',
     },
   });
+  const [qrcode, setQrcode] = useState<string>('');
+  const [jumpLink, setJumpLink] = useState<string>('');
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const appContext = useContext(AppContext);
 
   const balance = appContext.tokenBalance;
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    </pre>;
-    //   ),
-    // });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (data.amount && data.duration) {
+      await createStake(data.amount, getDurationInDays(data.duration));
+    }
   }
+  const createStake = async (amount: number, duration: number) => {
+    try {
+      setDrawerOpen(open => !open);
+      const payload = await fetch('/api/stake/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          address: appContext.walletAddress,
+          amount: amount,
+          duration: duration,
+          tier: appContext.userTier.name,
+        }),
+      });
+      const data = await payload.json();
+
+      setQrcode(data.payload.refs.qr_png);
+      setJumpLink(data.payload.next.always);
+
+      if (appContext.isMobile) {
+        window.open(data.payload.next.always, '_blank');
+      }
+
+      const ws = new WebSocket(data.payload.refs.websocket_status);
+
+      ws.onmessage = async e => {
+        const responseObj = JSON.parse(e.data);
+        if (responseObj.signed !== null && responseObj.signed !== undefined) {
+          const payload = await fetch(
+            `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
+          );
+          const payloadJson = await payload.json();
+          const hex = payloadJson.payload.response.hex;
+          const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
+          await checkSign.json();
+          await appContext.createStakeRecord(
+            appContext.walletAddress,
+            amount,
+            duration,
+          );
+          setDrawerOpen(false);
+        }
+      };
+    } catch (error) {
+      console.error('Error creating stake:', error);
+      appContext.setError('Error placing stake');
+      throw new Error('Failed to creating stake');
+    }
+  };
 
   return (
     <>
@@ -126,6 +173,12 @@ const StakeForm = () => {
             type="submit"
             label="Stake LAMBO"
             isPending={false}
+          />
+          <WalletScanDrawer
+            drawerOpen={drawerOpen}
+            jumpLink={jumpLink}
+            qrcode={qrcode}
+            setDrawerOpen={setDrawerOpen}
           />
         </form>
       </Form>
