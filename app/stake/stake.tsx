@@ -128,6 +128,7 @@ const StakeForm = () => {
           <FormField
             control={form.control}
             name="amount"
+            disabled={appContext.activeStake ? true : false}
             render={({ field }) => (
               <NumberInput
                 label="Amount"
@@ -141,6 +142,7 @@ const StakeForm = () => {
           />
           <FormField
             control={form.control}
+            disabled={appContext.activeStake ? true : false}
             name="duration"
             render={({ field }) => (
               <RadioInput
@@ -173,6 +175,7 @@ const StakeForm = () => {
             type="submit"
             label="Stake LAMBO"
             isPending={false}
+            disabled={appContext.activeStake?.status === 'ACTIVE'}
           />
           <WalletScanDrawer
             drawerOpen={drawerOpen}

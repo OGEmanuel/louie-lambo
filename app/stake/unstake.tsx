@@ -8,6 +8,8 @@ import { z } from 'zod';
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
+import { useContext } from 'react';
+import { AppContext } from '@/context/AppContext';
 
 const FormSchema = z.object({
   amount: z
@@ -51,7 +53,9 @@ const UnstakeForm = () => {
     },
   });
 
-  const balance = 25;
+  const appContext = useContext(AppContext);
+
+  const balance = Number(appContext.activeStake?.tokensAmount);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     // toast({
@@ -77,7 +81,7 @@ const UnstakeForm = () => {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
-              description={`Balance: ${balance} XRP`}
+              description={`Stake Balance: ${balance} LAMBO`}
               field={field}
             />
           )}
@@ -89,7 +93,7 @@ const UnstakeForm = () => {
           className="w-full"
           variant={'secondary'}
           type="submit"
-          label="Stake LAMBO"
+          label="Unstake LAMBO"
           isPending={false}
         />
       </form>

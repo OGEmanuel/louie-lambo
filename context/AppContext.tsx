@@ -7,7 +7,7 @@ import {
   tiers,
   XRP_MAINNET_RPC,
 } from '@/lib/constants';
-import { AppContextInterface } from '@/lib/types';
+import { AppContextInterface, StakeType } from '@/lib/types';
 import { xrpClient } from '@/lib/xrp/client';
 import { getTokenBalance } from '@/lib/xrp/helpers';
 import React, { createContext, useEffect, useState } from 'react';
@@ -19,6 +19,7 @@ export const AppContext = createContext<AppContextInterface>({
   success: '',
   userTier: tiers[0],
   tokenBalance: '0',
+  activeStake: undefined,
   poolXrpBalance: '',
   stakedWallets: 0,
   xrpRewardsDistributed: 0,
@@ -45,6 +46,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [stakedWallets, setStakedWallets] = useState<number>(0);
   const [xrpRewardsDistributed, setXrpRewardsDistributed] = useState<number>(0);
   const [value, setValue] = useState<Tier>(tiers[0]);
+  const [activeStake, setActiveStake] = useState<StakeType>();
 
   const [cookies] = useCookies(['walley']);
 
@@ -82,6 +84,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       setTokenBalance(Number(tbalance).toFixed(1));
       await fetchOverview();
+      await getActiveStake();
     };
 
     if (walletAddress) {
@@ -117,6 +120,19 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       throw new Error('Failed to fetch XRP balance');
     } finally {
       await xrpClient.disconnect();
+    }
+  };
+
+  const getActiveStake = async () => {
+    try {
+      const response = await fetch(`/api/stake?address=${walletAddress}`);
+      const data: { stake: StakeType } = await response.json();
+
+      setActiveStake(data.stake);
+    } catch (error) {
+      console.error('Error logging in:', error);
+      handleError("Couldn't complete login");
+      throw new Error('Failed to login');
     }
   };
 
@@ -179,14 +195,14 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     setError(text);
     setTimeout(() => {
       setError('');
-    }, 10000);
+    }, 4000);
   };
 
   const handleSuccess = (text: string) => {
     setSuccess(text);
     setTimeout(() => {
       setSuccess('');
-    }, 10000);
+    }, 4000);
   };
 
   return (
@@ -203,6 +219,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         walletAddress,
         xrpBalance,
         tokenBalance,
+        activeStake,
         setError: handleError,
         loginUser,
         createStakeRecord,

@@ -8,7 +8,6 @@ export const POST = async (req: NextRequest) => {
   try {
     await connectDB();
     const body = await req.json();
-    console.log(body);
     const { address, amount, duration, tier } = body;
 
     const user = await User.findOne({ walletAddress: address });
@@ -18,11 +17,8 @@ export const POST = async (req: NextRequest) => {
         { message: 'could not find user or config' },
         { status: 404 },
       );
-    console.log(user);
-    console.log(tierRec);
     const date = new Date();
     date.setDate(date.getDate() + duration);
-    console.log(date);
 
     const newStake = await Stake.create({
       userId: user.id,

@@ -11,6 +11,7 @@ export interface AppContextInterface {
   error: string;
   success: string;
   isMobile: boolean;
+  activeStake: StakeType | undefined;
   setWalletAddress: React.Dispatch<React.SetStateAction<string>>;
   setError: (text: string) => void;
   setSuccess: (text: string) => void;
@@ -21,3 +22,12 @@ export interface AppContextInterface {
     duration: number,
   ) => void;
 }
+
+export type StakeType = {
+  userId: string;
+  tier: string;
+  tokensAmount: number;
+  stakingDurationInDays: number;
+  status: string;
+  unlockDate: Date;
+};

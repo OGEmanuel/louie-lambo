@@ -28,6 +28,6 @@ const StakeSchema = new Schema<StakeI>(
 );
 
 const Stake =
-  mongoose.models.User || mongoose.model<StakeI>('Stake', StakeSchema);
+  mongoose.models.Stake || mongoose.model<StakeI>('Stake', StakeSchema);
 
 export default Stake;

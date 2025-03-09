@@ -9,19 +9,24 @@ import { AppContext } from '@/context/AppContext';
 
 const StakeTabs = () => {
   const [value, setValue] = useState('stake');
+  const appContext = useContext(AppContext);
 
   return (
     <Tabs onValueChange={setValue} value={value} className="">
       <TabsList className="">
         <TabsTrigger value="stake">Stake</TabsTrigger>
-        <TabsTrigger value="unstake">Unstake</TabsTrigger>
+        {appContext.activeStake && (
+          <TabsTrigger value="unstake">Unstake</TabsTrigger>
+        )}
       </TabsList>
       <TabsContent value="stake" className="w-full">
         <Stake />
       </TabsContent>
-      <TabsContent value="unstake" className="w-full">
-        <UnStake />
-      </TabsContent>
+      {appContext.activeStake && (
+        <TabsContent value="unstake" className="w-full">
+          <UnStake />
+        </TabsContent>
+      )}
     </Tabs>
   );
 };
