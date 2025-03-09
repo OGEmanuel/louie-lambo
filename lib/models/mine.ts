@@ -25,6 +25,6 @@ const MineSchema = new Schema<MineI>(
   { timestamps: true },
 );
 
-const Mine = mongoose.model<MineI>('Stake', MineSchema);
+const Mine = mongoose.models.Mine || mongoose.model<MineI>('Mine', MineSchema);
 
 export default Mine;

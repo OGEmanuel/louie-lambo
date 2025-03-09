@@ -27,6 +27,7 @@ const StakeSchema = new Schema<StakeI>(
   { timestamps: true },
 );
 
-const Stake = mongoose.model<StakeI>('Stake', StakeSchema);
+const Stake =
+  mongoose.models.User || mongoose.model<StakeI>('Stake', StakeSchema);
 
 export default Stake;

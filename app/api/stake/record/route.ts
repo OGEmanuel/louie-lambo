@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
     console.log(date);
 
     const newStake = await Stake.create({
-      user: user.id,
+      userId: user.id,
       tier: tierRec.name,
       tokensAmount: amount,
       stakingDurationInDays: duration,

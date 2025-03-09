@@ -48,6 +48,6 @@ const TierSchema = new Schema<TierI>(
   { timestamps: true },
 );
 
-const Tier = mongoose.model<TierI>('Tier', TierSchema);
+const Tier = mongoose.models.Tier || mongoose.model<TierI>('Tier', TierSchema);
 
 export default Tier;
