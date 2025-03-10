@@ -38,9 +38,9 @@ const Sidenav = () => {
         <li>
           <NavLink href="/miner">Miner</NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink href="/portfolio">My Portfolio</NavLink>
-        </li>
+        </li> */}
         <li>
           <NavLink href="/calculator">APY Calculator</NavLink>
         </li>

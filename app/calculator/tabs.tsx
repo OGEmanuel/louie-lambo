@@ -1,17 +1,16 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Stake from './stake';
 import Miner from './miner';
 
 const CalculatorTabs = () => {
   return (
-    <Tabs defaultValue="stake" className="">
+    <Tabs defaultValue="miner" className="">
       <TabsList>
-        <TabsTrigger value="stake">Stake</TabsTrigger>
+        {/* <TabsTrigger value="stake">Stake</TabsTrigger> */}
         <TabsTrigger value="miner">Miner</TabsTrigger>
       </TabsList>
-      <TabsContent value="stake" className="w-full">
+      {/* <TabsContent value="stake" className="w-full">
         <Stake />
-      </TabsContent>
+      </TabsContent> */}
       <TabsContent value="miner" className="w-full">
         <Miner />
       </TabsContent>
