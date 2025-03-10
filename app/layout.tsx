@@ -7,6 +7,7 @@ import QueryProvider from '@/utils/query-provider';
 import Head from 'next/head';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AppContextProvider } from '@/context/AppContext';
+import { Suspense } from 'react';
 
 const dmSans = DM_Sans({
   variable: '--font-dm-sans',
@@ -41,21 +42,23 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} flex justify-center dark:bg-[var(--color-lambo-black)]`}
       >
-        <AppContextProvider>
-          <ThemeProvider>
-            <section className="flex w-full max-w-[1728px] justify-center">
-              <QueryProvider>
-                <div className="flex w-full max-w-[1488px] flex-col gap-6 pb-[30px] pt-6 md:gap-10 md:pt-[25px]">
-                  <Navbar />
-                  <div className="flex items-start gap-10">
-                    <Sidenav />
-                    {children}
+        <Suspense fallback={null}>
+          <AppContextProvider>
+            <ThemeProvider>
+              <section className="flex w-full max-w-[1728px] justify-center">
+                <QueryProvider>
+                  <div className="flex w-full max-w-[1488px] flex-col gap-6 pb-[30px] pt-6 md:gap-10 md:pt-[25px]">
+                    <Navbar />
+                    <div className="flex items-start gap-10">
+                      <Sidenav />
+                      {children}
+                    </div>
                   </div>
-                </div>
-              </QueryProvider>
-            </section>
-          </ThemeProvider>
-        </AppContextProvider>
+                </QueryProvider>
+              </section>
+            </ThemeProvider>
+          </AppContextProvider>
+        </Suspense>
       </body>
     </html>
   );
