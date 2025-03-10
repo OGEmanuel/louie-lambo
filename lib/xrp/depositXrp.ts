@@ -16,6 +16,6 @@ export async function depositXrpWithXumm(
     true,
   );
 
-  if (!signRequest) throw new Error('could not create payload');
+  if (!signRequest) throw new Error('could  not create payload');
   return signRequest;
 }
