@@ -8,7 +8,6 @@ import {
   XRP_MAINNET_RPC,
 } from '@/lib/constants';
 import { AppContextInterface, StakeType } from '@/lib/types';
-import { xrpClient } from '@/lib/xrp/client';
 import { getTokenBalance } from '@/lib/xrp/helpers';
 import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -128,8 +127,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getXrpBalance = async (address: string): Promise<number> => {
+    const xrpClient = new xrpl.Client(XRP_MAINNET_RPC);
+
     try {
-      const xrpClient = new xrpl.Client(XRP_MAINNET_RPC);
       await xrpClient.connect();
 
       const my_balance = await xrpClient.getXrpBalance(address);
