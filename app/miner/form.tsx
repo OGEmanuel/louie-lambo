@@ -218,8 +218,8 @@ export const MinerFormWithdraw = (props: {
     if (data.amount) {
       setIsloading(true);
       await appContext.unMine(data.amount);
-      setIsloading(false);
       props.setIsSuccess(true);
+      setIsloading(false);
     }
   }
 

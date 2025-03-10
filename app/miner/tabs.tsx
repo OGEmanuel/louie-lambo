@@ -89,6 +89,7 @@ export const SuccessPage = (props: {
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
   type: string;
 }) => {
+  const appContext = useContext(AppContext);
   return (
     <div className="flex flex-col items-center justify-center">
       <MinerSuccess className="dark:hidden" />
@@ -100,8 +101,10 @@ export const SuccessPage = (props: {
       <div className="py-[10.5px]"></div>
       <p className="text-[var(--color-black)]">
         You have successfully {props.type}{' '}
-        <span className="text-black dark:text-white">25 XRP</span> to your
-        wallet
+        <span className="text-black dark:text-white">
+          {appContext.activeMine?.tokensAmount} XRP
+        </span>{' '}
+        to your wallet
       </p>
       <div className="py-[17.5px]"></div>
       <Button
