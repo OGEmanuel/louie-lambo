@@ -44,3 +44,31 @@ export async function unstakeTokens(
     throw new Error('something went wrong');
   }
 }
+
+export async function withdrawToken(userAddress: string, stakedAmount: number) {
+  await connectDB();
+  const refundAmount = stakedAmount;
+
+  const client = new xrpl.Client(XRP_MAINNET_RPC);
+  await client.connect();
+
+  const setting = await Setting.findOne({});
+  const stakingWallet = xrpl.Wallet.fromSeed(setting.XRPPoolWalletSeed);
+
+  const prepared = await client.autofill({
+    TransactionType: 'Payment',
+    Account: stakingWallet.address,
+    Destination: userAddress,
+    Amount: (refundAmount * 1000000).toString(),
+  });
+
+  const signed = stakingWallet.sign(prepared);
+  const result = await client.submitAndWait(signed.tx_blob);
+
+  if (result.result.tx_json.TxnSignature) {
+    return result;
+  } else {
+    console.log(`❌ Unstaking failed:`);
+    throw new Error('something went wrong');
+  }
+}

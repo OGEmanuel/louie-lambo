@@ -9,6 +9,7 @@ export interface MineI extends Document {
   expectedAmount: number;
   rewardsEarned: number;
   unlockDate: Date;
+  status: string;
 }
 
 const MineSchema = new Schema<MineI>(
@@ -20,6 +21,7 @@ const MineSchema = new Schema<MineI>(
     stakingDurationInDays: { type: Number, required: true, default: 7 },
     expectedAmount: { type: Number, required: true },
     rewardsEarned: { type: Number, default: 0 },
+    status: { type: String, required: true },
     unlockDate: { type: Date, required: true },
   },
   { timestamps: true },

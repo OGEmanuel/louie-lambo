@@ -47,3 +47,22 @@ export function isUnlockDateEarly(unlockDate: Date): boolean {
 
   return todayDateOnly < unlockDateOnly;
 }
+
+export function calculateStakeRewards(
+  stake: number,
+  apy: number,
+  duration: number,
+  startDate: Date,
+  currentDate: Date,
+): number {
+  const minutesInTwoWeeks = 1 * duration * 24 * 60;
+  const rewardPerMinute = apy / minutesInTwoWeeks;
+
+  const elapsedMinutes = Math.floor(
+    (currentDate.getTime() - startDate.getTime()) / (1000 * 60),
+  );
+  const totalRewardPercentage = rewardPerMinute * elapsedMinutes;
+
+  const earnedRewards = (totalRewardPercentage / 100) * stake;
+  return earnedRewards;
+}

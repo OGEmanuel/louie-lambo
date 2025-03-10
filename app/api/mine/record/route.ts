@@ -41,6 +41,7 @@ export const POST = async (req: NextRequest) => {
       stakingDurationInDays: duration,
       expectedAmount,
       unlockDate: date,
+      status: 'ACTIVE',
       rewardsEarned: 0,
     });
 
