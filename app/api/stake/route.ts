@@ -15,7 +15,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const stakeExists = await Stake.findOne({ userId: user.id });
+    const stakeExists = await Stake.findOne({
+      userId: user.id,
+      status: 'ACTIVE',
+    });
 
     return NextResponse.json({ stake: stakeExists }, { status: 200 });
   } catch (error) {

@@ -6,13 +6,19 @@ import UnStake from './unstake';
 import { useContext, useEffect, useState } from 'react';
 import Apy from '../components/icons/apy';
 import { AppContext } from '@/context/AppContext';
+import { Timer } from '@/components/Timer';
+import { isUnlockDateEarly } from '@/lib/utils';
 
 const StakeTabs = () => {
-  const [value, setValue] = useState('stake');
+  const [, setValue] = useState('stake');
   const appContext = useContext(AppContext);
 
   return (
-    <Tabs onValueChange={setValue} value={value} className="">
+    <Tabs
+      onValueChange={setValue}
+      value={appContext.activeStake ? 'unstake' : 'stake'}
+      className=""
+    >
       <TabsList className="">
         <TabsTrigger value="stake">Stake</TabsTrigger>
         {appContext.activeStake && (
@@ -43,15 +49,6 @@ export const Summary = (props: { tab: string }) => {
   }, [appContext.userTier]);
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
-      <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
-        <div className="flex items-center gap-1">
-          <p className="leading-[20.83px] text-[var(--color-black)]">
-            Max XRP Mineable
-          </p>
-          <Apy className="lg:hidden" />
-        </div>
-        <p className="text-[28px] leading-[36.46px]">{apy} XRP</p>
-      </div>
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
         <div className="flex flex-col gap-3">
           <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
@@ -61,6 +58,7 @@ export const Summary = (props: { tab: string }) => {
             {appContext.userTier.name}
           </p>
         </div>
+
         {props.tab === 'stake' && (
           <>
             <hr />
@@ -75,6 +73,30 @@ export const Summary = (props: { tab: string }) => {
           </>
         )}
       </div>
+      <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[30.5px] pt-[48.25px] text-center font-medium">
+        <div className="flex items-center gap-1">
+          <p className="leading-[20.83px] text-[var(--color-black)]">
+            Max XRP Mineable
+          </p>
+          <Apy className="lg:hidden" />
+        </div>
+        <p className="text-[28px] leading-[36.46px]">{apy} XRP</p>
+      </div>
+      {appContext.activeStake && (
+        <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[30.5px] pt-[48.25px] text-center font-medium">
+          <div className="flex items-center gap-1">
+            <p className="leading-[20.83px] text-[var(--color-black)]">
+              Unlock Date
+            </p>
+            <Apy className="lg:hidden" />
+          </div>
+          <Timer
+            deadline={new Date(
+              appContext.activeStake.unlockDate!,
+            ).toISOString()}
+          />
+        </div>
+      )}
     </div>
   );
 };
@@ -89,18 +111,32 @@ export const EarlyWithdrawal = () => {
 };
 
 export const TransactionDetails = () => {
+  const appContext = useContext(AppContext);
+  const [isEarly, setIsEarly] = useState(false);
+
+  useEffect(() => {
+    if (appContext.activeStake) {
+      setIsEarly(isUnlockDateEarly(appContext.activeStake!.unlockDate));
+    }
+  }, [appContext.activeStake]);
+
   return (
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">Transaction cost</p>
         <p className="font-medium text-[var(--color-black)]">0.24 XRP</p>
       </div>
-      <div className="flex items-center justify-between">
-        <p className="text-[var(--color-gray)]">Exchange rate</p>
-        <p className="font-medium text-[var(--color-black)]">
-          1 $LAMBO = 1.2 XRP
-        </p>
-      </div>
+      {appContext.activeStake && (
+        <div className="flex items-center justify-between">
+          <p className="text-[var(--color-gray)]">You will receive</p>
+          <p className="font-medium text-[var(--color-black)]">
+            {isEarly
+              ? appContext.activeStake!.tokensAmount / 2
+              : appContext.activeStake?.tokensAmount}{' '}
+            LAMBO
+          </p>
+        </div>
+      )}
     </div>
   );
 };

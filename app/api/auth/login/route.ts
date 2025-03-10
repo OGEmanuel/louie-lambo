@@ -16,6 +16,7 @@ export const POST = async (req: NextRequest) => {
 
   const userExists = await User.findOne({ walletAddress: address });
   if (userExists) {
+    await User.updateOne({ walletAddress: address }, { platform: platform });
     return NextResponse.json({ user: userExists }, { status: 200 });
   }
 

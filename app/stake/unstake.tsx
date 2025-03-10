@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 
 const FormSchema = z.object({
@@ -46,26 +46,24 @@ const UnStake = () => {
 export default UnStake;
 
 const UnstakeForm = () => {
+  const appContext = useContext(AppContext);
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      amount: 0,
+      amount: appContext.activeStake?.tokensAmount,
     },
   });
 
-  const appContext = useContext(AppContext);
-
   const balance = Number(appContext.activeStake?.tokensAmount);
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    </pre>;
-    //   ),
-    // });
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (data.amount) {
+      setIsloading(true);
+      await appContext.unstake(data.amount);
+      setIsloading(false);
+    }
   }
 
   return (
@@ -86,7 +84,6 @@ const UnstakeForm = () => {
             />
           )}
         />
-        <EarlyWithdrawal />
         <Separator className="my-4 bg-[var(--color-stroke)]" />
         <TransactionDetails />
         <ButtonLoading
@@ -94,8 +91,10 @@ const UnstakeForm = () => {
           variant={'secondary'}
           type="submit"
           label="Unstake LAMBO"
-          isPending={false}
+          isPending={isLoading}
+          disabled={isLoading}
         />
+        <EarlyWithdrawal />
       </form>
     </Form>
   );

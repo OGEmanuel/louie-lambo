@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import User from '@/lib/models/user';
 import Config from '@/lib/models/setting';
-import { stakeWithXumm } from '@/lib/xrp/createStake';
+import { depositXrpWithXumm } from '@/lib/xrp/depositXrp';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -19,10 +19,10 @@ export const POST = async (req: NextRequest) => {
       );
 
     if (user.platform === 'xaman') {
-      const payload = await stakeWithXumm(
+      const payload = await depositXrpWithXumm(
         user.walletAddress,
         amount,
-        config.tokenPoolWalletAddress,
+        config.xrpPoolWalletAddress,
       );
       return NextResponse.json({ payload: payload }, { status: 200 });
     }

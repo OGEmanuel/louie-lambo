@@ -14,6 +14,7 @@ export interface AppContextInterface {
   activeStake: StakeType | undefined;
   setWalletAddress: React.Dispatch<React.SetStateAction<string>>;
   setError: (text: string) => void;
+  unstake: (amount: number) => void;
   setSuccess: (text: string) => void;
   loginUser: (address: string, platform: string) => void;
   createStakeRecord: (

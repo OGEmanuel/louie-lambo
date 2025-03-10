@@ -12,6 +12,7 @@ import { xrpClient } from '@/lib/xrp/client';
 import { getTokenBalance } from '@/lib/xrp/helpers';
 import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { toast } from 'react-toastify';
 import xrpl from 'xrpl';
 
 export const AppContext = createContext<AppContextInterface>({
@@ -24,6 +25,7 @@ export const AppContext = createContext<AppContextInterface>({
   stakedWallets: 0,
   xrpRewardsDistributed: 0,
   setError: () => {},
+  unstake: () => {},
   setSuccess: () => {},
   walletAddress: '',
   isMobile: false,
@@ -84,6 +86,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       setTokenBalance(Number(tbalance).toFixed(1));
       await fetchOverview();
+      handleSuccess('test');
       await getActiveStake();
     };
 
@@ -104,6 +107,25 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
   }, [tokenBalance]);
+
+  const unStake = async (amount: number) => {
+    try {
+      const payload = await fetch('/api/stake/unstake', {
+        method: 'POST',
+        body: JSON.stringify({
+          address: walletAddress,
+          amount: amount,
+        }),
+      });
+      await payload.json();
+      setActiveStake(undefined);
+      await handleSuccess('successfully unstaked tokens');
+    } catch (error) {
+      console.error('Error creating stake:', error);
+      handleError('Error placing stake');
+      throw new Error('Failed to creating stake');
+    }
+  };
 
   const getXrpBalance = async (address: string): Promise<number> => {
     try {
@@ -161,7 +183,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         method: 'POST',
         body: JSON.stringify({ address, amount, duration, tier: value.name }),
       });
-      await response.json();
+      const data = await response.json();
+      setActiveStake(data.stake);
       const newTokenBalance = Number(tokenBalance) - amount;
       setTokenBalance(String(newTokenBalance));
       handleSuccess('Staked tokens✅');
@@ -193,6 +216,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleError = (text: string) => {
     setError(text);
+    toast.error(text);
     setTimeout(() => {
       setError('');
     }, 4000);
@@ -200,6 +224,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const handleSuccess = (text: string) => {
     setSuccess(text);
+    toast.success(text);
     setTimeout(() => {
       setSuccess('');
     }, 4000);
@@ -214,6 +239,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setWalletAddress,
         poolXrpBalance,
         stakedWallets,
+        unstake: unStake,
         userTier: value,
         xrpRewardsDistributed,
         walletAddress,

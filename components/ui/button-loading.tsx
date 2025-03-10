@@ -6,10 +6,11 @@ import React, { ReactNode } from 'react';
 interface ButtonLoadingProps extends ButtonProps {
   isPending: boolean;
   label: string | ReactNode;
+  disabled: boolean;
 }
 
 export const ButtonLoading = (props: ButtonLoadingProps) => {
-  const { isPending, label, variant, type, className } = props;
+  const { isPending, label, variant, type, className, disabled } = props;
 
   return (
     <Button
@@ -19,6 +20,7 @@ export const ButtonLoading = (props: ButtonLoadingProps) => {
         'grid-stack max-lg: grid w-max gap-0 overflow-hidden max-lg:text-lg max-lg:leading-[23.44px] max-md:h-[60px] max-md:py-4 max-sm:w-full',
         className,
       )}
+      disabled={disabled}
     >
       <span
         className={cn(

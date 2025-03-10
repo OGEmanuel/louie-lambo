@@ -4,6 +4,7 @@ import User from '@/lib/models/user';
 import Config from '@/lib/models/setting';
 import { unstakeTokens } from '@/lib/xrp/unStake';
 import Stake from '@/lib/models/stake';
+import { isUnlockDateEarly } from '@/lib/utils';
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -20,19 +21,7 @@ export const POST = async (req: NextRequest) => {
       );
     const stake = await Stake.findOne({ userId: user.id, status: 'ACTIVE' });
 
-    const today = new Date();
-    const todayDateOnly = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate(),
-    );
-    const unlockDateOnly = new Date(
-      stake.unlockDate.getFullYear(),
-      stake.unlockDate.getMonth(),
-      stake.unlockDate.getDate(),
-    );
-
-    const isEarly = todayDateOnly < unlockDateOnly;
+    const isEarly = isUnlockDateEarly(stake.unlockDate);
 
     if (user.platform === 'xaman') {
       const payload = await unstakeTokens(user.walletAddress, amount, isEarly);

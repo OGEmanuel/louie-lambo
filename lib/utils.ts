@@ -30,3 +30,20 @@ export const getDurationInDays = (duration: string): number => {
       throw new Error('Invalid duration');
   }
 };
+
+export function isUnlockDateEarly(unlockDate: Date): boolean {
+  const today = new Date();
+  const todayDateOnly = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  );
+  const dt = new Date(unlockDate);
+  const unlockDateOnly = new Date(
+    dt.getFullYear(),
+    dt.getMonth(),
+    dt.getDate(),
+  );
+
+  return todayDateOnly < unlockDateOnly;
+}

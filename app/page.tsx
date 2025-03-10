@@ -28,12 +28,7 @@ export default function Home() {
     <SectionCard>
       <OverviewMain />
 
-      <div className="absolute bottom-0 md:right-0">
-        {/* {appContext.error && <Error errorText={appContext.error} />}
-        {appContext.success && <Success successText={appContext.success} />} */}
-
-        <ToastContainer position="bottom-right" theme="dark" />
-      </div>
+      <ToastContainer position="bottom-right" theme="dark" />
     </SectionCard>
   );
 }

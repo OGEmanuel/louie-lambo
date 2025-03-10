@@ -108,7 +108,7 @@ const Navbar = () => {
     const pubkey = id.response.data.publicKey;
     const signature = id.response.data.signature;
     const checkSign = await fetch(
-      `/api/auth/crossmark/checksign?signature=${signature}`,
+      `/api/auth/crossmark/checkSign?signature=${signature}`,
       {
         method: 'POST',
         headers: {
@@ -124,7 +124,8 @@ const Navbar = () => {
 
     const checkSignJson = await checkSign.json();
     if (checkSignJson.hasOwnProperty('token')) {
-      appContext.setWalletAddress(address);
+      await appContext.loginUser(checkSignJson.xrpAddress, 'crossmark');
+      appContext.setWalletAddress(checkSignJson.xrpAddress);
       setCookie('walley', checkSignJson.token, { path: '/' });
     }
   };
@@ -147,10 +148,7 @@ const Navbar = () => {
             <>
               {' '}
               <Button onClick={() => getQrCode()}>Connect Wallet</Button>
-              <Button
-                onClick={() => handleConnectCrossmark()}
-                className="hidden"
-              >
+              <Button onClick={() => handleConnectCrossmark()} className="">
                 Crossmark
               </Button>
               <Button onClick={() => handleConnectGem()} className="hidden">

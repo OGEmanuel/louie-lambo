@@ -61,6 +61,7 @@ const StakeForm = () => {
   const [qrcode, setQrcode] = useState<string>('');
   const [jumpLink, setJumpLink] = useState<string>('');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [isLoading, setIsloading] = useState<boolean>(false);
   const appContext = useContext(AppContext);
 
   const balance = appContext.tokenBalance;
@@ -72,6 +73,7 @@ const StakeForm = () => {
   }
   const createStake = async (amount: number, duration: number) => {
     try {
+      setIsloading(true);
       setDrawerOpen(open => !open);
       const payload = await fetch('/api/stake/create', {
         method: 'POST',
@@ -108,6 +110,7 @@ const StakeForm = () => {
             amount,
             duration,
           );
+          form.setValue('amount', 0);
           setDrawerOpen(false);
         }
       };
@@ -115,6 +118,8 @@ const StakeForm = () => {
       console.error('Error creating stake:', error);
       appContext.setError('Error placing stake');
       throw new Error('Failed to creating stake');
+    } finally {
+      setIsloading(false);
     }
   };
 
@@ -127,8 +132,8 @@ const StakeForm = () => {
         >
           <FormField
             control={form.control}
+            disabled={appContext.activeStake?.status == 'ACTIVE'}
             name="amount"
-            disabled={appContext.activeStake ? true : false}
             render={({ field }) => (
               <NumberInput
                 label="Amount"
@@ -142,10 +147,11 @@ const StakeForm = () => {
           />
           <FormField
             control={form.control}
-            disabled={appContext.activeStake ? true : false}
+            disabled={appContext.activeStake?.status == 'ACTIVE'}
             name="duration"
             render={({ field }) => (
               <RadioInput
+                disabled={appContext.activeStake?.status == 'ACTIVE'}
                 label="Duration"
                 field={field}
                 options={[
@@ -174,8 +180,8 @@ const StakeForm = () => {
             variant={'secondary'}
             type="submit"
             label="Stake LAMBO"
-            isPending={false}
-            disabled={appContext.activeStake?.status === 'ACTIVE'}
+            isPending={isLoading}
+            disabled={appContext.activeStake?.status == 'ACTIVE' || isLoading}
           />
           <WalletScanDrawer
             drawerOpen={drawerOpen}

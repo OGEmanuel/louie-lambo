@@ -6,7 +6,17 @@ import { z } from 'zod';
 import NumberInput from '@/components/ui/number-input';
 import { useForm } from 'react-hook-form';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { Dispatch, SetStateAction } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { AppContext } from '@/context/AppContext';
+import { getDurationInDays } from '@/lib/utils';
+import RadioInput from '@/components/ui/radio-input';
+import WalletScanDrawer from '@/components/walletScanDrawer';
 
 const FormSchema = z.object({
   amount: z
@@ -29,6 +39,9 @@ const FormSchema = z.object({
       }
       return val;
     }),
+  duration: z.string().min(2, {
+    message: 'Duration must be at least 2 characters.',
+  }),
 });
 
 const MinerForm = (props: {
@@ -39,22 +52,89 @@ const MinerForm = (props: {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
+      duration: '14-days',
     },
   });
+  const [qrcode, setQrcode] = useState<string>('');
+  const [jumpLink, setJumpLink] = useState<string>('');
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const appContext = useContext(AppContext);
 
-  const balance = 280;
+  const [apy, setApy] = useState<number>(0);
+  useEffect(() => {
+    const getApy = () => {
+      console.log(form.getValues('duration'));
+      if (getDurationInDays(form.getValues('duration')) == 7)
+        setApy(appContext.userTier.oneWeekApy);
+      else if (getDurationInDays(form.getValues('duration')) == 14)
+        setApy(appContext.userTier.twoWeeksApy);
+      else if (getDurationInDays(form.getValues('duration')) == 30)
+        setApy(appContext.userTier.oneMonthApy);
+      else if (getDurationInDays(form.getValues('duration')) == 90)
+        setApy(appContext.userTier.threeMonthsApy);
+      else if (getDurationInDays(form.getValues('duration')) == 180)
+        setApy(appContext.userTier.sixMonthsApy);
+      else setApy(0);
+    };
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    </pre>;
-    props.setIsSuccess(true);
-    //   ),
-    // });
+    getApy();
+  }, [form, appContext.userTier]);
+
+  const balance = appContext.xrpBalance;
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (data.amount && data.duration) {
+      await createStake(data.amount, getDurationInDays(data.duration));
+    }
   }
+
+  const createStake = async (amount: number, duration: number) => {
+    try {
+      setDrawerOpen(open => !open);
+      const payload = await fetch('/api/mine/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          address: appContext.walletAddress,
+          amount: amount,
+          duration: duration,
+          tier: appContext.userTier.name,
+        }),
+      });
+      const data = await payload.json();
+
+      setQrcode(data.payload.refs.qr_png);
+      setJumpLink(data.payload.next.always);
+
+      if (appContext.isMobile) {
+        window.open(data.payload.next.always, '_blank');
+      }
+
+      const ws = new WebSocket(data.payload.refs.websocket_status);
+
+      ws.onmessage = async e => {
+        const responseObj = JSON.parse(e.data);
+        if (responseObj.signed !== null && responseObj.signed !== undefined) {
+          const payload = await fetch(
+            `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
+          );
+          const payloadJson = await payload.json();
+          const hex = payloadJson.payload.response.hex;
+          const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
+          await checkSign.json();
+          await appContext.createStakeRecord(
+            appContext.walletAddress,
+            amount,
+            duration,
+          );
+          setDrawerOpen(false);
+        }
+      };
+    } catch (error) {
+      console.error('Error depositing xrp:', error);
+      appContext.setError('Error placing stake');
+      throw new Error('Failed to creating stake');
+    }
+  };
 
   return (
     <Form {...form}>
@@ -70,8 +150,26 @@ const MinerForm = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
-              description={`Projected yield: APY 4.5%`}
+              description={`Projected yield: APY ${apy}%`}
               field={field}
+            />
+          )}
+        />
+        <FormField
+          control={form.control}
+          disabled={appContext.activeStake ? true : false}
+          name="duration"
+          render={({ field }) => (
+            <RadioInput
+              label="Duration"
+              field={field}
+              options={[
+                { label: '7 days', value: '7-days' },
+                { label: '14 days', value: '14-days' },
+                { label: '1 month', value: '1-month' },
+                { label: '3 months', value: '3-months' },
+                { label: '6 months', value: '6-months' },
+              ]}
             />
           )}
         />
@@ -81,6 +179,12 @@ const MinerForm = (props: {
           type="submit"
           label={`${props.type} XRP`}
           isPending={false}
+        />
+        <WalletScanDrawer
+          drawerOpen={drawerOpen}
+          jumpLink={jumpLink}
+          qrcode={qrcode}
+          setDrawerOpen={setDrawerOpen}
         />
       </form>
     </Form>
@@ -96,10 +200,10 @@ const TransactionDetails = (props: { balance: number }) => {
         <p className="text-[var(--color-gray)]">XRP Balance</p>
         <p className="font-medium">{props.balance} XRP</p>
       </div>
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Deposited</p>
         <p className="font-medium">28 XRP</p>
-      </div>
+      </div> */}
     </div>
   );
 };
