@@ -17,6 +17,7 @@ export interface AppContextInterface {
   unstake: (amount: number) => void;
   setSuccess: (text: string) => void;
   loginUser: (address: string, platform: string) => void;
+  ref: string | null;
   createStakeRecord: (
     address: string,
     amount: number,

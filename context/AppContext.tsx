@@ -9,7 +9,8 @@ import {
 } from '@/lib/constants';
 import { AppContextInterface, StakeType } from '@/lib/types';
 import { getTokenBalance } from '@/lib/xrp/helpers';
-import React, { createContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { createContext, use, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import xrpl from 'xrpl';
@@ -32,6 +33,7 @@ export const AppContext = createContext<AppContextInterface>({
   loginUser: () => {},
   createStakeRecord: () => {},
   xrpBalance: 0,
+  ref: null,
 });
 
 export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -50,6 +52,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeStake, setActiveStake] = useState<StakeType>();
 
   const [cookies] = useCookies(['walley']);
+  const params = useSearchParams();
+  const refQuery = params.get('ref');
 
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -250,6 +254,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         loginUser,
         createStakeRecord,
         setSuccess: handleSuccess,
+        ref: refQuery,
       }}
     >
       {children}

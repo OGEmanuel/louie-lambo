@@ -12,12 +12,56 @@
 import { AppContext } from '@/context/AppContext';
 // import { zodResolver } from '@hookform/resolvers/zod';
 import { Copy } from 'lucide-react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { useForm } from 'react-hook-form';
 // import { z } from 'zod';
 
 export const Referral = () => {
   const appContext = useContext(AppContext);
+  const [origin, setOrigin] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setOrigin(window.location.origin);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (appContext.error) {
+      toast.error(appContext.error, {
+        position: 'bottom-right',
+      });
+    } else if (appContext.success) {
+      toast.success(appContext.success, {
+        position: 'bottom-right',
+      });
+    }
+  }, [appContext.error, appContext.success]);
+
+  function copyToClipboard(text: string) {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(
+        () => {
+          toast.success('Copied to clipboard', {
+            position: 'bottom-right',
+          });
+          toast;
+        },
+        err => {
+          toast.error(err.message, {
+            position: 'bottom-right',
+          });
+        },
+      );
+    } else {
+      toast.error('Failed to copy to clipboard', {
+        position: 'bottom-right',
+      });
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col gap-[46px]">
@@ -34,14 +78,21 @@ export const Referral = () => {
         <p className="text-[var(--text-black)]">Referral link</p>
         <div className="flex max-2xl:flex-col max-2xl:gap-2 max-xl:flex-row max-xl:items-center max-xl:justify-between 2xl:items-center 2xl:justify-between">
           <p className="text-[var(--color-gray)] max-2xl:line-clamp-1 max-2xl:text-ellipsis">
-            http://localhost:3000?ref={appContext.walletAddress}
+            {`${origin}`}?ref={appContext.walletAddress}
           </p>
-          <div className="flex items-center gap-1 text-[var(--color-black)]">
+          <button
+            type="button"
+            onClick={() =>
+              copyToClipboard(`${origin}?ref=${appContext.walletAddress}`)
+            }
+            className="flex items-center gap-1 text-[var(--color-black)]"
+          >
             <Copy />
             <p>Copy</p>
-          </div>
+          </button>
         </div>
       </div>
+      <ToastContainer position="bottom-right" theme="dark" />
     </>
   );
 };
