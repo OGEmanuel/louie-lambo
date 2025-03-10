@@ -4,7 +4,9 @@ import { ButtonLoading } from '@/components/ui/button-loading';
 import { Form, FormField } from '@/components/ui/form';
 import NumberInput from '@/components/ui/number-input';
 import RadioInput from '@/components/ui/radio-input';
+import { AppContext } from '@/context/AppContext';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -35,6 +37,17 @@ const FormSchema = z.object({
 });
 
 const CalculatorForm = () => {
+  useEffect(() => {
+    const tiers = fetch('api/admin/getTiers');
+    tiers
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
+  }, []);
+
+  // console.log(appContext);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
