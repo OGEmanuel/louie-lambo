@@ -267,7 +267,7 @@ const TransactionDetails = (props: { balance: number }) => {
       </div>
       {/* <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Deposited</p>
-        <p className="font-medium">28 XRP</p>
+        <p className="font-medium">28 XR P</p>
       </div> */}
     </div>
   );
