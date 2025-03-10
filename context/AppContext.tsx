@@ -85,7 +85,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       setTokenBalance(Number(tbalance).toFixed(1));
       await fetchOverview();
-      handleSuccess('test');
       await getActiveStake();
     };
 
