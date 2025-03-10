@@ -179,6 +179,7 @@ const MinerForm = (props: {
           type="submit"
           label={`${props.type} XRP`}
           isPending={false}
+          disabled={false}
         />
         <WalletScanDrawer
           drawerOpen={drawerOpen}

@@ -100,6 +100,7 @@ const CalculatorForm = () => {
           type="submit"
           label="Calculate rewards"
           isPending={false}
+          disabled={false}
         />
       </form>
     </Form>
