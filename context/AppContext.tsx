@@ -10,7 +10,7 @@ import {
 import { AppContextInterface, MineType, StakeType } from '@/lib/types';
 import { getTokenBalance } from '@/lib/xrp/helpers';
 import { useSearchParams } from 'next/navigation';
-import React, { createContext, use, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 import xrpl from 'xrpl';
