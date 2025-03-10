@@ -10,6 +10,8 @@ import { useCookies } from 'react-cookie';
 import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
 import WalletScanDrawer from '@/components/walletScanDrawer';
+import { isInstalled, getPublicKey, signMessage } from '@gemwallet/api';
+import sdk from '@crossmarkio/sdk';
 
 const Navbar = () => {
   const [qrcode, setQrcode] = useState<string>('');
@@ -51,6 +53,82 @@ const Navbar = () => {
     };
   };
 
+  const handleConnectGem = () => {
+    isInstalled().then(response => {
+      if (response.result.isInstalled) {
+        getPublicKey().then(response => {
+          const pubkey = response.result?.publicKey;
+          fetch(
+            `/api/auth/gem/nonce?pubkey=${pubkey}&address=${response.result?.address}`,
+          )
+            .then(response => response.json())
+            .then(data => {
+              const nonceToken = data.token;
+              const opts = {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${nonceToken}`,
+                },
+              };
+              signMessage(nonceToken).then(response => {
+                const signedMessage = response.result?.signedMessage;
+                if (signedMessage !== undefined) {
+                  fetch(
+                    `/api/auth/gem/checksign?signature=${signedMessage}`,
+                    opts,
+                  )
+                    .then(response => response.json())
+                    .then(data => {
+                      const { token, address } = data;
+                      if (token === undefined) {
+                        console.log('error');
+                        return;
+                      }
+                      appContext.setWalletAddress(address);
+                      setCookie('walley', token, { path: '/' });
+                    });
+                }
+              });
+            });
+        });
+      }
+    });
+  };
+
+  const handleConnectCrossmark = async () => {
+    //sign in first, then generate nonce
+    const hashUrl = '/api/auth/crossmark/hash';
+    const hashR = await fetch(hashUrl);
+    const hashJson = await hashR.json();
+    const hash = hashJson.hash;
+    const id = await sdk.methods.signInAndWait(hash);
+    console.log(id);
+    const address = id.response.data.address;
+    const pubkey = id.response.data.publicKey;
+    const signature = id.response.data.signature;
+    const checkSign = await fetch(
+      `/api/auth/crossmark/checksign?signature=${signature}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${hash}`,
+        },
+        body: JSON.stringify({
+          pubkey: pubkey,
+          address: address,
+        }),
+      },
+    );
+
+    const checkSignJson = await checkSign.json();
+    if (checkSignJson.hasOwnProperty('token')) {
+      appContext.setWalletAddress(address);
+      setCookie('walley', checkSignJson.token, { path: '/' });
+    }
+  };
+
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
       <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] md:rounded-[30px] md:px-[33px] md:py-[19px]">
@@ -69,6 +147,15 @@ const Navbar = () => {
             <>
               {' '}
               <Button onClick={() => getQrCode()}>Connect Wallet</Button>
+              <Button
+                onClick={() => handleConnectCrossmark()}
+                className="hidden"
+              >
+                Crossmark
+              </Button>
+              <Button onClick={() => handleConnectGem()} className="hidden">
+                Gem wallet
+              </Button>
               <WalletScanDrawer
                 drawerOpen={drawerOpen}
                 jumpLink={jumpLink}
