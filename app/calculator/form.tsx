@@ -19,10 +19,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import axios from 'axios';
+import { AppContext } from '@/context/AppContext';
 
 const FormSchema = z.object({
   amount: z
@@ -69,6 +70,7 @@ type Tier = {
 
 const CalculatorForm = () => {
   const [tiers, setTiers] = useState<Tier[]>([]);
+  const [calculatedValue, setCalculatedValue] = useState<number>(0);
 
   useEffect(() => {
     const fetchTiers = async () => {
@@ -83,7 +85,7 @@ const CalculatorForm = () => {
     fetchTiers();
   }, []);
 
-  console.log(tiers);
+  // console.log(tiers);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -94,17 +96,29 @@ const CalculatorForm = () => {
     },
   });
 
-  const balance = 25;
+  const appContext = useContext(AppContext);
+
+  const balance = appContext.tokenBalance;
+
+  const getAPY = (value: string): number => {
+    return value === 'oneWeek'
+      ? tiers[Number(form.watch('tier'))]?.oneWeekApy
+      : value === 'twoWeeks'
+        ? tiers[Number(form.watch('tier'))]?.twoWeeksApy
+        : value === 'oneMonth'
+          ? tiers[Number(form.watch('tier'))]?.oneMonthApy
+          : value === 'threeMonths'
+            ? tiers[Number(form.watch('tier'))]?.threeMonthsApy
+            : tiers[Number(form.watch('tier'))].sixMonthsApy;
+  };
+
+  function calculatePercentage(value: number, percentage: number) {
+    const calculatedValue = (value * percentage) / 100;
+    setCalculatedValue(calculatedValue + value);
+  }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    // toast({
-    //   title: 'You submitted the following values:',
-    //   description: (
-    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-      <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-    </pre>;
-    //   ),
-    // });
+    calculatePercentage(Number(data?.amount), getAPY(data.duration));
   }
 
   return (
@@ -152,7 +166,7 @@ const CalculatorForm = () => {
           render={({ field }) => (
             <NumberInput
               label="Amount"
-              onSetMax={() => form.setValue('amount', balance)}
+              onSetMax={() => form.setValue('amount', Number(balance))}
               field={field}
             />
           )}
@@ -163,7 +177,7 @@ const CalculatorForm = () => {
           render={({ field }) => (
             <RadioInput
               label="Duration"
-              description={`Projected yield: APY ${field.value === 'oneWeek' ? tiers[Number(form.watch('tier'))].oneWeekApy : field.value === 'twoWeeks' ? tiers[Number(form.watch('tier'))].twoWeeksApy : field.value === 'oneMonth' ? tiers[Number(form.watch('tier'))].oneMonthApy : field.value === 'threeMonths' ? tiers[Number(form.watch('tier'))].threeMonthsApy : tiers[Number(form.watch('tier'))].sixMonthsApy}%`}
+              description={`Projected yield: APY ${getAPY(field.value)}%`}
               options={[
                 { label: '7 days', value: 'oneWeek' },
                 { label: '14 days', value: 'twoWeeks' },
@@ -175,6 +189,9 @@ const CalculatorForm = () => {
             />
           )}
         />
+        <p className="text-[var(--color-black)]">
+          Total rewards: {calculatedValue} LAMBO
+        </p>
         <ButtonLoading
           className="w-full"
           variant={'secondary'}
