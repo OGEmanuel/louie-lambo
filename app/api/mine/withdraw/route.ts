@@ -21,7 +21,10 @@ export const POST = async (req: NextRequest) => {
     const mine = await Mine.findOne({ user: user._id, status: 'ACTIVE' });
 
     if (user.platform === 'xaman') {
-      const payload = await withdrawToken(user.walletAddress, mine.amount);
+      const payload = await withdrawToken(
+        user.walletAddress,
+        mine.tokensAmount,
+      );
       if (payload) {
         await Mine.updateOne(
           { userId: user._id, status: 'ACTIVE' },

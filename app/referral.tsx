@@ -47,7 +47,6 @@ export const Referral = () => {
           toast.success('Copied to clipboard', {
             position: 'bottom-right',
           });
-          toast;
         },
         err => {
           toast.error(err.message, {
