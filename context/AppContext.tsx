@@ -141,7 +141,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       handleError("Couldn't fetch balance");
       throw new Error('Failed to fetch XRP balance');
     } finally {
-      await xrpClient.disconnect();
+      await xrpClient?.disconnect();
     }
   };
 
