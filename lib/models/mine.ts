@@ -1,9 +1,9 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface MineI extends Document {
-  user: ObjectId;
-  tier: ObjectId;
-  stake: ObjectId;
+  user: string;
+  tier: string;
+  stake: string;
   tokensAmount: number;
   stakingDurationInDays: number;
   expectedAmount: number;
@@ -14,9 +14,9 @@ export interface MineI extends Document {
 
 const MineSchema = new Schema<MineI>(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    tier: { type: Schema.Types.ObjectId, ref: 'Tier', required: true },
-    stake: { type: Schema.Types.ObjectId, ref: 'Stake', required: true },
+    user: { type: String, required: true },
+    tier: { type: String, required: true },
+    stake: { type: String, required: true },
     tokensAmount: { type: Number, required: true },
     stakingDurationInDays: { type: Number, required: true, default: 7 },
     expectedAmount: { type: Number, required: true },

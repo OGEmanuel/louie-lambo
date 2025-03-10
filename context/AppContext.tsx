@@ -7,7 +7,7 @@ import {
   tiers,
   XRP_MAINNET_RPC,
 } from '@/lib/constants';
-import { AppContextInterface, StakeType } from '@/lib/types';
+import { AppContextInterface, MineType, StakeType } from '@/lib/types';
 import { getTokenBalance } from '@/lib/xrp/helpers';
 import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -20,17 +20,20 @@ export const AppContext = createContext<AppContextInterface>({
   userTier: tiers[0],
   tokenBalance: '0',
   activeStake: undefined,
+  activeMine: undefined,
   poolXrpBalance: '',
   stakedWallets: 0,
   xrpRewardsDistributed: 0,
   setError: () => {},
   unstake: () => {},
+  unMine: () => {},
   setSuccess: () => {},
   walletAddress: '',
   isMobile: false,
   setWalletAddress: () => {},
   loginUser: () => {},
   createStakeRecord: () => {},
+  createMineRecord: () => {},
   xrpBalance: 0,
 });
 
@@ -48,6 +51,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [xrpRewardsDistributed, setXrpRewardsDistributed] = useState<number>(0);
   const [value, setValue] = useState<Tier>(tiers[0]);
   const [activeStake, setActiveStake] = useState<StakeType>();
+  const [activeMine, setActiveMine] = useState<MineType>();
 
   const [cookies] = useCookies(['walley']);
 
@@ -86,6 +90,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setTokenBalance(Number(tbalance).toFixed(1));
       await fetchOverview();
       await getActiveStake();
+      await getActiveMine();
     };
 
     if (walletAddress) {
@@ -109,6 +114,25 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const unStake = async (amount: number) => {
     try {
       const payload = await fetch('/api/stake/unstake', {
+        method: 'POST',
+        body: JSON.stringify({
+          address: walletAddress,
+          amount: amount,
+        }),
+      });
+      await payload.json();
+      setActiveStake(undefined);
+      await handleSuccess('successfully unstaked tokens');
+    } catch (error) {
+      console.error('Error creating stake:', error);
+      handleError('Error placing stake');
+      throw new Error('Failed to creating stake');
+    }
+  };
+
+  const unMine = async (amount: number) => {
+    try {
+      const payload = await fetch('/api/mine/withdraw', {
         method: 'POST',
         body: JSON.stringify({
           address: walletAddress,
@@ -157,6 +181,19 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getActiveMine = async () => {
+    try {
+      const response = await fetch(`/api/mine?address=${walletAddress}`);
+      const data: { mine: MineType } = await response.json();
+
+      setActiveMine(data.mine);
+    } catch (error) {
+      console.error('Error logging in:', error);
+      handleError("Couldn't get active deposit");
+      throw new Error("Couldn't get active deposit");
+    }
+  };
+
   const loginUser = async (address: string, platform: string) => {
     try {
       const response = await fetch('/api/auth/login', {
@@ -169,6 +206,28 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error('Error logging in:', error);
       handleError("Couldn't complete login");
       throw new Error('Failed to login');
+    }
+  };
+
+  const createMineRecord = async (
+    address: string,
+    amount: number,
+    duration: number,
+  ) => {
+    try {
+      const response = await fetch('/api/mine/record', {
+        method: 'POST',
+        body: JSON.stringify({ address, amount, duration, tier: value.name }),
+      });
+      const data = await response.json();
+      setActiveMine(data.mine);
+      const newTokenBalance = Number(xrpBalance) - amount;
+      setXrpBalance(newTokenBalance);
+      handleSuccess('Deposited tokens✅');
+    } catch (error) {
+      console.error('Error depositing tokens', error);
+      handleError("Couldn't deposit tokens");
+      throw new Error('Failed to stake tokens');
     }
   };
 
@@ -242,6 +301,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         userTier: value,
         xrpRewardsDistributed,
         walletAddress,
+        activeMine,
+        createMineRecord,
+        unMine,
         xrpBalance,
         tokenBalance,
         activeStake,

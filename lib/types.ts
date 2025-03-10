@@ -12,9 +12,11 @@ export interface AppContextInterface {
   success: string;
   isMobile: boolean;
   activeStake: StakeType | undefined;
+  activeMine: MineType | undefined;
   setWalletAddress: React.Dispatch<React.SetStateAction<string>>;
   setError: (text: string) => void;
   unstake: (amount: number) => void;
+  unMine: (amount: number) => void;
   setSuccess: (text: string) => void;
   loginUser: (address: string, platform: string) => void;
   createStakeRecord: (
@@ -22,6 +24,7 @@ export interface AppContextInterface {
     amount: number,
     duration: number,
   ) => void;
+  createMineRecord: (address: string, amount: number, duration: number) => void;
 }
 
 export type StakeType = {
@@ -31,4 +34,17 @@ export type StakeType = {
   stakingDurationInDays: number;
   status: string;
   unlockDate: Date;
+};
+
+export type MineType = {
+  user: string;
+  tier: string;
+  stake: string;
+  tokensAmount: number;
+  stakingDurationInDays: number;
+  expectedAmount: number;
+  rewardsEarned: number;
+  createdAt: string;
+  unlockDate: Date;
+  status: string;
 };

@@ -57,6 +57,8 @@ const MinerForm = (props: {
   });
   const [qrcode, setQrcode] = useState<string>('');
   const [jumpLink, setJumpLink] = useState<string>('');
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const appContext = useContext(AppContext);
 
@@ -90,14 +92,13 @@ const MinerForm = (props: {
 
   const createStake = async (amount: number, duration: number) => {
     try {
+      setIsloading(true);
       setDrawerOpen(open => !open);
       const payload = await fetch('/api/mine/create', {
         method: 'POST',
         body: JSON.stringify({
           address: appContext.walletAddress,
           amount: amount,
-          duration: duration,
-          tier: appContext.userTier.name,
         }),
       });
       const data = await payload.json();
@@ -121,18 +122,21 @@ const MinerForm = (props: {
           const hex = payloadJson.payload.response.hex;
           const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
           await checkSign.json();
-          await appContext.createStakeRecord(
+          await appContext.createMineRecord(
             appContext.walletAddress,
             amount,
             duration,
           );
           setDrawerOpen(false);
+          props.setIsSuccess(true);
         }
       };
     } catch (error) {
       console.error('Error depositing xrp:', error);
       appContext.setError('Error placing stake');
       throw new Error('Failed to creating stake');
+    } finally {
+      setIsloading(false);
     }
   };
 
@@ -178,8 +182,8 @@ const MinerForm = (props: {
           variant={'secondary'}
           type="submit"
           label={`${props.type} XRP`}
-          isPending={false}
-          disabled={false}
+          isPending={isLoading}
+          disabled={appContext.activeMine?.status === 'ACTIVE' || isLoading}
         />
         <WalletScanDrawer
           drawerOpen={drawerOpen}
@@ -192,13 +196,73 @@ const MinerForm = (props: {
   );
 };
 
+export const MinerFormWithdraw = (props: {
+  type: string;
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const appContext = useContext(AppContext);
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      amount: appContext.activeMine?.tokensAmount,
+      duration: '22888',
+    },
+  });
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
+  const balance = appContext.activeMine!.tokensAmount;
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data.amount);
+    if (data.amount) {
+      setIsloading(true);
+      await appContext.unMine(data.amount);
+      setIsloading(false);
+      props.setIsSuccess(true);
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-[46px] max-lg:space-y-6"
+      >
+        <TransactionDetails balance={balance} />
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <NumberInput
+              label="Amount"
+              onSetMax={() => form.setValue('amount', balance)}
+              description={`Projected yield: APY ${'100'}%`}
+              field={field}
+            />
+          )}
+        />
+
+        <ButtonLoading
+          className="w-full"
+          variant={'secondary'}
+          type="submit"
+          label={`${props.type} XRP`}
+          isPending={isLoading}
+          disabled={isLoading}
+        />
+      </form>
+    </Form>
+  );
+};
+
 export default MinerForm;
 
 const TransactionDetails = (props: { balance: number }) => {
   return (
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
       <div className="flex items-center justify-between">
-        <p className="text-[var(--color-gray)]">XRP Balance</p>
+        <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
         <p className="font-medium">{props.balance} XRP</p>
       </div>
       {/* <div className="flex items-center justify-between">

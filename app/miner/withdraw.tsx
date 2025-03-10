@@ -1,10 +1,8 @@
 'use client';
 
-import MinerForm from './form';
+import { MinerFormWithdraw } from './form';
 import { useState } from 'react';
-import HowItWorks from './how-it-works';
 import { SuccessPage, Summary } from './tabs';
-import { Separator } from '@/components/ui/separator';
 
 const Withdraw = () => {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -15,12 +13,9 @@ const Withdraw = () => {
         {isSuccess ? (
           <SuccessPage type="withdrawn" setIsSuccess={setIsSuccess} />
         ) : (
-          <MinerForm type="Withdraw" setIsSuccess={setIsSuccess} />
+          <MinerFormWithdraw type="Withdraw" setIsSuccess={setIsSuccess} />
         )}
         <div className="py-[17.5px] max-lg:py-0"></div>
-        <Separator className="bg-[var(--color-stroke)]" />
-        <div className="py-[18.5px] max-lg:py-0"></div>
-        <HowItWorks />
       </div>
       <Summary />
     </div>

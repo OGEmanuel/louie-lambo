@@ -19,24 +19,32 @@ export const POST = async (req: NextRequest) => {
         { message: 'could not find user or config' },
         { status: 404 },
       );
+
+    console.log(tierRec.oneWeekApy);
+    const perc: number =
+      duration === 7
+        ? tierRec.oneWeekApy
+        : duration == 14
+          ? tierRec.twoWeeksApy
+          : duration == 30
+            ? tierRec.oneMonthApy
+            : duration == 60
+              ? tierRec.threeMonthsApy
+              : duration == 90
+                ? tierRec.sixMonthsApy
+                : 0;
     const date = new Date();
     date.setDate(date.getDate() + duration);
 
-    let perc;
-
-    if (duration === 7) perc = tier.oneWeekApy;
-    else if (duration === 14) perc = tier.twoWeeksApy;
-    else if (duration === 30) perc = tier.oneMonthApy;
-    else if (duration === 60) perc = tier.threeMonthsApy;
-    else if (duration === 90) perc = tier.sixMonthsApy;
-    else perc = 0;
-
-    const expectedAmount = amount + perc * amount;
+    console.log(perc);
+    const expectedAmount: number =
+      Number(amount) + Number(perc) * Number(amount);
+    console.log(expectedAmount);
 
     const newMine = await Mine.create({
-      user: user._id,
-      tier: tier._id,
-      stake: stake._id,
+      user: user.id,
+      tier: tierRec.id,
+      stake: stake.id,
       tokensAmount: amount,
       stakingDurationInDays: duration,
       expectedAmount,

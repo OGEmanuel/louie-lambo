@@ -53,7 +53,7 @@ export async function withdrawToken(userAddress: string, stakedAmount: number) {
   await client.connect();
 
   const setting = await Setting.findOne({});
-  const stakingWallet = xrpl.Wallet.fromSeed(setting.XRPPoolWalletSeed);
+  const stakingWallet = xrpl.Wallet.fromSeed(setting.xrpPoolWalletSeed);
 
   const prepared = await client.autofill({
     TransactionType: 'Payment',
