@@ -22,6 +22,11 @@ export const Referral = () => {
   const appContext = useContext(AppContext);
   const [origin, setOrigin] = useState('');
 
+  function truncateString(value: string): string {
+    if (value.length <= 12) return value;
+    return `${value.slice(0, 6)}.....${value.slice(-6)}`;
+  }
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setOrigin(window.location.origin);
@@ -77,7 +82,7 @@ export const Referral = () => {
         <p className="text-[var(--text-black)]">Referral link</p>
         <div className="flex max-2xl:flex-col max-2xl:gap-2 max-xl:flex-row max-xl:items-center max-xl:justify-between 2xl:items-center 2xl:justify-between">
           <p className="text-[var(--color-gray)] max-2xl:line-clamp-1 max-2xl:text-ellipsis">
-            {`${origin}`}?ref={appContext.walletAddress}
+            {`${origin}`}?ref={truncateString(appContext.walletAddress)}
           </p>
           <button
             type="button"
