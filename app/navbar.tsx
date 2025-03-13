@@ -30,44 +30,44 @@ import Bitfrost from './components/icons/bitfrost';
 import Edge from './components/icons/edge';
 
 const Navbar = () => {
-  const [qrcode, setQrcode] = useState<string>('');
-  const [jumpLink, setJumpLink] = useState<string>('');
+  // const [qrcode, setQrcode] = useState<string>('');
+  // const [jumpLink, setJumpLink] = useState<string>('');
   const [, setCookie] = useCookies(['walley']);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const appContext = useContext(AppContext);
 
-  const getQrCode = async () => {
-    setDrawerOpen(open => !open);
-    const payload = await fetch('/api/auth/xumm/createPayload');
-    const data = await payload.json();
+  // const getQrCode = async () => {
+  //   setDrawerOpen(open => !open);
+  //   const payload = await fetch('/api/auth/xumm/createPayload');
+  //   const data = await payload.json();
 
-    setQrcode(data.payload.refs.qr_png);
-    setJumpLink(data.payload.next.always);
+  //   setQrcode(data.payload.refs.qr_png);
+  //   setJumpLink(data.payload.next.always);
 
-    if (appContext.isMobile) {
-      window.open(data.payload.next.always, '_blank');
-    }
+  //   if (appContext.isMobile) {
+  //     window.open(data.payload.next.always, '_blank');
+  //   }
 
-    const ws = new WebSocket(data.payload.refs.websocket_status);
+  //   const ws = new WebSocket(data.payload.refs.websocket_status);
 
-    ws.onmessage = async e => {
-      const responseObj = JSON.parse(e.data);
-      if (responseObj.signed !== null && responseObj.signed !== undefined) {
-        const payload = await fetch(
-          `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
-        );
-        const payloadJson = await payload.json();
-        const hex = payloadJson.payload.response.hex;
-        const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
-        const checkSignJson = await checkSign.json();
-        await appContext.loginUser(checkSignJson.xrpAddress, 'xaman');
-        appContext.setWalletAddress(checkSignJson.xrpAddress);
-        setCookie('walley', checkSignJson.token, { path: '/' });
-        setDrawerOpen(false);
-      }
-    };
-  };
+  //   ws.onmessage = async e => {
+  //     const responseObj = JSON.parse(e.data);
+  //     if (responseObj.signed !== null && responseObj.signed !== undefined) {
+  //       const payload = await fetch(
+  //         `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
+  //       );
+  //       const payloadJson = await payload.json();
+  //       const hex = payloadJson.payload.response.hex;
+  //       const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
+  //       const checkSignJson = await checkSign.json();
+  //       await appContext.loginUser(checkSignJson.xrpAddress, 'xaman');
+  //       appContext.setWalletAddress(checkSignJson.xrpAddress);
+  //       setCookie('walley', checkSignJson.token, { path: '/' });
+  //       setDrawerOpen(false);
+  //     }
+  //   };
+  // };
 
   const handleConnectGem = () => {
     isInstalled().then(response => {
@@ -112,39 +112,39 @@ const Navbar = () => {
     });
   };
 
-  const handleConnectCrossmark = async () => {
-    //sign in first, then generate nonce
-    const hashUrl = '/api/auth/crossmark/hash';
-    const hashR = await fetch(hashUrl);
-    const hashJson = await hashR.json();
-    const hash = hashJson.hash;
-    const id = await sdk.methods.signInAndWait(hash);
-    console.log(id);
-    const address = id.response.data.address;
-    const pubkey = id.response.data.publicKey;
-    const signature = id.response.data.signature;
-    const checkSign = await fetch(
-      `/api/auth/crossmark/checkSign?signature=${signature}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${hash}`,
-        },
-        body: JSON.stringify({
-          pubkey: pubkey,
-          address: address,
-        }),
-      },
-    );
+  // const handleConnectCrossmark = async () => {
+  //   //sign in first, then generate nonce
+  //   const hashUrl = '/api/auth/crossmark/hash';
+  //   const hashR = await fetch(hashUrl);
+  //   const hashJson = await hashR.json();
+  //   const hash = hashJson.hash;
+  //   const id = await sdk.methods.signInAndWait(hash);
+  //   console.log(id);
+  //   const address = id.response.data.address;
+  //   const pubkey = id.response.data.publicKey;
+  //   const signature = id.response.data.signature;
+  //   const checkSign = await fetch(
+  //     `/api/auth/crossmark/checkSign?signature=${signature}`,
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${hash}`,
+  //       },
+  //       body: JSON.stringify({
+  //         pubkey: pubkey,
+  //         address: address,
+  //       }),
+  //     },
+  //   );
 
-    const checkSignJson = await checkSign.json();
-    if (checkSignJson.hasOwnProperty('token')) {
-      await appContext.loginUser(checkSignJson.xrpAddress, 'crossmark');
-      appContext.setWalletAddress(checkSignJson.xrpAddress);
-      setCookie('walley', checkSignJson.token, { path: '/' });
-    }
-  };
+  //   const checkSignJson = await checkSign.json();
+  //   if (checkSignJson.hasOwnProperty('token')) {
+  //     await appContext.loginUser(checkSignJson.xrpAddress, 'crossmark');
+  //     appContext.setWalletAddress(checkSignJson.xrpAddress);
+  //     setCookie('walley', checkSignJson.token, { path: '/' });
+  //   }
+  // };
 
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
@@ -171,12 +171,12 @@ const Navbar = () => {
               <Button onClick={() => handleConnectGem()} className="hidden">
                 Gem wallet
               </Button>
-              <WalletScanDrawer
+              {/* <WalletScanDrawer
                 drawerOpen={drawerOpen}
                 jumpLink={jumpLink}
                 qrcode={qrcode}
                 setDrawerOpen={setDrawerOpen}
-              />
+              /> */}
             </>
           )}
 
@@ -190,14 +190,18 @@ const Navbar = () => {
 export default Navbar;
 
 const WALLET_LIST = [
-  { name: 'First ledger', icon: <FirstLedger /> },
-  { name: 'Xaman wallet', icon: <Xaman /> },
-  { name: 'Atomic wallet', icon: <Atomic /> },
-  { name: 'Crossmark', icon: <Crossmark /> },
-  { name: 'Exodus wallet', icon: <Exodus /> },
-  { name: 'Gatehub', icon: <Gatehub /> },
-  { name: 'Bitfrost', icon: <Bitfrost /> },
-  { name: 'Edge wallet', icon: <Edge /> },
+  {
+    name: 'First ledger',
+    icon: <FirstLedger />,
+    func: () => console.log('xaman'),
+  },
+  { name: 'Xaman wallet', icon: <Xaman />, func: () => console.log('xaman') },
+  { name: 'Atomic wallet', icon: <Atomic />, func: () => console.log('xaman') },
+  { name: 'Crossmark', icon: <Crossmark />, func: () => console.log('xaman') },
+  { name: 'Exodus wallet', icon: <Exodus />, func: () => console.log('xaman') },
+  { name: 'Gatehub', icon: <Gatehub />, func: () => console.log('xaman') },
+  { name: 'Bitfrost', icon: <Bitfrost />, func: () => console.log('xaman') },
+  { name: 'Edge wallet', icon: <Edge />, func: () => console.log('xaman') },
 ];
 
 const WalletDialog = () => {
@@ -219,6 +223,7 @@ const WalletDialog = () => {
           {WALLET_LIST.map(item => (
             <button
               key={item.name}
+              onClick={item.func}
               className="flex items-center gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] bg-[#FFFFFFF9] p-[1.13rem] dark:bg-[var(--color-lambo-black)] sm:p-7"
             >
               <div className="rounded-xl border p-2 dark:border-[var(--color-stroke)]">
