@@ -67,7 +67,8 @@ export const Summary = () => {
   const [open, setOpen] = useState(false);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async (data: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mutationFn: async (data: any) => {
       return axios.post(`${BASE_URL}/mine/claimRewards`, data, {
         headers: {
           'Content-Type': 'application/json',
@@ -205,6 +206,7 @@ export const SuccessPage = (props: {
 const WarningModal = (props: {
   children: ReactNode;
   title: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   mutate: any;
   isPending: boolean;
   open: boolean;
@@ -233,7 +235,7 @@ const WarningModal = (props: {
             isPending={props.isPending}
             disabled={props.isPending}
             className="h-48 py-2"
-            onClick={() => props.mutate(appContext.walletAddress)}
+            onClick={() => props.mutate({ address: appContext.walletAddress })}
           />
         </DialogFooter>
       </DialogContent>
