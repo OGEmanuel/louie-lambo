@@ -9,9 +9,9 @@ import { useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
-import WalletScanDrawer from '@/components/walletScanDrawer';
+// import WalletScanDrawer from '@/components/walletScanDrawer';
 import { isInstalled, getPublicKey, signMessage } from '@gemwallet/api';
-import sdk from '@crossmarkio/sdk';
+// import sdk from '@crossmarkio/sdk';
 import {
   Dialog,
   DialogContent,
