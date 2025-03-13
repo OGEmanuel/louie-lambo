@@ -33,7 +33,7 @@ const Navbar = () => {
   // const [qrcode, setQrcode] = useState<string>('');
   // const [jumpLink, setJumpLink] = useState<string>('');
   const [, setCookie] = useCookies(['walley']);
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  // const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const appContext = useContext(AppContext);
 
