@@ -5,7 +5,7 @@ import LamboLogo from './components/icons/lambo-logo';
 import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { MobileSidenav } from './sidenav';
 import Link from 'next/link';
-import { useContext } from 'react';
+import { SetStateAction, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
@@ -28,12 +28,13 @@ import Exodus from './components/icons/exodus';
 import Gatehub from './components/icons/gatehub';
 import Bitfrost from './components/icons/bitfrost';
 import Edge from './components/icons/edge';
+import WalletScanDrawer from '@/components/walletScanDrawer';
 
 const Navbar = () => {
-  // const [qrcode, setQrcode] = useState<string>('');
-  // const [jumpLink, setJumpLink] = useState<string>('');
+  const [qrcode, setQrcode] = useState<string>('');
+  const [jumpLink, setJumpLink] = useState<string>('');
   const [, setCookie] = useCookies(['walley']);
-  // const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
+  const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const appContext = useContext(AppContext);
 
@@ -164,19 +165,23 @@ const Navbar = () => {
             <>
               {' '}
               {/* <Button onClick={() => getQrCode()}>Connect Wallet</Button> */}
-              <WalletDialog />
+              <WalletDialog
+                setDrawerOpen={setDrawerOpen}
+                setQrcode={setQrcode}
+                setJumpLink={setJumpLink}
+              />
               {/* <Button onClick={() => handleConnectCrossmark()} className="">
                 Crossmark
               </Button> */}
               <Button onClick={() => handleConnectGem()} className="hidden">
                 Gem wallet
               </Button>
-              {/* <WalletScanDrawer
+              <WalletScanDrawer
                 drawerOpen={drawerOpen}
                 jumpLink={jumpLink}
                 qrcode={qrcode}
                 setDrawerOpen={setDrawerOpen}
-              /> */}
+              />
             </>
           )}
 
@@ -189,22 +194,74 @@ const Navbar = () => {
 
 export default Navbar;
 
-const WALLET_LIST = [
-  {
-    name: 'First ledger',
-    icon: <FirstLedger />,
-    func: () => console.log('xaman'),
-  },
-  { name: 'Xaman wallet', icon: <Xaman />, func: () => console.log('xaman') },
-  { name: 'Atomic wallet', icon: <Atomic />, func: () => console.log('xaman') },
-  { name: 'Crossmark', icon: <Crossmark />, func: () => console.log('xaman') },
-  { name: 'Exodus wallet', icon: <Exodus />, func: () => console.log('xaman') },
-  { name: 'Gatehub', icon: <Gatehub />, func: () => console.log('xaman') },
-  { name: 'Bitfrost', icon: <Bitfrost />, func: () => console.log('xaman') },
-  { name: 'Edge wallet', icon: <Edge />, func: () => console.log('xaman') },
-];
+const WalletDialog = (props: {
+  setDrawerOpen: React.Dispatch<SetStateAction<boolean>>;
+  setQrcode: React.Dispatch<SetStateAction<string>>;
+  setJumpLink: React.Dispatch<SetStateAction<string>>;
+}) => {
+  const { setDrawerOpen, setQrcode, setJumpLink } = props;
+  const [, setCookie] = useCookies(['walley']);
 
-const WalletDialog = () => {
+  const appContext = useContext(AppContext);
+  const getQrCode = async () => {
+    setDrawerOpen(open => !open);
+    const payload = await fetch('/api/auth/xumm/createPayload');
+    const data = await payload.json();
+
+    setQrcode(data.payload.refs.qr_png);
+    setJumpLink(data.payload.next.always);
+
+    if (appContext.isMobile) {
+      window.open(data.payload.next.always, '_blank');
+    }
+
+    const ws = new WebSocket(data.payload.refs.websocket_status);
+
+    ws.onmessage = async e => {
+      const responseObj = JSON.parse(e.data);
+      if (responseObj.signed !== null && responseObj.signed !== undefined) {
+        const payload = await fetch(
+          `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
+        );
+        const payloadJson = await payload.json();
+        const hex = payloadJson.payload.response.hex;
+        const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
+        const checkSignJson = await checkSign.json();
+        await appContext.loginUser(checkSignJson.xrpAddress, 'xaman');
+        appContext.setWalletAddress(checkSignJson.xrpAddress);
+        setCookie('walley', checkSignJson.token, { path: '/' });
+        setDrawerOpen(false);
+      }
+    };
+  };
+
+  const WALLET_LIST = [
+    {
+      name: 'First ledger',
+      icon: <FirstLedger />,
+      func: () => console.log('xaman'),
+    },
+    { name: 'Xaman wallet', icon: <Xaman />, func: () => getQrCode() },
+    {
+      name: 'Atomic wallet',
+      icon: <Atomic />,
+      func: () => console.log('xaman'),
+    },
+    {
+      name: 'Crossmark',
+      icon: <Crossmark />,
+      func: () => console.log('xaman'),
+    },
+    {
+      name: 'Exodus wallet',
+      icon: <Exodus />,
+      func: () => console.log('xaman'),
+    },
+    { name: 'Gatehub', icon: <Gatehub />, func: () => console.log('xaman') },
+    { name: 'Bitfrost', icon: <Bitfrost />, func: () => console.log('xaman') },
+    { name: 'Edge wallet', icon: <Edge />, func: () => console.log('xaman') },
+  ];
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -224,7 +281,7 @@ const WalletDialog = () => {
             <button
               key={item.name}
               onClick={item.func}
-              className="flex items-center gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] bg-[#FFFFFFF9] p-[1.13rem] dark:bg-[var(--color-lambo-black)] sm:p-7"
+              className="flex cursor-pointer items-center gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] bg-[#FFFFFFF9] p-[1.13rem] dark:bg-[var(--color-lambo-black)] sm:p-7"
             >
               <div className="rounded-xl border p-2 dark:border-[var(--color-stroke)]">
                 {item.icon}
