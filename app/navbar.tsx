@@ -38,38 +38,6 @@ const Navbar = () => {
 
   const appContext = useContext(AppContext);
 
-  // const getQrCode = async () => {
-  //   setDrawerOpen(open => !open);
-  //   const payload = await fetch('/api/auth/xumm/createPayload');
-  //   const data = await payload.json();
-
-  //   setQrcode(data.payload.refs.qr_png);
-  //   setJumpLink(data.payload.next.always);
-
-  //   if (appContext.isMobile) {
-  //     window.open(data.payload.next.always, '_blank');
-  //   }
-
-  //   const ws = new WebSocket(data.payload.refs.websocket_status);
-
-  //   ws.onmessage = async e => {
-  //     const responseObj = JSON.parse(e.data);
-  //     if (responseObj.signed !== null && responseObj.signed !== undefined) {
-  //       const payload = await fetch(
-  //         `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
-  //       );
-  //       const payloadJson = await payload.json();
-  //       const hex = payloadJson.payload.response.hex;
-  //       const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
-  //       const checkSignJson = await checkSign.json();
-  //       await appContext.loginUser(checkSignJson.xrpAddress, 'xaman');
-  //       appContext.setWalletAddress(checkSignJson.xrpAddress);
-  //       setCookie('walley', checkSignJson.token, { path: '/' });
-  //       setDrawerOpen(false);
-  //     }
-  //   };
-  // };
-
   const handleConnectGem = () => {
     isInstalled().then(response => {
       if (response.result.isInstalled) {
