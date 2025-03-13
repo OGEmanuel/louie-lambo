@@ -37,6 +37,7 @@ const BASE_URL = 'https://lambo-miner-backend.onrender.com/api';
 
 const MinerTabs = () => {
   const appContext = useContext(AppContext);
+
   return (
     <Tabs
       defaultValue={appContext.activeMine ? 'withdraw' : 'deposit'}
