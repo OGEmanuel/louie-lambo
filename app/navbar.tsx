@@ -12,6 +12,22 @@ import { AppContext } from '@/context/AppContext';
 import WalletScanDrawer from '@/components/walletScanDrawer';
 import { isInstalled, getPublicKey, signMessage } from '@gemwallet/api';
 import sdk from '@crossmarkio/sdk';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import FirstLedger from './components/icons/first-ledger';
+import Xaman from './components/icons/xaman';
+import Atomic from './components/icons/atomic';
+import Crossmark from './components/icons/crossmark';
+import Exodus from './components/icons/exodus';
+import Gatehub from './components/icons/gatehub';
+import Bitfrost from './components/icons/bitfrost';
+import Edge from './components/icons/edge';
 
 const Navbar = () => {
   const [qrcode, setQrcode] = useState<string>('');
@@ -147,10 +163,11 @@ const Navbar = () => {
           ) : (
             <>
               {' '}
-              <Button onClick={() => getQrCode()}>Connect Wallet</Button>
-              <Button onClick={() => handleConnectCrossmark()} className="">
+              {/* <Button onClick={() => getQrCode()}>Connect Wallet</Button> */}
+              <WalletDialog />
+              {/* <Button onClick={() => handleConnectCrossmark()} className="">
                 Crossmark
-              </Button>
+              </Button> */}
               <Button onClick={() => handleConnectGem()} className="hidden">
                 Gem wallet
               </Button>
@@ -171,3 +188,49 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const WALLET_LIST = [
+  { name: 'First ledger', icon: <FirstLedger /> },
+  { name: 'Xaman wallet', icon: <Xaman /> },
+  { name: 'Atomic wallet', icon: <Atomic /> },
+  { name: 'Crossmark', icon: <Crossmark /> },
+  { name: 'Exodus wallet', icon: <Exodus /> },
+  { name: 'Gatehub', icon: <Gatehub /> },
+  { name: 'Bitfrost', icon: <Bitfrost /> },
+  { name: 'Edge wallet', icon: <Edge /> },
+];
+
+const WalletDialog = () => {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button>Connect Wallet</Button>
+      </DialogTrigger>
+      <DialogContent className="flex w-full flex-col gap-8 rounded-3xl px-6 pt-6 max-sm:h-[38.5rem] max-sm:w-4/5 sm:max-w-[47.5rem] sm:gap-[3.5rem] sm:rounded-[2.5rem] sm:px-[2.69rem] sm:pt-8 [&>button]:right-[2.69rem] [&>button]:top-6 sm:[&>button]:top-7 [&>button_svg]:size-6 sm:[&>button_svg]:size-8">
+        <DialogHeader className="max-sm:text-left">
+          <DialogTitle className="text-xl leading-[1.38rem] sm:text-[1.75rem]">
+            Select Wallet
+          </DialogTitle>
+          <DialogDescription className="sr-only">
+            Select your wallet to connect to the app.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-3 overflow-auto rounded-[1.25rem] bg-[var(--color-off-white)] p-3 dark:bg-[var(--color-bg)] max-sm:h-full max-sm:max-h-[32rem] sm:grid-cols-2 sm:gap-7 sm:rounded-[2rem] sm:p-5">
+          {WALLET_LIST.map(item => (
+            <button
+              key={item.name}
+              className="flex items-center gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] bg-[#FFFFFFF9] p-[1.13rem] dark:bg-[var(--color-lambo-black)] sm:p-7"
+            >
+              <div className="rounded-xl border p-2 dark:border-[var(--color-stroke)]">
+                {item.icon}
+              </div>
+              <p className="text-lg text-[#505050] dark:text-white sm:text-2xl sm:leading-[1.38rem]">
+                {item.name}
+              </p>
+            </button>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
