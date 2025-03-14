@@ -9,7 +9,6 @@ import { SetStateAction, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
-// import WalletScanDrawer from '@/components/walletScanDrawer';
 import { isInstalled, getPublicKey, signMessage } from '@gemwallet/api';
 import sdk from '@crossmarkio/sdk';
 import {
@@ -23,7 +22,6 @@ import {
 import FirstLedger from './components/icons/first-ledger';
 import Xaman from './components/icons/xaman';
 import Crossmark from './components/icons/crossmark';
-
 import WalletScanDrawer from '@/components/walletScanDrawer';
 
 const Navbar = () => {
@@ -67,6 +65,7 @@ const Navbar = () => {
                         return;
                       }
                       appContext.setWalletAddress(address);
+                      appContext.setPlatform('gem');
                       setCookie('walley', token, { path: '/' });
                     });
                 }
@@ -107,6 +106,7 @@ const Navbar = () => {
     if (checkSignJson.hasOwnProperty('token')) {
       await appContext.loginUser(checkSignJson.xrpAddress, 'crossmark');
       appContext.setWalletAddress(checkSignJson.xrpAddress);
+      appContext.setPlatform('crossmark');
       setCookie('walley', checkSignJson.token, { path: '/' });
     }
   };
@@ -128,16 +128,12 @@ const Navbar = () => {
           ) : (
             <>
               {' '}
-              {/* <Button onClick={() => getQrCode()}>Connect Wallet</Button> */}
               <WalletDialog
                 setDrawerOpen={setDrawerOpen}
                 setQrcode={setQrcode}
                 connectCrossMark={handleConnectCrossmark}
                 setJumpLink={setJumpLink}
               />
-              {/* <Button onClick={() => handleConnectCrossmark()} className="">
-                Crossmark
-              </Button> */}
               <Button onClick={() => handleConnectGem()} className="hidden">
                 Gem wallet
               </Button>
@@ -195,6 +191,7 @@ const WalletDialog = (props: {
         const checkSignJson = await checkSign.json();
         await appContext.loginUser(checkSignJson.xrpAddress, 'xaman');
         appContext.setWalletAddress(checkSignJson.xrpAddress);
+        appContext.setPlatform('xaman');
         setCookie('walley', checkSignJson.token, { path: '/' });
         setDrawerOpen(false);
       }
@@ -208,7 +205,6 @@ const WalletDialog = (props: {
       func: () => console.log('xaman'),
     },
     { name: 'Xaman wallet', icon: <Xaman />, func: () => getQrCode() },
-
     {
       name: 'Crossmark',
       icon: <Crossmark />,

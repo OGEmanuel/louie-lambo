@@ -38,6 +38,8 @@ export const AppContext = createContext<AppContextInterface>({
   setActiveMine: () => {},
   xrpBalance: 0,
   ref: null,
+  platform: null,
+  setPlatform: () => {},
 });
 
 export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -56,6 +58,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeStake, setActiveStake] = useState<StakeType>();
   const [activeMine, setActiveMine] = useState<MineType>();
   const [referrer, setReferrer] = useState<string>('');
+  const [platform, setPlatform] = useState<string | null>(null);
 
   const [cookies] = useCookies(['walley']);
   const params = useSearchParams();
@@ -352,6 +355,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         createStakeRecord,
         setSuccess: handleSuccess,
         ref: referrer,
+        platform,
+        setPlatform,
       }}
     >
       {children}

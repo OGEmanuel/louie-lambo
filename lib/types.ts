@@ -27,6 +27,8 @@ export interface AppContextInterface {
   ) => void;
   createMineRecord: (address: string, amount: number, duration: number) => void;
   setActiveMine: (mine: MineType) => void;
+  platform: string | null;
+  setPlatform: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export type StakeType = {
