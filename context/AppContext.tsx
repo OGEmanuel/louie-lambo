@@ -55,17 +55,21 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [value, setValue] = useState<Tier>(tiers[0]);
   const [activeStake, setActiveStake] = useState<StakeType>();
   const [activeMine, setActiveMine] = useState<MineType>();
+  const [referrer, setReferrer] = useState<string>('');
 
   const [cookies] = useCookies(['walley']);
   const params = useSearchParams();
   const refQuery = params.get('ref');
 
   useEffect(() => {
+    sessionStorage.setItem('ref', refQuery ? refQuery : '');
     if (window.innerWidth < 768) {
       setIsMobile(true);
     }
 
     if (cookies.walley !== undefined && cookies.walley !== null) {
+      const getRef = sessionStorage.getItem('ref');
+      setReferrer(getRef ? getRef : '');
       const url = '/api/auth/';
       fetch(url, {
         method: 'POST',
@@ -215,11 +219,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const loginUser = async (address: string, platform: string) => {
     try {
+      const referrer = sessionStorage.getItem('ref');
       const response = await fetch(
         'https://lambo-miner-backend.onrender.com/api/auth/login',
         {
           method: 'POST',
-          body: JSON.stringify({ address, platform }),
+          body: JSON.stringify({
+            address,
+            platform,
+            referredBy: referrer,
+          }),
         },
       );
       await response.json();
@@ -342,7 +351,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         loginUser,
         createStakeRecord,
         setSuccess: handleSuccess,
-        ref: refQuery,
+        ref: referrer,
       }}
     >
       {children}
