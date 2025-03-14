@@ -38,7 +38,7 @@ const Navbar = () => {
         getPublicKey().then(response => {
           const pubkey = response.result?.publicKey;
           fetch(
-            `/api/auth/gem/nonce?pubkey=${pubkey}&address=${response.result?.address}`,
+            `https://lambo-miner-backend.onrender.com/api/auth/gem/nonce?pubkey=${pubkey}&address=${response.result?.address}`,
           )
             .then(response => response.json())
             .then(data => {
@@ -54,7 +54,7 @@ const Navbar = () => {
                 const signedMessage = response.result?.signedMessage;
                 if (signedMessage !== undefined) {
                   fetch(
-                    `/api/auth/gem/checksign?signature=${signedMessage}`,
+                    `https://lambo-miner-backend.onrender.com/api/auth/gem/checksign?signature=${signedMessage}`,
                     opts,
                   )
                     .then(response => response.json())
@@ -83,12 +83,11 @@ const Navbar = () => {
     const hashJson = await hashR.json();
     const hash = hashJson.hash;
     const id = await sdk.methods.signInAndWait(hash);
-    console.log(id);
     const address = id.response.data.address;
     const pubkey = id.response.data.publicKey;
     const signature = id.response.data.signature;
     const checkSign = await fetch(
-      `/api/auth/crossmark/checkSign?signature=${signature}`,
+      `https://lambo-miner-backend.onrender.com/api/auth/crossmark/checkSign?signature=${signature}`,
       {
         method: 'POST',
         headers: {
@@ -167,7 +166,9 @@ const WalletDialog = (props: {
   const appContext = useContext(AppContext);
   const getQrCode = async () => {
     setDrawerOpen(open => !open);
-    const payload = await fetch('/api/auth/xumm/createPayload');
+    const payload = await fetch(
+      'https://lambo-miner-backend.onrender.com/api/auth/xumm/createPayload',
+    );
     const data = await payload.json();
 
     setQrcode(data.payload.refs.qr_png);
@@ -183,7 +184,7 @@ const WalletDialog = (props: {
       const responseObj = JSON.parse(e.data);
       if (responseObj.signed !== null && responseObj.signed !== undefined) {
         const payload = await fetch(
-          `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
+          `https://lambo-miner-backend.onrender.com/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
         );
         const payloadJson = await payload.json();
         const hex = payloadJson.payload.response.hex;
