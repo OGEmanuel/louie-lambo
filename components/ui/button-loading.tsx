@@ -6,16 +6,18 @@ import React, { ReactNode } from 'react';
 interface ButtonLoadingProps extends ButtonProps {
   isPending: boolean;
   label: string | ReactNode;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export const ButtonLoading = (props: ButtonLoadingProps) => {
-  const { isPending, label, variant, type, className, disabled } = props;
+  const { isPending, label, variant, type, className, disabled, onClick } =
+    props;
 
   return (
     <Button
       type={type}
       variant={variant ? variant : 'default'}
+      onClick={onClick}
       className={cn(
         'grid-stack max-lg: grid w-max gap-0 overflow-hidden max-lg:text-lg max-lg:leading-[23.44px] max-md:h-[60px] max-md:py-4 max-sm:w-full',
         className,

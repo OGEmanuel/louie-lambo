@@ -65,11 +65,14 @@ const TierSelector = () => {
           </span>
           <ArrowDown />
         </PopoverTrigger>
-        <PopoverContent className="w-full rounded-[18px] p-[42px] dark:bg-[var(--color-lambo-black)]">
+        <PopoverContent
+          align="center"
+          className="w-full rounded-[18px] p-4 dark:bg-[var(--color-lambo-black)] md:p-[2.63rem]"
+        >
           <RadioGroup
             defaultValue={appContext.userTier.name}
             value={appContext.userTier.name}
-            className="grid grid-cols-2 gap-[42px]"
+            className="grid gap-6 md:grid-cols-2 md:gap-[2.63rem]"
           >
             <TierItem
               tier="T1 Max"
