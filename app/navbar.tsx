@@ -11,7 +11,7 @@ import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
 // import WalletScanDrawer from '@/components/walletScanDrawer';
 import { isInstalled, getPublicKey, signMessage } from '@gemwallet/api';
-// import sdk from '@crossmarkio/sdk';
+import sdk from '@crossmarkio/sdk';
 import {
   Dialog,
   DialogContent,
@@ -22,12 +22,8 @@ import {
 } from '@/components/ui/dialog';
 import FirstLedger from './components/icons/first-ledger';
 import Xaman from './components/icons/xaman';
-import Atomic from './components/icons/atomic';
 import Crossmark from './components/icons/crossmark';
-import Exodus from './components/icons/exodus';
-import Gatehub from './components/icons/gatehub';
-import Bitfrost from './components/icons/bitfrost';
-import Edge from './components/icons/edge';
+
 import WalletScanDrawer from '@/components/walletScanDrawer';
 
 const Navbar = () => {
@@ -81,39 +77,39 @@ const Navbar = () => {
     });
   };
 
-  // const handleConnectCrossmark = async () => {
-  //   //sign in first, then generate nonce
-  //   const hashUrl = '/api/auth/crossmark/hash';
-  //   const hashR = await fetch(hashUrl);
-  //   const hashJson = await hashR.json();
-  //   const hash = hashJson.hash;
-  //   const id = await sdk.methods.signInAndWait(hash);
-  //   console.log(id);
-  //   const address = id.response.data.address;
-  //   const pubkey = id.response.data.publicKey;
-  //   const signature = id.response.data.signature;
-  //   const checkSign = await fetch(
-  //     `/api/auth/crossmark/checkSign?signature=${signature}`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${hash}`,
-  //       },
-  //       body: JSON.stringify({
-  //         pubkey: pubkey,
-  //         address: address,
-  //       }),
-  //     },
-  //   );
+  const handleConnectCrossmark = async () => {
+    //sign in first, then generate nonce
+    const hashUrl = '/api/auth/crossmark/hash';
+    const hashR = await fetch(hashUrl);
+    const hashJson = await hashR.json();
+    const hash = hashJson.hash;
+    const id = await sdk.methods.signInAndWait(hash);
+    console.log(id);
+    const address = id.response.data.address;
+    const pubkey = id.response.data.publicKey;
+    const signature = id.response.data.signature;
+    const checkSign = await fetch(
+      `/api/auth/crossmark/checkSign?signature=${signature}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${hash}`,
+        },
+        body: JSON.stringify({
+          pubkey: pubkey,
+          address: address,
+        }),
+      },
+    );
 
-  //   const checkSignJson = await checkSign.json();
-  //   if (checkSignJson.hasOwnProperty('token')) {
-  //     await appContext.loginUser(checkSignJson.xrpAddress, 'crossmark');
-  //     appContext.setWalletAddress(checkSignJson.xrpAddress);
-  //     setCookie('walley', checkSignJson.token, { path: '/' });
-  //   }
-  // };
+    const checkSignJson = await checkSign.json();
+    if (checkSignJson.hasOwnProperty('token')) {
+      await appContext.loginUser(checkSignJson.xrpAddress, 'crossmark');
+      appContext.setWalletAddress(checkSignJson.xrpAddress);
+      setCookie('walley', checkSignJson.token, { path: '/' });
+    }
+  };
 
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
@@ -136,6 +132,7 @@ const Navbar = () => {
               <WalletDialog
                 setDrawerOpen={setDrawerOpen}
                 setQrcode={setQrcode}
+                connectCrossMark={handleConnectCrossmark}
                 setJumpLink={setJumpLink}
               />
               {/* <Button onClick={() => handleConnectCrossmark()} className="">
@@ -166,6 +163,7 @@ const WalletDialog = (props: {
   setDrawerOpen: React.Dispatch<SetStateAction<boolean>>;
   setQrcode: React.Dispatch<SetStateAction<string>>;
   setJumpLink: React.Dispatch<SetStateAction<string>>;
+  connectCrossMark: () => void;
 }) => {
   const { setDrawerOpen, setQrcode, setJumpLink } = props;
   const [, setCookie] = useCookies(['walley']);
@@ -210,24 +208,12 @@ const WalletDialog = (props: {
       func: () => console.log('xaman'),
     },
     { name: 'Xaman wallet', icon: <Xaman />, func: () => getQrCode() },
-    {
-      name: 'Atomic wallet',
-      icon: <Atomic />,
-      func: () => console.log('xaman'),
-    },
+
     {
       name: 'Crossmark',
       icon: <Crossmark />,
-      func: () => console.log('xaman'),
+      func: () => props.connectCrossMark(),
     },
-    {
-      name: 'Exodus wallet',
-      icon: <Exodus />,
-      func: () => console.log('xaman'),
-    },
-    { name: 'Gatehub', icon: <Gatehub />, func: () => console.log('xaman') },
-    { name: 'Bitfrost', icon: <Bitfrost />, func: () => console.log('xaman') },
-    { name: 'Edge wallet', icon: <Edge />, func: () => console.log('xaman') },
   ];
 
   return (
