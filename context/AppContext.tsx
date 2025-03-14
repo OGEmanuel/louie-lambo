@@ -35,6 +35,7 @@ export const AppContext = createContext<AppContextInterface>({
   loginUser: () => {},
   createStakeRecord: () => {},
   createMineRecord: () => {},
+  setActiveMine: () => {},
   xrpBalance: 0,
   ref: null,
 });
@@ -65,7 +66,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (cookies.walley !== undefined && cookies.walley !== null) {
-      const url = '/api/auth';
+      const url = '/api/auth/';
       fetch(url, {
         method: 'POST',
         headers: {
@@ -117,13 +118,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const unStake = async (amount: number) => {
     try {
-      const payload = await fetch('/api/stake/unstake', {
-        method: 'POST',
-        body: JSON.stringify({
-          address: walletAddress,
-          amount: amount,
-        }),
-      });
+      const payload = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/stake/unstake',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            address: walletAddress,
+            amount: amount,
+          }),
+        },
+      );
       await payload.json();
       setActiveStake(undefined);
       await handleSuccess('successfully unstaked tokens');
@@ -136,13 +140,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const unMine = async (amount: number) => {
     try {
-      const payload = await fetch('/api/mine/withdraw', {
-        method: 'POST',
-        body: JSON.stringify({
-          address: walletAddress,
-          amount: amount,
-        }),
-      });
+      const payload = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/mine/withdraw',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            address: walletAddress,
+            amount: amount,
+          }),
+        },
+      );
       await payload.json();
       setActiveStake(undefined);
       await handleSuccess('successfully unstaked tokens');
@@ -172,9 +179,15 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const handleSetActiveMine = (mine: MineType) => {
+    setActiveMine(mine);
+  };
+
   const getActiveStake = async () => {
     try {
-      const response = await fetch(`/api/stake?address=${walletAddress}`);
+      const response = await fetch(
+        `https://lambo-miner-backend.onrender.com/api/stake?address=${walletAddress}`,
+      );
       const data: { stake: StakeType } = await response.json();
 
       setActiveStake(data.stake);
@@ -187,7 +200,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getActiveMine = async () => {
     try {
-      const response = await fetch(`/api/mine?address=${walletAddress}`);
+      const response = await fetch(
+        `https://lambo-miner-backend.onrender.com/api/mine?address=${walletAddress}`,
+      );
       const data: { mine: MineType } = await response.json();
 
       setActiveMine(data.mine);
@@ -200,10 +215,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const loginUser = async (address: string, platform: string) => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        body: JSON.stringify({ address, platform }),
-      });
+      const response = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/auth/login',
+        {
+          method: 'POST',
+          body: JSON.stringify({ address, platform }),
+        },
+      );
       await response.json();
       handleSuccess('Login Successful');
     } catch (error) {
@@ -219,10 +237,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     duration: number,
   ) => {
     try {
-      const response = await fetch('/api/mine/record', {
-        method: 'POST',
-        body: JSON.stringify({ address, amount, duration, tier: value.name }),
-      });
+      const response = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/mine/record',
+        {
+          method: 'POST',
+          body: JSON.stringify({ address, amount, duration, tier: value.name }),
+        },
+      );
       const data = await response.json();
       setActiveMine(data.mine);
       const newTokenBalance = Number(xrpBalance) - amount;
@@ -241,10 +262,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     duration: number,
   ) => {
     try {
-      const response = await fetch('/api/stake/record', {
-        method: 'POST',
-        body: JSON.stringify({ address, amount, duration, tier: value.name }),
-      });
+      const response = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/stake/record',
+        {
+          method: 'POST',
+          body: JSON.stringify({ address, amount, duration, tier: value.name }),
+        },
+      );
       const data = await response.json();
       setActiveStake(data.stake);
       const newTokenBalance = Number(tokenBalance) - amount;
@@ -259,7 +283,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchOverview = async () => {
     try {
-      const response = await fetch('/api/users/overview');
+      const response = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/users/overview',
+      );
       const data: {
         poolXrpBalance: string;
         stakedWallets: number;
@@ -308,6 +334,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         activeMine,
         createMineRecord,
         unMine,
+        setActiveMine: handleSetActiveMine,
         xrpBalance,
         tokenBalance,
         activeStake,

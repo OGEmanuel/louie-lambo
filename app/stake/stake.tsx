@@ -75,15 +75,18 @@ const StakeForm = () => {
     try {
       setIsloading(true);
       setDrawerOpen(open => !open);
-      const payload = await fetch('/api/stake/create', {
-        method: 'POST',
-        body: JSON.stringify({
-          address: appContext.walletAddress,
-          amount: amount,
-          duration: duration,
-          tier: appContext.userTier.name,
-        }),
-      });
+      const payload = await fetch(
+        'https://lambo-miner-backend.onrender.com/api/stake/create',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            address: appContext.walletAddress,
+            amount: amount,
+            duration: duration,
+            tier: appContext.userTier.name,
+          }),
+        },
+      );
       const data = await payload.json();
 
       setQrcode(data.payload.refs.qr_png);
@@ -99,11 +102,13 @@ const StakeForm = () => {
         const responseObj = JSON.parse(e.data);
         if (responseObj.signed !== null && responseObj.signed !== undefined) {
           const payload = await fetch(
-            `/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
+            `https://lambo-miner-backend.onrender.com/api/auth/xumm/getPayload?payloadId=${responseObj.payload_uuidv4}`,
           );
           const payloadJson = await payload.json();
           const hex = payloadJson.payload.response.hex;
-          const checkSign = await fetch(`/api/auth/xumm/checkSign?hex=${hex}`);
+          const checkSign = await fetch(
+            `https://lambo-miner-backend.onrender.com/api/auth/xumm/checkSign?hex=${hex}`,
+          );
           await checkSign.json();
           await appContext.createStakeRecord(
             appContext.walletAddress,

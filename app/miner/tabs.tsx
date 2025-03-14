@@ -17,7 +17,10 @@ import MinerSuccess from '../components/icons/miner-success';
 import Apy from '../components/icons/apy';
 import MinerSuccessDark from '../components/icons/miner-success-dark';
 import { AppContext } from '@/context/AppContext';
-import { calculateStakeRewards } from '@/lib/utils';
+import {
+  calculateStakeRewards,
+  getApyBasedOnTierAndDuration,
+} from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -32,6 +35,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { ButtonLoading } from '@/components/ui/button-loading';
+import { MineType } from '@/lib/types';
 
 const BASE_URL = 'https://lambo-miner-backend.onrender.com/api';
 
@@ -66,6 +70,7 @@ export default MinerTabs;
 export const Summary = () => {
   const appContext = useContext(AppContext);
   const [open, setOpen] = useState(false);
+  const [openRemine, setOpenRemine] = useState(false);
 
   const { mutate, isPending } = useMutation({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,14 +81,16 @@ export const Summary = () => {
         },
       });
     },
-    onSuccess: () => {
-      toast.success(appContext.success, {
+    onSuccess: async data => {
+      toast.success('Successfully claimed rewards', {
         position: 'bottom-right',
       });
+      appContext.setActiveMine(data.data.mine as MineType);
+
       setOpen(false);
     },
     onError: () => {
-      toast.error(appContext.error, {
+      toast.error('Error claiming rewards', {
         position: 'bottom-right',
       });
     },
@@ -97,14 +104,15 @@ export const Summary = () => {
         },
       });
     },
-    onSuccess: () => {
-      toast.success(appContext.success, {
+    onSuccess: async data => {
+      toast.success('Successfully restaked xrp', {
         position: 'bottom-right',
       });
-      setOpen(false);
+      appContext.setActiveMine(data.data.mine as MineType);
+      setOpenRemine(false);
     },
     onError: () => {
-      toast.error(appContext.error, {
+      toast.error('Error restaking xrp', {
         position: 'bottom-right',
       });
     },
@@ -124,9 +132,12 @@ export const Summary = () => {
             <p className="text-[28px] leading-[36.46px]">
               {calculateStakeRewards(
                 appContext.activeMine?.tokensAmount,
-                175,
+                getApyBasedOnTierAndDuration(
+                  appContext.activeMine.tierData,
+                  appContext.activeMine.stakingDurationInDays,
+                ),
                 appContext.activeMine?.stakingDurationInDays,
-                new Date(appContext.activeMine.createdAt!),
+                new Date(appContext.activeMine.lastClaimDate!),
                 new Date(),
               ).toFixed(5)}{' '}
               XRP
@@ -137,8 +148,8 @@ export const Summary = () => {
               title="Re-mine"
               mutate={mutateReMine}
               isPending={isPendingReMine}
-              open={open}
-              setOpen={setOpen}
+              open={openRemine}
+              setOpen={setOpenRemine}
             >
               <Button
                 variant={'outline'}

@@ -26,6 +26,7 @@ export interface AppContextInterface {
     duration: number,
   ) => void;
   createMineRecord: (address: string, amount: number, duration: number) => void;
+  setActiveMine: (mine: MineType) => void;
 }
 
 export type StakeType = {
@@ -44,8 +45,23 @@ export type MineType = {
   tokensAmount: number;
   stakingDurationInDays: number;
   expectedAmount: number;
+  lastClaimDate: string;
   rewardsEarned: number;
+  tierData: TierI;
   createdAt: string;
   unlockDate: Date;
   status: string;
 };
+
+export interface TierI {
+  name: string;
+  description: string;
+  minimumTokensHeld: number;
+  maximumTokensHeld: number;
+  oneWeekApy: number;
+  twoWeeksApy: number;
+  oneMonthApy: number;
+  threeMonthsApy: number;
+  sixMonthsApy: number;
+  maxXrpMineable: number;
+}

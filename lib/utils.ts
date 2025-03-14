@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { TierI } from './types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -66,3 +67,20 @@ export function calculateStakeRewards(
   const earnedRewards = (totalRewardPercentage / 100) * stake;
   return earnedRewards;
 }
+
+export const getApyBasedOnTierAndDuration = (tier: TierI, duration: number) => {
+  const perc: number =
+    duration === 7
+      ? tier.oneWeekApy
+      : duration == 14
+        ? tier.twoWeeksApy
+        : duration == 30
+          ? tier.oneMonthApy
+          : duration == 60
+            ? tier.threeMonthsApy
+            : duration == 90
+              ? tier.sixMonthsApy
+              : 0;
+
+  return perc;
+};
