@@ -1,19 +1,11 @@
 'use client';
 
-import {
-  LAMBO_TOKEN_CODE,
-  LAMBO_TOKEN_ISSUER,
-  Tier,
-  tiers,
-  XRP_MAINNET_RPC,
-} from '@/lib/constants';
+import { Tier, tiers } from '@/lib/constants';
 import { AppContextInterface, MineType, StakeType } from '@/lib/types';
-import { getTokenBalance } from '@/lib/xrp/helpers';
 import { useSearchParams } from 'next/navigation';
 import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
-import xrpl from 'xrpl';
 
 export const AppContext = createContext<AppContextInterface>({
   error: '',
@@ -92,14 +84,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const balance = await getXrpBalance(walletAddress);
-      setXrpBalance(balance);
-      const tbalance = await getTokenBalance(
-        walletAddress,
-        LAMBO_TOKEN_ISSUER,
-        LAMBO_TOKEN_CODE,
-      );
-      setTokenBalance(Number(tbalance).toFixed(1));
       await fetchOverview();
       await getActiveStake();
       await getActiveMine();
@@ -167,24 +151,24 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const getXrpBalance = async (address: string): Promise<number> => {
-    const xrpClient = new xrpl.Client(XRP_MAINNET_RPC);
+  // const getXrpBalance = async (address: string): Promise<number> => {
+  //   const xrpClient = new xrpl.Client(XRP_MAINNET_RPC);
 
-    try {
-      await xrpClient.connect();
+  //   try {
+  //     await xrpClient.connect();
 
-      const my_balance = await xrpClient.getXrpBalance(address);
-      const balanceXrp = my_balance;
+  //     const my_balance = await xrpClient.getXrpBalance(address);
+  //     const balanceXrp = my_balance;
 
-      return Number(balanceXrp.toFixed(1));
-    } catch (error) {
-      console.error('Error fetching balance:', error);
-      handleError("Couldn't fetch balance");
-      throw new Error('Failed to fetch XRP balance');
-    } finally {
-      await xrpClient?.disconnect();
-    }
-  };
+  //     return Number(balanceXrp.toFixed(1));
+  //   } catch (error) {
+  //     console.error('Error fetching balance:', error);
+  //     handleError("Couldn't fetch balance");
+  //     throw new Error('Failed to fetch XRP balance');
+  //   } finally {
+  //     await xrpClient?.disconnect();
+  //   }
+  // };
 
   const handleSetActiveMine = (mine: MineType) => {
     setActiveMine(mine);
@@ -302,11 +286,15 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         poolXrpBalance: string;
         stakedWallets: number;
         xrpRewardsDistributed: number;
+        userBalance: number;
+        tokenBalance: string;
       } = await response.json();
 
       setPoolXrpBalance(data.poolXrpBalance);
       setStakedWallets(data.stakedWallets);
       setXrpRewardsDistributed(data.xrpRewardsDistributed);
+      setXrpBalance(data.userBalance);
+      setTokenBalance(data.tokenBalance);
     } catch (error) {
       console.error('Error fetching overview:', error);
       handleError('Error fetching overview');
