@@ -161,7 +161,6 @@ const StakeForm = () => {
                 field={field}
                 options={[
                   { label: '7 days', value: '7-days' },
-                  { label: '14 days', value: '14-days' },
                   { label: '1 month', value: '1-month' },
                   { label: '3 months', value: '3-months' },
                   { label: '6 months', value: '6-months' },
