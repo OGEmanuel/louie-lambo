@@ -73,7 +73,7 @@ export const Referral = () => {
           <p className="text-2xl leading-[31.25px] text-[var(--color-black)]">
             Refer & Earn
           </p>
-          <p className="leading-[20.83px] text-[var(--color-gray)] dark:text-white">
+          <p className="font-bold leading-[20.83px] text-[var(--color-gray)] dark:text-white">
             Coming Soon...
           </p>
         </div>
