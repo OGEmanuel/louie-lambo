@@ -83,14 +83,14 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   useEffect(() => {
-    const fetchBalance = async () => {
-      await fetchOverview();
+    const fetchBalance = async (address: string) => {
+      await fetchOverview(address);
       await getActiveStake();
       await getActiveMine();
     };
 
     if (walletAddress) {
-      fetchBalance();
+      fetchBalance(walletAddress);
     }
   }, [walletAddress]);
 
@@ -277,10 +277,10 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const fetchOverview = async () => {
+  const fetchOverview = async (address: string) => {
     try {
       const response = await fetch(
-        'https://lambo-miner-backend.onrender.com/api/users/overview',
+        `https://lambo-miner-backend.onrender.com/api/users/overview?address=${address}`,
       );
       const data: {
         poolXrpBalance: string;
@@ -293,8 +293,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setPoolXrpBalance(data.poolXrpBalance);
       setStakedWallets(data.stakedWallets);
       setXrpRewardsDistributed(data.xrpRewardsDistributed);
-      setXrpBalance(data.userBalance);
-      setTokenBalance(data.tokenBalance);
+      setXrpBalance(Number(data.userBalance.toFixed(2)));
+      setTokenBalance(Number(data.tokenBalance).toFixed(2));
     } catch (error) {
       console.error('Error fetching overview:', error);
       handleError('Error fetching overview');
