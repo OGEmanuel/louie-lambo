@@ -10,26 +10,26 @@ import { Timer } from '@/components/Timer';
 import { isUnlockDateEarly } from '@/lib/utils';
 
 const StakeTabs = () => {
-  const [, setValue] = useState('stake');
+  const [, setValue] = useState('lock');
   const appContext = useContext(AppContext);
 
   return (
     <Tabs
       onValueChange={setValue}
-      value={appContext.activeStake ? 'unstake' : 'stake'}
+      value={appContext.activeStake ? 'unlock' : 'lock'}
       className=""
     >
       <TabsList className="">
-        <TabsTrigger value="stake">Stake</TabsTrigger>
+        <TabsTrigger value="lock">Lock</TabsTrigger>
         {appContext.activeStake && (
-          <TabsTrigger value="unstake">Unstake</TabsTrigger>
+          <TabsTrigger value="unlock">Unlock</TabsTrigger>
         )}
       </TabsList>
-      <TabsContent value="stake" className="w-full">
+      <TabsContent value="lock" className="w-full">
         <Stake />
       </TabsContent>
       {appContext.activeStake && (
-        <TabsContent value="unstake" className="w-full">
+        <TabsContent value="unlock" className="w-full">
           <UnStake />
         </TabsContent>
       )}
@@ -59,7 +59,7 @@ export const Summary = (props: { tab: string }) => {
           </p>
         </div>
 
-        {props.tab === 'stake' && (
+        {props.tab === 'lock' && (
           <>
             <hr />
             <div className="flex flex-col gap-3">

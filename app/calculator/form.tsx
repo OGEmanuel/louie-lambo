@@ -114,7 +114,7 @@ const CalculatorForm = () => {
 
   function calculatePercentage(value: number, percentage: number) {
     const calculatedValue = (value * percentage) / 100;
-    setCalculatedValue(calculatedValue + value);
+    setCalculatedValue(calculatedValue);
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -189,7 +189,7 @@ const CalculatorForm = () => {
           )}
         />
         <p className="text-[var(--color-black)]">
-          Total rewards: {calculatedValue} LAMBO
+          Total rewards: {calculatedValue} XRP
         </p>
         <ButtonLoading
           className="w-full"

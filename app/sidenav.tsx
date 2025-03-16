@@ -36,7 +36,7 @@ const Sidenav = () => {
           <NavLink href="/stake">Your $LAMBO Awaits</NavLink>
         </li>
         <li>
-          <NavLink href="/miner">Let's Ride</NavLink>
+          <NavLink href="/miner">{"Let's Ride"}</NavLink>
         </li>
         {/* <li>
           <NavLink href="/portfolio">My Portfolio</NavLink>

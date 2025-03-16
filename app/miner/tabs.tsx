@@ -155,7 +155,7 @@ export const Summary = () => {
                 variant={'outline'}
                 className="basis-full border-[var(--color-lambo-green)] max-xl:h-[49px]"
               >
-                Re-mine
+                Re-lock
               </Button>
             </WarningModal>
             <WarningModal

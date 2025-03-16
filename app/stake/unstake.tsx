@@ -38,7 +38,7 @@ const UnStake = () => {
   return (
     <div className="flex w-full gap-8 max-xl:flex-col">
       <UnstakeForm />
-      <Summary tab="unstake" />
+      <Summary tab="unlock" />
     </div>
   );
 };
@@ -91,7 +91,7 @@ const UnstakeForm = () => {
           className="w-full"
           variant={'secondary'}
           type="submit"
-          label="Unstake LAMBO"
+          label="Unlock LAMBO"
           isPending={isLoading}
           disabled={isLoading}
         />

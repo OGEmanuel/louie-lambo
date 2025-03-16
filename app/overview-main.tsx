@@ -2,8 +2,8 @@
 
 import { ReactNode, useContext, useState } from 'react';
 import RibbonFirst from './components/icons/ribbon-first';
-import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+// import Link from 'next/link';
+// import { ChevronRight } from 'lucide-react';
 import {
   Popover,
   PopoverContent,

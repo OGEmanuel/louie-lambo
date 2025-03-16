@@ -183,7 +183,7 @@ const StakeForm = () => {
             className="w-full"
             variant={'secondary'}
             type="submit"
-            label="Stake LAMBO"
+            label="lock LAMBO"
             isPending={isLoading}
             disabled={appContext.activeStake?.status == 'ACTIVE' || isLoading}
           />
@@ -195,7 +195,7 @@ const StakeForm = () => {
           />
         </form>
       </Form>
-      <Summary tab="stake" />
+      <Summary tab="lock" />
     </>
   );
 };
