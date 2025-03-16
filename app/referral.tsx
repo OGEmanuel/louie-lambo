@@ -10,11 +10,13 @@
 // } from '@/components/ui/form';
 // import { Input } from '@/components/ui/input';
 import { AppContext } from '@/context/AppContext';
+import Image from 'next/image';
 // import { zodResolver } from '@hookform/resolvers/zod';
 // import { Copy } from 'lucide-react';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import comingSoon from '@/public/images/coming-soon.png';
 // import { useForm } from 'react-hook-form';
 // import { z } from 'zod';
 
@@ -68,14 +70,20 @@ export const Referral = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-[46px]">
+      <div className="flex flex-col gap-[2.63rem]">
         <div className="flex flex-col gap-[7px] text-center">
           <p className="text-2xl leading-[31.25px] text-[var(--color-black)]">
             Refer & Earn
           </p>
-          <p className="font-bold leading-[20.83px] text-[var(--color-gray)] dark:text-white">
-            Coming Soon...
+          <p className="leading-[100%] text-[var(--color-gray)] dark:text-white">
+            Earn free XRP bonus from referrals
           </p>
+        </div>
+        <div className="flex flex-col items-center gap-[0.89rem]">
+          <p className="text-xl leading-[100%] text-[var(--text-black)]">
+            Coming soon!
+          </p>
+          <Image src={comingSoon} alt="coming soon" />
         </div>
       </div>
     </>

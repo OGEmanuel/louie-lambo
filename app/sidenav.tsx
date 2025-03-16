@@ -33,10 +33,10 @@ const Sidenav = () => {
           <NavLink href="/">Overview</NavLink>
         </li>
         <li>
-          <NavLink href="/stake">Stake</NavLink>
+          <NavLink href="/stake">Your $LAMBO Awaits</NavLink>
         </li>
         <li>
-          <NavLink href="/miner">Miner</NavLink>
+          <NavLink href="/miner">Let's Ride</NavLink>
         </li>
         {/* <li>
           <NavLink href="/portfolio">My Portfolio</NavLink>
@@ -150,7 +150,7 @@ export const NavLink = (
       className={cn(
         'block text-nowrap rounded-xl p-4 text-[var(--color-black)] transition-all dark:text-[#8A8A8A]',
         pathname === props.href &&
-          'bg-[var(--color-off-white)] dark:bg-[#42434B] dark:text-[var(--color-lambo-green)]',
+          'bg-[var(--color-off-white)] font-bold dark:bg-[#42434B] dark:text-[var(--color-lambo-green)]',
       )}
     />
   );

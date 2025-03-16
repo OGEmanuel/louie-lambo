@@ -91,7 +91,7 @@ const CalculatorForm = () => {
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
-      duration: 'twoWeeks',
+      duration: 'oneWeek',
       tier: '0',
     },
   });
@@ -180,7 +180,6 @@ const CalculatorForm = () => {
               description={`Projected yield: APY ${getAPY(field.value)}%`}
               options={[
                 { label: '7 days', value: 'oneWeek' },
-                { label: '14 days', value: 'twoWeeks' },
                 { label: '1 month', value: 'oneMonth' },
                 { label: '3 months', value: 'threeMonths' },
                 { label: '6 months', value: 'sixMonths' },

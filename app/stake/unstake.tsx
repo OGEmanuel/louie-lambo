@@ -84,6 +84,7 @@ const UnstakeForm = () => {
             />
           )}
         />
+        <EarlyWithdrawal />
         <Separator className="my-4 bg-[var(--color-stroke)]" />
         <TransactionDetails />
         <ButtonLoading
@@ -94,7 +95,6 @@ const UnstakeForm = () => {
           isPending={isLoading}
           disabled={isLoading}
         />
-        <EarlyWithdrawal />
       </form>
     </Form>
   );

@@ -23,6 +23,11 @@ import FirstLedger from './components/icons/first-ledger';
 import Xaman from './components/icons/xaman';
 import Crossmark from './components/icons/crossmark';
 import WalletScanDrawer from '@/components/walletScanDrawer';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuSubTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const Navbar = () => {
   const [qrcode, setQrcode] = useState<string>('');
@@ -247,3 +252,18 @@ const WalletDialog = (props: {
     </Dialog>
   );
 };
+
+// const ProfileDropdown = () => {
+//   return (
+//     <DropdownMenu>
+//       <DropdownMenuSubTrigger>Open</DropdownMenuTrigger>
+//       <DropdownMenuContent>
+//         <DropdownMenuSeparator />
+//         <DropdownMenuItem>Profile</DropdownMenuItem>
+//         <DropdownMenuItem>Billing</DropdownMenuItem>
+//         <DropdownMenuItem>Team</DropdownMenuItem>
+//         <DropdownMenuItem>Subscription</DropdownMenuItem>
+//       </DropdownMenuContent>
+//     </DropdownMenu>
+//   );
+// };

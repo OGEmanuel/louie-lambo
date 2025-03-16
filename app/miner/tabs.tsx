@@ -125,7 +125,7 @@ export const Summary = () => {
           {' '}
           <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
             <div className="flex items-center gap-1 text-[var(--color-black)]">
-              <p className="leading-[20.83px]">XRP mined</p>
+              <p className="leading-[20.83px]">XRP Earned</p>
               <Apy className="lg:hidden" />
             </div>
 

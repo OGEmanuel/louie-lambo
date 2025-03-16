@@ -13,7 +13,7 @@ const HowItWorks = () => {
         className="rounded-xl border-none bg-[var(--color-bg)]"
       >
         <AccordionTrigger className="p-4 text-[var(--color-black)] hover:no-underline">
-          How Lambo Miner works
+          How to Earn XRP
         </AccordionTrigger>
         <AccordionContent className="p-4">
           <ul className="flex list-inside list-decimal flex-col gap-4">

@@ -76,7 +76,7 @@ export const Summary = (props: { tab: string }) => {
       <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[30.5px] pt-[48.25px] text-center font-medium">
         <div className="flex items-center gap-1">
           <p className="leading-[20.83px] text-[var(--color-black)]">
-            Max XRP Mineable
+            How much XRP you can pack in your trunk
           </p>
           <Apy className="lg:hidden" />
         </div>
@@ -104,8 +104,7 @@ export const Summary = (props: { tab: string }) => {
 export const EarlyWithdrawal = () => {
   return (
     <p className="rounded-lg bg-[var(--color-bg)] p-3 leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.23px]">
-      Early withdrawal will result in <span className="font-medium">50%</span>{' '}
-      loss of staked $LAMBO tokens
+      Recover all XRP you pack along for the ride. All XRP will be lost.
     </p>
   );
 };

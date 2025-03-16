@@ -20,27 +20,18 @@ import ArrowDown from './components/icons/arrow-down';
 import RibbonSelectMobile from './components/icons/ribbon-select-mobile';
 import { Separator } from '@/components/ui/separator';
 import { AppContext } from '@/context/AppContext';
+import Pooled from './components/icons/pooled';
+import Wallet from './components/icons/wallet';
+import Trophy from './components/icons/trophy';
 
 const OverviewMain = () => {
   return (
     <div className="flex flex-col gap-12 sm:gap-[61px] lg:max-xl:gap-6">
-      <div className="flex items-center justify-between max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
+      <div className="flex justify-between gap-6 max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
         <TierSelector />
         <Balance />
       </div>
       <div className="flex flex-col gap-[13px]">
-        <p className="items-center px-[10px] py-[10.5px] text-sm leading-[18.23px] text-[var(--color-black)] sm:text-[18px] sm:leading-[23.44px] md:gap-2 xl:flex">
-          Refer & earn: Earn additional{' '}
-          <span className="font-bold dark:text-white">XRP</span> upon all
-          referals.{' '}
-          <Link
-            href="/"
-            className="flex items-center font-semibold text-black dark:text-white"
-          >
-            Refer now
-            <ChevronRight className="h-6 w-6" />
-          </Link>
-        </p>
         <WalletSummary />
       </div>
     </div>
@@ -55,9 +46,9 @@ const TierSelector = () => {
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex flex-col gap-5 rounded-[18px] border border-green-400 p-4 sm:p-6">
+    <div className="flex flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
       <Popover onOpenChange={setOpen} open={open}>
-        <PopoverTrigger className="flex w-max items-center gap-[11px]">
+        <PopoverTrigger className="flex items-center gap-[11px]">
           <span className="flex items-center gap-[14px] text-[18px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
             <RibbonFirst className="hidden sm:block" />
             <RibbonSelectMobile className="sm:hidden" />
@@ -105,7 +96,7 @@ const TierSelector = () => {
           </RadioGroup>
         </PopoverContent>
       </Popover>
-      <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-gray)] dark:text-[var(--color-gray)]">
+      <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
         {appContext.userTier.name === 'T1 Max' && <Tier1 />}
         {appContext.userTier.name === 'T2 Max' && <Tier2 />}
         {appContext.userTier.name === 'T3 Max' && <Tier3 />}
@@ -119,27 +110,15 @@ const Balance = () => {
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex w-full gap-[18.5px] sm:max-md:justify-center md:w-2/5 md:justify-between lg:max-xl:w-full">
-      <div className="flex flex-col gap-3 pb-[26px] pt-3 text-center max-xl:basis-full sm:gap-6">
-        <p className="text-sm leading-[18.23px] text-[var(--color-gray)] sm:text-xl sm:leading-[26.04px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
-          XRP balance
-        </p>
-        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] dark:text-white sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
-          {appContext.xrpBalance} XRP
-        </p>
+    <div className="flex w-full flex-col gap-[1.13rem] rounded-2xl border border-[var(--color-lambo-green)] p-[2.63rem] text-xl font-medium leading-[100%] text-[var(--color-black)] md:w-2/5 lg:max-xl:w-full">
+      <div className="flex items-center gap-5">
+        <div className="rounded-lg bg-[var(--color-bg)] p-3">
+          <Pooled fill="#313131" className="dark:hidden" />
+          <Pooled fill="#8a8a8a" className="hidden dark:block" />
+        </div>
+        <p>XRP pooled</p>
       </div>
-      <Separator
-        className="my-2 h-auto bg-[var(--color-stroke)] md:max-lg:my-0"
-        orientation="vertical"
-      />
-      <div className="flex flex-col gap-3 pb-[26px] pt-3 text-center max-xl:basis-full sm:gap-6">
-        <p className="text-sm leading-[18.23px] text-[var(--color-gray)] sm:text-xl sm:leading-[26.04px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
-          XRP pooled
-        </p>
-        <p className="text-[20px] font-medium leading-[26.04px] text-[var(--color-black)] dark:text-white sm:text-[28px] sm:leading-[36.46px] md:max-lg:text-lg md:max-lg:leading-[18.23px]">
-          {appContext.poolXrpBalance} XRP
-        </p>
-      </div>
+      <p>{appContext.poolXrpBalance}</p>
     </div>
   );
 };
@@ -148,41 +127,37 @@ const WalletSummary = () => {
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex justify-center rounded-[20px] border border-[var(--color-stroke)] py-12 sm:py-8">
-      <div className="flex justify-between max-md:gap-12 max-sm:max-w-[175px] max-sm:flex-col sm:w-3/4 lg:max-xl:gap-6">
-        <div className="flex w-full max-w-[139px] flex-col gap-4 self-center text-center sm:gap-6 sm:pb-[26px] sm:pt-3 lg:max-xl:basis-full">
-          <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
-            $LAMBO Token Holdings
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
-            {appContext.tokenBalance} LAMBO
-          </p>
+    <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-md:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem]">
+      <div className="flex items-center gap-6 rounded-[1.25rem] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
+        <div className="rounded-[1.13rem] bg-[var(--color-bg)] p-6">
+          <Wallet className="hidden dark:block" />
+          <Wallet className="dark:hidden" fill="#8A8A8A" />
         </div>
-        <Separator
-          className="my-2 hidden h-auto bg-[var(--color-stroke)] sm:block"
-          orientation="vertical"
-        />
-        <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] sm:hidden" />
-        <div className="flex w-full max-w-[139px] flex-col gap-4 self-center text-center sm:gap-6 sm:pb-[26px] sm:pt-3 lg:max-xl:basis-full">
-          <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
-            Staked Wallets
+        <div className="flex flex-col gap-6">
+          <p className="text-xl leading-[100%] text-[var(--color-gray)]">
+            No. of wallets staked
           </p>
-          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
+          <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
             {appContext.stakedWallets}
           </p>
         </div>
-        <Separator
-          className="my-2 hidden h-auto bg-[var(--color-stroke)] sm:block"
-          orientation="vertical"
-        />
-        <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] sm:hidden" />
-        <div className="flex w-full max-w-[139px] flex-col gap-4 self-center text-center sm:gap-6 sm:pb-[26px] sm:pt-3 lg:max-xl:basis-full">
-          <p className="leading-[20.83px] text-[var(--color-gray)] md:text-xl md:leading-[26.04px] lg:max-xl:text-base">
-            XRP <br />
-            Rewards Distributed
+      </div>
+      <Separator
+        className="my-2 hidden h-auto bg-[var(--color-stroke)] md:block"
+        orientation="vertical"
+      />
+      <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] md:hidden" />
+      <div className="flex items-center gap-6 rounded-[1.25rem] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
+        <div className="rounded-[1.13rem] bg-[var(--color-bg)] p-6">
+          <Trophy className="hidden dark:block" />
+          <Trophy className="dark:hidden" fill="#8A8A8A" />
+        </div>
+        <div className="flex flex-col gap-6">
+          <p className="text-xl leading-[100%] text-[var(--color-gray)]">
+            XRP rewards distributed
           </p>
-          <p className="text-2xl font-medium leading-[31.25px] text-[var(--color-black)] dark:text-white md:text-[28px] md:leading-[36.46px] lg:max-xl:text-xl">
-            {appContext.xrpRewardsDistributed} XRP
+          <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
+            {appContext.xrpRewardsDistributed}
           </p>
         </div>
       </div>
@@ -203,9 +178,14 @@ const TierItem = (props: {
         htmlFor={props.tier}
         className={cn(
           'flex flex-col gap-[19px] rounded-2xl border-2 p-4',
-          props.tier === props.value
-            ? 'border-[var(--color-lambo-green)]'
-            : 'border-[var(--color-stroke)]',
+          props.tier === 'T1 Max' &&
+            'border-[var(--color-lambo-black)] bg-[#B9DFFF] dark:border-[var(--color-lambo-green)]',
+          props.tier === 'T2 Max' &&
+            'border-[var(--color-stroke)] bg-[#D1FFED]',
+          props.tier === 'T3 Max' &&
+            'border-[var(--color-stroke)] bg-[#FFE4FC]',
+          props.tier === 'T4 Max' &&
+            'border-[var(--color-stroke)] bg-[#E8FFCF]',
         )}
       >
         <div className="flex items-center justify-between">
