@@ -7,7 +7,7 @@ import { MobileSidenav } from './sidenav';
 import Link from 'next/link';
 import { SetStateAction, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { truncateXrpAddress } from '@/lib/utils';
+// import { truncateXrpAddress } from '@/lib/utils';
 import { AppContext } from '@/context/AppContext';
 import { isInstalled, getPublicKey, signMessage } from '@gemwallet/api';
 import sdk from '@crossmarkio/sdk';
@@ -23,11 +23,21 @@ import FirstLedger from './components/icons/first-ledger';
 import Xaman from './components/icons/xaman';
 import Crossmark from './components/icons/crossmark';
 import WalletScanDrawer from '@/components/walletScanDrawer';
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuSubTrigger,
-// } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import avatar from '@/public/avatar.svg';
+import Image from 'next/image';
+import { ChevronDown } from 'lucide-react';
+import CopyFilled from './components/icons/copy-filled';
+import Disconnect from './components/icons/disconnect';
+// import { copyToClipboard } from '@/lib/utils';
+import { deleteToken } from '@/lib/actions';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [qrcode, setQrcode] = useState<string>('');
@@ -127,7 +137,8 @@ const Navbar = () => {
         <div className="flex items-center gap-[25px]">
           {appContext.walletAddress ? (
             <>
-              <Button>{truncateXrpAddress(appContext.walletAddress)}</Button>
+              <ProfileDropdown />
+              {/* <Button>{truncateXrpAddress(appContext.walletAddress)}</Button> */}
             </>
           ) : (
             <>
@@ -253,17 +264,96 @@ const WalletDialog = (props: {
   );
 };
 
-// const ProfileDropdown = () => {
-//   return (
-//     <DropdownMenu>
-//       <DropdownMenuSubTrigger>Open</DropdownMenuTrigger>
-//       <DropdownMenuContent>
-//         <DropdownMenuSeparator />
-//         <DropdownMenuItem>Profile</DropdownMenuItem>
-//         <DropdownMenuItem>Billing</DropdownMenuItem>
-//         <DropdownMenuItem>Team</DropdownMenuItem>
-//         <DropdownMenuItem>Subscription</DropdownMenuItem>
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   );
-// };
+const ProfileDropdown = () => {
+  const appContext = useContext(AppContext);
+  function truncateString(
+    str: string,
+    startLength = 10,
+    endLength = 10,
+  ): string {
+    if (str.length <= startLength + endLength) {
+      return str; // No need to truncate if it's already short
+    }
+    return `${str.slice(0, startLength)}.............${str.slice(-endLength)}`;
+  }
+
+  function copyToClipboard(text: string) {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(
+        () => {
+          toast.success('Copied to clipboard', {
+            position: 'bottom-right',
+          });
+        },
+        err => {
+          toast.error(err.message, {
+            position: 'bottom-right',
+          });
+        },
+      );
+    } else {
+      toast.error('Failed to copy to clipboard', {
+        position: 'bottom-right',
+      });
+    }
+  }
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex items-center gap-3 rounded-xl border border-[#444444] bg-[#444444] px-4 py-3 text-white">
+        <div className="overflow-hidden rounded-full bg-[var(--color-lambo-green)]">
+          <Image src={avatar} alt="avatar" />
+        </div>
+        <p className="text-sm leading-[100%]">
+          {appContext.walletAddress.slice(0, 13)}
+        </p>
+        <ChevronDown className="size-7" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="flex w-[364px] flex-col gap-8 border-transparent p-6 dark:bg-[var(--color-black)]">
+        <DropdownMenuLabel className="font-medium leading-[100%]">
+          Connected with{' '}
+          <span className="capitalize">{appContext.platform}</span>
+        </DropdownMenuLabel>
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-3 rounded-xl border border-[#444444] p-2">
+            <div className="overflow-hidden rounded-full bg-[var(--color-lambo-green)]">
+              <Image src={avatar} alt="avatar" />
+            </div>
+            <p className="text-sm leading-[100%]">
+              {truncateString(appContext.walletAddress)}
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <button
+              role="button"
+              aria-label="Copy address"
+              onClick={() => copyToClipboard(appContext.walletAddress)}
+            >
+              <DropdownMenuItem className="p-[0.625rem]">
+                <CopyFilled className="hidden dark:block" />
+                <CopyFilled className="dark:hidden" fill="#13141e" />
+                <p className="text-sm leading-[100%]">Copy address</p>
+              </DropdownMenuItem>
+            </button>
+            <button
+              role="button"
+              aria-label="Disconnect wallet"
+              onClick={() => (
+                deleteToken(),
+                appContext.setWalletAddress(''),
+                appContext.setPlatform(null),
+                window.location.reload()
+              )}
+            >
+              <DropdownMenuItem className="p-[0.625rem]">
+                <Disconnect className="hidden dark:block" />
+                <Disconnect className="dark:hidden" fill="#13141e" />
+                <p className="text-sm leading-[100%]">Disconnect wallet</p>
+              </DropdownMenuItem>
+            </button>
+          </div>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

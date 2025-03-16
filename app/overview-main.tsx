@@ -118,7 +118,7 @@ const Balance = () => {
         </div>
         <p>XRP pooled</p>
       </div>
-      <p>{appContext.poolXrpBalance}</p>
+      <p>{appContext.poolXrpBalance} XRP</p>
     </div>
   );
 };
@@ -138,7 +138,7 @@ const WalletSummary = () => {
             No. of wallets staked
           </p>
           <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
-            {appContext.stakedWallets}
+            {appContext.stakedWallets} wallets
           </p>
         </div>
       </div>
@@ -157,7 +157,7 @@ const WalletSummary = () => {
             XRP rewards distributed
           </p>
           <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
-            {appContext.xrpRewardsDistributed}
+            {appContext.xrpRewardsDistributed} XRP
           </p>
         </div>
       </div>
