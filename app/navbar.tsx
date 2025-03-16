@@ -309,7 +309,7 @@ const ProfileDropdown = () => {
         </p>
         <ChevronDown className="size-7" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="flex w-[364px] flex-col gap-8 border-transparent p-6 dark:bg-[var(--color-black)]">
+      <DropdownMenuContent className="flex w-[364px] flex-col gap-8 rounded-2xl border-transparent p-6 dark:bg-[var(--color-black)]">
         <DropdownMenuLabel className="font-medium leading-[100%]">
           Connected with{' '}
           <span className="capitalize">{appContext.platform}</span>
