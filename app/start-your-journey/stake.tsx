@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
+import { EarlyWithdrawal, Summary } from './tabs';
 import { Separator } from '@/components/ui/separator';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
@@ -51,18 +51,29 @@ const Stake = () => {
 export default Stake;
 
 const StakeForm = () => {
+  const appContext = useContext(AppContext);
+  const getAPY = (value: string): number => {
+    return value === '7-days'
+      ? appContext.userTier?.oneWeekApy
+      : value === '1-month'
+        ? appContext.userTier?.oneMonthApy
+        : value === '3-months'
+          ? appContext.userTier?.threeMonthsApy
+          : appContext.userTier?.sixMonthsApy;
+  };
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
-      duration: '14-days',
+      duration: '7-days',
     },
   });
+
   const [qrcode, setQrcode] = useState<string>('');
   const [jumpLink, setJumpLink] = useState<string>('');
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [isLoading, setIsloading] = useState<boolean>(false);
-  const appContext = useContext(AppContext);
 
   const balance = appContext.tokenBalance;
 
@@ -157,6 +168,7 @@ const StakeForm = () => {
             render={({ field }) => (
               <RadioInput
                 disabled={appContext.activeStake?.status == 'ACTIVE'}
+                description={`Projected yield: APY ${getAPY(field.value)}%`}
                 label="Duration"
                 field={field}
                 options={[
@@ -178,12 +190,12 @@ const StakeForm = () => {
             </p>
           </div> */}
           <Separator className="my-4 bg-[var(--color-stroke)]" />
-          <TransactionDetails />
+          {/* <TransactionDetails /> */}
           <ButtonLoading
             className="w-full"
             variant={'secondary'}
             type="submit"
-            label="lock LAMBO"
+            label="Start your $LAMBO Journey"
             isPending={isLoading}
             disabled={appContext.activeStake?.status == 'ACTIVE' || isLoading}
           />

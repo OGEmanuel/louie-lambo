@@ -20,9 +20,9 @@ const StakeTabs = () => {
       className=""
     >
       <TabsList className="">
-        <TabsTrigger value="lock">Lock</TabsTrigger>
+        <TabsTrigger value="lock">Start your journey</TabsTrigger>
         {appContext.activeStake && (
-          <TabsTrigger value="unlock">Unlock</TabsTrigger>
+          <TabsTrigger value="unlock">Eject from your ride</TabsTrigger>
         )}
       </TabsList>
       <TabsContent value="lock" className="w-full">
@@ -101,11 +101,16 @@ export const Summary = (props: { tab: string }) => {
   );
 };
 
-export const EarlyWithdrawal = () => {
+export const EarlyWithdrawal = (props: { tab?: string }) => {
   return (
-    <p className="rounded-lg bg-[var(--color-bg)] p-3 leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.23px]">
-      Recover all XRP you pack along for the ride. All XRP will be lost.
-    </p>
+    <>
+      <p className="rounded-lg bg-[var(--color-bg)] p-3 leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.23px]">
+        All XRP rewards gained will be lost.{' '}
+        {props.tab === 'unlock' && (
+          <span>You will receive 50% $LAMBO if you eject early</span>
+        )}
+      </p>
+    </>
   );
 };
 
@@ -121,10 +126,10 @@ export const TransactionDetails = () => {
 
   return (
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">Transaction cost</p>
         <p className="font-medium text-[var(--color-black)]">0.24 XRP</p>
-      </div>
+      </div> */}
       {appContext.activeStake && (
         <div className="flex items-center justify-between">
           <p className="text-[var(--color-gray)]">You will receive</p>

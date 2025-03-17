@@ -37,7 +37,7 @@ const FormSchema = z.object({
 const UnStake = () => {
   return (
     <div className="flex w-full gap-8 max-xl:flex-col">
-      <UnstakeForm />
+      <UnstakeForm tab="unlock" />
       <Summary tab="unlock" />
     </div>
   );
@@ -45,7 +45,7 @@ const UnStake = () => {
 
 export default UnStake;
 
-const UnstakeForm = () => {
+const UnstakeForm = (props: { tab?: string }) => {
   const appContext = useContext(AppContext);
   const [isLoading, setIsloading] = useState<boolean>(false);
 
@@ -84,14 +84,14 @@ const UnstakeForm = () => {
             />
           )}
         />
-        <EarlyWithdrawal />
+        <EarlyWithdrawal tab={props.tab} />
         <Separator className="my-4 bg-[var(--color-stroke)]" />
         <TransactionDetails />
         <ButtonLoading
           className="w-full"
           variant={'secondary'}
           type="submit"
-          label="Unlock LAMBO"
+          label="Eject from your ride"
           isPending={isLoading}
           disabled={isLoading}
         />

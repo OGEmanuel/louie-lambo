@@ -6,13 +6,7 @@ import { z } from 'zod';
 import NumberInput from '@/components/ui/number-input';
 import { useForm } from 'react-hook-form';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import { getDurationInDays } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
@@ -48,11 +42,13 @@ const MinerForm = (props: {
   type: string;
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const convertedDuration: string = 'oneWeek';
+  const appContext = useContext(AppContext);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       amount: 0,
-      duration: '7-days',
+      duration: convertedDuration,
     },
   });
   const [qrcode, setQrcode] = useState<string>('');
@@ -60,27 +56,18 @@ const MinerForm = (props: {
   const [isLoading, setIsloading] = useState<boolean>(false);
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
-  const appContext = useContext(AppContext);
 
-  const [apy, setApy] = useState<number>(0);
-  useEffect(() => {
-    const getApy = () => {
-      console.log(form.getValues('duration'));
-      if (getDurationInDays(form.getValues('duration')) == 7)
-        setApy(appContext.userTier.oneWeekApy);
-      else if (getDurationInDays(form.getValues('duration')) == 14)
-        setApy(appContext.userTier.twoWeeksApy);
-      else if (getDurationInDays(form.getValues('duration')) == 30)
-        setApy(appContext.userTier.oneMonthApy);
-      else if (getDurationInDays(form.getValues('duration')) == 90)
-        setApy(appContext.userTier.threeMonthsApy);
-      else if (getDurationInDays(form.getValues('duration')) == 180)
-        setApy(appContext.userTier.sixMonthsApy);
-      else setApy(0);
-    };
-
-    getApy();
-  }, [form, appContext.userTier]);
+  const getAPY = (): number => {
+    return convertedDuration === 'oneWeek'
+      ? appContext.userTier?.oneWeekApy
+      : convertedDuration === 'twoWeeks'
+        ? appContext.userTier?.twoWeeksApy
+        : convertedDuration === 'oneMonth'
+          ? appContext.userTier?.oneMonthApy
+          : convertedDuration === 'threeMonths'
+            ? appContext.userTier?.threeMonthsApy
+            : appContext.userTier?.sixMonthsApy;
+  };
 
   const balance = appContext.xrpBalance;
 
@@ -159,7 +146,7 @@ const MinerForm = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
-              description={`Projected yield: APY ${apy}%`}
+              description={`Projected yield: APY ${getAPY()}%`}
               field={field}
             />
           )}
@@ -172,12 +159,16 @@ const MinerForm = (props: {
             <RadioInput
               label="Duration"
               field={field}
+              disabled={true}
               options={[
-                { label: '7 days', value: '7-days' },
-                { label: '1 month', value: '1-month' },
-                { label: '3 months', value: '3-months' },
-                { label: '6 months', value: '6-months' },
+                { label: '7 days', value: 'oneWeek' },
+                { label: '1 month', value: 'oneMonth' },
+                { label: '3 months', value: 'threeMonths' },
+                { label: '6 months', value: 'sixMonths' },
               ]}
+              onChange={() => {
+                field.onChange(convertedDuration);
+              }}
             />
           )}
         />
@@ -205,6 +196,16 @@ export const MinerFormWithdraw = (props: {
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) => {
   const appContext = useContext(AppContext);
+
+  const getAPY = (): number => {
+    return appContext.activeMine?.stakingDurationInDays === 7
+      ? appContext.userTier?.oneWeekApy
+      : appContext.activeMine?.stakingDurationInDays === 30
+        ? appContext.userTier?.oneMonthApy
+        : appContext.activeMine?.stakingDurationInDays === 90
+          ? appContext.userTier?.threeMonthsApy
+          : appContext.userTier?.sixMonthsApy;
+  };
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -241,7 +242,7 @@ export const MinerFormWithdraw = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
-              description={`Projected yield: APY ${'100'}%`}
+              description={`Projected yield: APY ${getAPY()}%`}
               field={field}
             />
           )}

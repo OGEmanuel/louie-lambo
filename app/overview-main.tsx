@@ -138,7 +138,7 @@ const WalletSummary = () => {
             No. of wallets staked
           </p>
           <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
-            {appContext.stakedWallets} wallets
+            {appContext.stakedWallets}
           </p>
         </div>
       </div>

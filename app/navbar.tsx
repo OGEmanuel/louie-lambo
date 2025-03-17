@@ -128,17 +128,18 @@ const Navbar = () => {
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
       <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] md:rounded-[30px] md:px-[33px] md:py-[19px]">
-        <Link href="/">
-          <LamboLogo className="hidden md:block" />
-        </Link>
-        <Link href="/">
-          <LamboLogoSmall className="md:hidden" />
-        </Link>
+        <div>
+          <Link href="/">
+            <LamboLogo className="hidden md:block" />
+          </Link>
+          <Link href="/">
+            <LamboLogoSmall className="md:hidden" />
+          </Link>
+        </div>
         <div className="flex items-center gap-[25px]">
           {appContext.walletAddress ? (
             <>
               <ProfileDropdown />
-              {/* <Button>{truncateXrpAddress(appContext.walletAddress)}</Button> */}
             </>
           ) : (
             <>
@@ -304,7 +305,7 @@ const ProfileDropdown = () => {
         <div className="overflow-hidden rounded-full bg-[var(--color-lambo-green)]">
           <Image src={avatar} alt="avatar" />
         </div>
-        <p className="text-sm leading-[100%]">
+        <p className="text-sm leading-[100%] max-sm:hidden">
           {appContext.walletAddress.slice(0, 13)}
         </p>
         <ChevronDown className="size-7" />

@@ -20,7 +20,7 @@ interface RadioInputProps extends ComponentProps<'input'> {
 }
 
 const RadioInput = (props: RadioInputProps) => {
-  const { field, label, options, description } = props;
+  const { field, label, options, description, disabled } = props;
   return (
     <FormItem className="space-y-4">
       <FormLabel className="text-lg font-medium leading-[23.44px] text-[var(--color-black)] max-lg:text-base max-lg:leading-[20.83px]">
@@ -30,6 +30,7 @@ const RadioInput = (props: RadioInputProps) => {
         <RadioGroup
           onValueChange={field.onChange}
           defaultValue={field.value}
+          disabled={disabled}
           className="grid flex-wrap gap-[22px] max-lg:gap-3 max-lg:gap-y-6 max-md:flex md:grid-cols-5 lg:grid-cols-4 2xl:grid-cols-5"
         >
           {options.map(option => (

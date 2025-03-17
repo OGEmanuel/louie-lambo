@@ -19,11 +19,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import axios from 'axios';
-import { AppContext } from '@/context/AppContext';
+import { useQuery } from '@tanstack/react-query';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const FormSchema = z.object({
   amount: z
@@ -54,38 +55,31 @@ const FormSchema = z.object({
   }),
 });
 
-type Tier = {
-  _id: string;
-  name: string;
-  description: string;
-  oneWeekApy: number;
-  twoWeeksApy: number;
-  oneMonthApy: number;
-  threeMonthsApy: number;
-  sixMonthsApy: number;
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
-  __v: number;
-};
+// type Tier = {
+//   _id: string;
+//   name: string;
+//   description: string;
+//   oneWeekApy: number;
+//   twoWeeksApy: number;
+//   oneMonthApy: number;
+//   threeMonthsApy: number;
+//   sixMonthsApy: number;
+//   createdAt: string; // ISO date string
+//   updatedAt: string; // ISO date string
+//   __v: number;
+// };
 
 const CalculatorForm = () => {
-  const [tiers, setTiers] = useState<Tier[]>([]);
+  // const [tiers, setTiers] = useState<Tier[]>([]);
   const [calculatedValue, setCalculatedValue] = useState<number>(0);
 
-  useEffect(() => {
-    const fetchTiers = async () => {
-      try {
-        const response = await axios.get('/api/admin/getTiers');
-        setTiers(response.data.tiers);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchTiers();
-  }, []);
-
-  // console.log(tiers);
+  const { data: tiers, isPending } = useQuery({
+    queryKey: ['tiers'],
+    queryFn: async () => {
+      const response = await axios.get('/api/admin/getTiers');
+      return response.data.tiers;
+    },
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -95,10 +89,6 @@ const CalculatorForm = () => {
       tier: '0',
     },
   });
-
-  const appContext = useContext(AppContext);
-
-  const balance = appContext.tokenBalance;
 
   const getAPY = (value: string): number => {
     return value === 'oneWeek'
@@ -111,6 +101,18 @@ const CalculatorForm = () => {
             ? tiers[Number(form.watch('tier'))]?.threeMonthsApy
             : tiers[Number(form.watch('tier'))].sixMonthsApy;
   };
+
+  // const getMaxXrp = (value: string) => {
+  //   return value === 'oneWeek'
+  //     ? tiers[Number(form.watch('tier'))]?.oneWeekMaxXrp
+  //     : value === 'twoWeeks'
+  //       ? tiers[Number(form.watch('tier'))]?.twoWeeksMaxXrp
+  //       : value === 'oneMonth'
+  //         ? tiers[Number(form.watch('tier'))]?.oneMonthMaxXrp
+  //         : value === 'threeMonths'
+  //           ? tiers[Number(form.watch('tier'))]?.threeMonthsMaxXrp
+  //           : tiers[Number(form.watch('tier'))].sixMonthsMaxXrp;
+  // };
 
   function calculatePercentage(value: number, percentage: number) {
     const calculatedValue = (value * percentage) / 100;
@@ -130,64 +132,84 @@ const CalculatorForm = () => {
         <p className="text-2xl leading-[31.25px] text-[var(--color-black)]">
           Estimate your returns
         </p>
-        <FormField
-          control={form.control}
-          name="tier"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-lg font-medium leading-[23.44px] text-[var(--color-black)] max-lg:text-base">
-                Select Tier
-              </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger className="text-[var(--color-black)]">
-                    <SelectValue placeholder="Select a tier" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {Array.isArray(tiers) && tiers.length > 0 ? (
-                    tiers.map((tier, i) => (
-                      <SelectItem key={tier._id} value={i.toString()}>
-                        {tier.name}
-                      </SelectItem>
-                    ))
-                  ) : (
-                    <p className="px-2 text-gray-500">No tiers available</p>
-                  )}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <NumberInput
-              label="Amount"
-              onSetMax={() => form.setValue('amount', Number(balance))}
-              field={field}
-            />
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="duration"
-          render={({ field }) => (
-            <RadioInput
-              label="Duration"
-              description={`Projected yield: APY ${getAPY(field.value)}%`}
-              options={[
-                { label: '7 days', value: 'oneWeek' },
-                { label: '1 month', value: 'oneMonth' },
-                { label: '3 months', value: 'threeMonths' },
-                { label: '6 months', value: 'sixMonths' },
-              ]}
-              field={field}
-            />
-          )}
-        />
+        {isPending ? (
+          <Skeleton className="h-9 w-full" />
+        ) : (
+          <FormField
+            control={form.control}
+            name="tier"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-lg font-medium leading-[23.44px] text-[var(--color-black)] max-lg:text-base">
+                  Select Tier
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger className="text-[var(--color-black)]">
+                      <SelectValue placeholder="Select a tier" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {Array.isArray(tiers) && tiers.length > 0 ? (
+                      tiers.map((tier, i) => (
+                        <SelectItem key={tier._id} value={i.toString()}>
+                          {tier.name}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <p className="px-2 text-gray-500">No tiers available</p>
+                    )}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+        {isPending ? (
+          <Skeleton className="h-[7.5rem] w-full animate-pulse" />
+        ) : (
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <NumberInput
+                label="Amount"
+                onSetMax={() =>
+                  form.setValue(
+                    'amount',
+                    tiers[Number(form.watch('tier'))]?.maxXrpMineable,
+                  )
+                }
+                field={field}
+              />
+            )}
+          />
+        )}
+        {isPending ? (
+          <Skeleton className="h-10 w-full animate-pulse" />
+        ) : (
+          <FormField
+            control={form.control}
+            name="duration"
+            render={({ field }) => (
+              <RadioInput
+                label="Duration"
+                description={`Projected yield: APY ${getAPY(field.value)}%`}
+                options={[
+                  { label: '7 days', value: 'oneWeek' },
+                  { label: '1 month', value: 'oneMonth' },
+                  { label: '3 months', value: 'threeMonths' },
+                  { label: '6 months', value: 'sixMonths' },
+                ]}
+                field={field}
+              />
+            )}
+          />
+        )}
         <p className="text-[var(--color-black)]">
           Total rewards: {calculatedValue} XRP
         </p>

@@ -15,8 +15,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'Lambo XRP Miner',
-  description: 'Lambo Louie Xrp Miner',
+  title: '$Lambo Platform',
+  description: 'Lambo Louie Platform',
 };
 
 export default function RootLayout({
