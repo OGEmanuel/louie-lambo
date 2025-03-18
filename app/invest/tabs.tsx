@@ -11,6 +11,7 @@ import {
   ReactNode,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import MinerSuccess from '../components/icons/miner-success';
@@ -71,6 +72,7 @@ export const Summary = () => {
   const appContext = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [openRemine, setOpenRemine] = useState(false);
+  const [rewards, setRewards] = useState<number>(0);
 
   const { mutate, isPending } = useMutation({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,6 +120,29 @@ export const Summary = () => {
     },
   });
 
+  useEffect(() => {
+    const interval = setInterval(() => calculateRewards(), 2000);
+
+    return () => clearInterval(interval);
+  });
+
+  const calculateRewards = () => {
+    if (appContext.activeMine) {
+      const amount = calculateStakeRewards(
+        appContext.activeMine?.tokensAmount,
+        getApyBasedOnTierAndDuration(
+          appContext.activeMine.tierData,
+          appContext.activeMine.stakingDurationInDays,
+        ),
+        appContext.activeMine?.stakingDurationInDays,
+        new Date(appContext.activeMine.lastClaimDate!),
+        new Date(),
+      ).toFixed(5);
+
+      setRewards(Number(amount));
+    }
+  };
+
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       {appContext.activeMine && (
@@ -129,19 +154,7 @@ export const Summary = () => {
               <Apy className="lg:hidden" />
             </div>
 
-            <p className="text-[28px] leading-[36.46px]">
-              {calculateStakeRewards(
-                appContext.activeMine?.tokensAmount,
-                getApyBasedOnTierAndDuration(
-                  appContext.activeMine.tierData,
-                  appContext.activeMine.stakingDurationInDays,
-                ),
-                appContext.activeMine?.stakingDurationInDays,
-                new Date(appContext.activeMine.lastClaimDate!),
-                new Date(),
-              ).toFixed(5)}{' '}
-              XRP
-            </p>
+            <p className="text-[28px] leading-[36.46px]">{rewards} XRP</p>
           </div>
           <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
             <WarningModal

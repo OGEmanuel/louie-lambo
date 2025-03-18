@@ -50,18 +50,8 @@ export const Summary = (props: { tab: string }) => {
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
-        <div className="flex flex-col gap-3">
-          <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
-            Current tier
-          </p>
-          <p className="text-2xl font-medium leading-[31.25px]">
-            {appContext.userTier.name}
-          </p>
-        </div>
-
         {props.tab === 'lock' && (
           <>
-            <hr />
             <div className="flex flex-col gap-3">
               <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
                 $LAMBO balance
@@ -70,8 +60,19 @@ export const Summary = (props: { tab: string }) => {
                 {appContext.tokenBalance} $LAMBO
               </p>
             </div>
+
+            <hr />
           </>
         )}
+
+        <div className="flex flex-col gap-3">
+          <p className="text-lg leading-[23.44px] text-[var(--color-gray)]">
+            Current tier
+          </p>
+          <p className="text-2xl font-medium leading-[31.25px]">
+            {appContext.userTier.name}
+          </p>
+        </div>
       </div>
       <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[30.5px] pt-[48.25px] text-center font-medium">
         <div className="flex items-center gap-1">

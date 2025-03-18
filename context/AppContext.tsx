@@ -99,8 +99,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
     for (const tier of tiersList) {
       if (
-        tokenBalance >= tier.maximumTokensHeld.toFixed(1) &&
-        tokenBalance <= tier.minimumTokensHeld.toFixed(1)
+        Number(tokenBalance) >= Number(tier.maximumTokensHeld.toFixed(1)) &&
+        Number(tokenBalance) <= Number(tier.minimumTokensHeld.toFixed(1))
       ) {
         setValue(tier);
       }

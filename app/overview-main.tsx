@@ -66,28 +66,28 @@ const TierSelector = () => {
             className="grid gap-6 md:grid-cols-2 md:gap-[2.63rem]"
           >
             <TierItem
-              tier="T1 Max"
+              tier="T1"
               icon={<RibbonFirstSelect />}
               value={appContext.userTier.name}
             >
               <Tier1 />
             </TierItem>
             <TierItem
-              tier="T2 Max"
+              tier="T2"
               icon={<RibbonSecondSelect />}
               value={appContext.userTier.name}
             >
               <Tier2 />
             </TierItem>
             <TierItem
-              tier="T3 Max"
+              tier="T3"
               icon={<RibbonThirdSelect />}
               value={appContext.userTier.name}
             >
               <Tier3 />
             </TierItem>
             <TierItem
-              tier="T4 Max"
+              tier="T4"
               icon={<RibbonFourthSelect />}
               value={appContext.userTier.name}
             >
@@ -97,10 +97,10 @@ const TierSelector = () => {
         </PopoverContent>
       </Popover>
       <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
-        {appContext.userTier.name === 'T1 Max' && <Tier1 />}
-        {appContext.userTier.name === 'T2 Max' && <Tier2 />}
-        {appContext.userTier.name === 'T3 Max' && <Tier3 />}
-        {appContext.userTier.name === 'T4 Max' && <Tier4 />}
+        {appContext.userTier.name === 'T1' && <Tier1 />}
+        {appContext.userTier.name === 'T2' && <Tier2 />}
+        {appContext.userTier.name === 'T3' && <Tier3 />}
+        {appContext.userTier.name === 'T4' && <Tier4 />}
       </ul>
     </div>
   );
