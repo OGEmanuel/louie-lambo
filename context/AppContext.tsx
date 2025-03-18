@@ -300,7 +300,6 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setXrpBalance(Number(data.userBalance.toFixed(2)));
       setTokenBalance(Number(data.tokenBalance).toFixed(2));
       setHolders(data.holders);
-      console.log(data);
     } catch (error) {
       console.error('Error fetching overview:', error);
       handleError('Error fetching overview');

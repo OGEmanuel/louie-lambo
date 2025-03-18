@@ -2,8 +2,6 @@
 
 import { ReactNode, useContext, useState } from 'react';
 import RibbonFirst from './components/icons/ribbon-first';
-// import Link from 'next/link';
-// import { ChevronRight } from 'lucide-react';
 import {
   Popover,
   PopoverContent,
@@ -23,6 +21,9 @@ import { AppContext } from '@/context/AppContext';
 import Pooled from './components/icons/pooled';
 import Wallet from './components/icons/wallet';
 import Trophy from './components/icons/trophy';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const OverviewMain = () => {
   return (
@@ -43,22 +44,40 @@ export default OverviewMain;
 const TierSelector = () => {
   const [open, setOpen] = useState(false);
 
+  const { data: tiers, isPending } = useQuery({
+    queryKey: ['tiers'],
+    queryFn: async () => {
+      const response = await axios.get('/api/admin/getTiers');
+      return response.data.tiers;
+    },
+  });
+
+  if (isPending) {
+    return (
+      <Skeleton className="h-[11.9rem] w-full animate-pulse rounded-[18px]" />
+    );
+  }
+
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
+    <div className="flex basis-full flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
       <Popover onOpenChange={setOpen} open={open}>
-        <PopoverTrigger className="flex items-center gap-[11px]">
-          <span className="flex items-center gap-[14px] text-[18px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
-            <RibbonFirst className="hidden sm:block" />
-            <RibbonSelectMobile className="sm:hidden" />
-            {appContext.userTier.name}
-          </span>
-          <ArrowDown />
-        </PopoverTrigger>
+        {isPending ? (
+          <Skeleton className="h-9 w-full" />
+        ) : (
+          <PopoverTrigger className="flex items-center gap-[11px]">
+            <span className="flex items-center gap-[14px] text-[18px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
+              <RibbonFirst className="hidden sm:block" />
+              <RibbonSelectMobile className="sm:hidden" />
+              {appContext.userTier.name}
+            </span>
+            <ArrowDown />
+          </PopoverTrigger>
+        )}
         <PopoverContent
           align="center"
-          className="w-full rounded-[18px] p-4 dark:bg-[var(--color-lambo-black)] md:p-[2.63rem]"
+          className="w-80 max-w-[700px] self-center rounded-[18px] p-4 dark:bg-[var(--color-lambo-black)] sm:w-full md:p-[2.63rem]"
         >
           <RadioGroup
             defaultValue={appContext.userTier.name}
@@ -70,37 +89,37 @@ const TierSelector = () => {
               icon={<RibbonFirstSelect />}
               value={appContext.userTier.name}
             >
-              <Tier1 />
+              <li>{tiers[0].description}</li>
             </TierItem>
             <TierItem
               tier="T2"
               icon={<RibbonSecondSelect />}
               value={appContext.userTier.name}
             >
-              <Tier2 />
+              <li>{tiers[1].description}</li>
             </TierItem>
             <TierItem
               tier="T3"
               icon={<RibbonThirdSelect />}
               value={appContext.userTier.name}
             >
-              <Tier3 />
+              <li>{tiers[2].description}</li>
             </TierItem>
             <TierItem
               tier="T4"
               icon={<RibbonFourthSelect />}
               value={appContext.userTier.name}
             >
-              <Tier4 />
+              <li>{tiers[3].description}</li>
             </TierItem>
           </RadioGroup>
         </PopoverContent>
       </Popover>
       <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
-        {appContext.userTier.name === 'T1' && <Tier1 />}
-        {appContext.userTier.name === 'T2' && <Tier2 />}
-        {appContext.userTier.name === 'T3' && <Tier3 />}
-        {appContext.userTier.name === 'T4' && <Tier4 />}
+        {appContext.userTier.name === 'T1' && <li>{tiers[0].description}</li>}
+        {appContext.userTier.name === 'T2' && <li>{tiers[1].description}</li>}
+        {appContext.userTier.name === 'T3' && <li>{tiers[2].description}</li>}
+        {appContext.userTier.name === 'T4' && <li>{tiers[3].description}</li>}
       </ul>
     </div>
   );
@@ -110,7 +129,7 @@ const Balance = () => {
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex w-full flex-col gap-[1.13rem] rounded-2xl border border-[var(--color-lambo-green)] p-[2.63rem] text-xl font-medium leading-[100%] text-[var(--color-black)] md:w-2/5 lg:max-xl:w-full">
+    <div className="flex w-full flex-col gap-[1.13rem] rounded-2xl border border-[var(--color-lambo-green)] p-[2.63rem] text-xl font-medium leading-[100%] text-[var(--color-black)] md:basis-full lg:max-xl:w-full">
       <div className="flex items-center gap-5">
         <div className="rounded-lg bg-[var(--color-bg)] p-3">
           <Pooled fill="#313131" className="dark:hidden" />
@@ -203,69 +222,5 @@ const TierItem = (props: {
         </ul>
       </Label>
     </div>
-  );
-};
-
-const Tier1 = () => {
-  return (
-    <>
-      <li>
-        Hold <span>500K to 2M</span> $LAMBO
-      </li>
-      <li>
-        <span>250 XRP</span> maximum XRP mining
-      </li>
-      <li>
-        APY : 50% <span>(7 days) - 1000%</span> (6 months).
-      </li>
-    </>
-  );
-};
-
-const Tier2 = () => {
-  return (
-    <>
-      <li>
-        Hold <span>2.01M to 8M</span> $LAMBO
-      </li>
-      <li>
-        <span>500 XRP</span> maximum XRP mining
-      </li>
-      <li>
-        APY : 75% <span>(7 days) - 1000%</span> (6 months).
-      </li>
-    </>
-  );
-};
-
-const Tier3 = () => {
-  return (
-    <>
-      <li>
-        Hold <span>8.01M to 18M</span> $LAMBO
-      </li>
-      <li>
-        <span>500 XRP</span> maximum XRP mining
-      </li>
-      <li>
-        APY : 100% <span>(7 days) - 1250%</span> (6 months).
-      </li>
-    </>
-  );
-};
-
-const Tier4 = () => {
-  return (
-    <>
-      <li>
-        Hold <span>18M+</span> $LAMBO
-      </li>
-      <li>
-        <span>500 XRP</span> maximum XRP mining
-      </li>
-      <li>
-        APY : 200% <span>(7 days) - 1500%</span> (6 months).
-      </li>
-    </>
   );
 };

@@ -70,6 +70,7 @@ const MinerForm = (props: {
   };
 
   const balance = appContext.xrpBalance;
+  const depBalance = appContext.activeMine!.tokensAmount;
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount && data.duration) {
@@ -138,10 +139,7 @@ const MinerForm = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
-        <TransactionDetails
-          balance={balance}
-          xrpBalance={appContext.xrpBalance}
-        />
+        <TransactionDetails balance={depBalance} xrpBalance={balance} />
         <FormField
           control={form.control}
           name="amount"

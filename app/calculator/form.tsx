@@ -70,7 +70,6 @@ const FormSchema = z.object({
 // };
 
 const CalculatorForm = () => {
-  // const [tiers, setTiers] = useState<Tier[]>([]);
   const [calculatedValue, setCalculatedValue] = useState<number>(0);
 
   const { data: tiers, isPending } = useQuery({
@@ -101,18 +100,6 @@ const CalculatorForm = () => {
             ? tiers[Number(form.watch('tier'))]?.threeMonthsApy
             : tiers[Number(form.watch('tier'))].sixMonthsApy;
   };
-
-  // const getMaxXrp = (value: string) => {
-  //   return value === 'oneWeek'
-  //     ? tiers[Number(form.watch('tier'))]?.oneWeekMaxXrp
-  //     : value === 'twoWeeks'
-  //       ? tiers[Number(form.watch('tier'))]?.twoWeeksMaxXrp
-  //       : value === 'oneMonth'
-  //         ? tiers[Number(form.watch('tier'))]?.oneMonthMaxXrp
-  //         : value === 'threeMonths'
-  //           ? tiers[Number(form.watch('tier'))]?.threeMonthsMaxXrp
-  //           : tiers[Number(form.watch('tier'))].sixMonthsMaxXrp;
-  // };
 
   function calculatePercentage(value: number, percentage: number) {
     const calculatedValue = (value * percentage) / 100;
