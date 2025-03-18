@@ -32,6 +32,8 @@ export const AppContext = createContext<AppContextInterface>({
   ref: null,
   platform: null,
   setPlatform: () => {},
+  holders: 0,
+  setHolders: () => {},
 });
 
 export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -51,6 +53,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [activeMine, setActiveMine] = useState<MineType>();
   const [referrer, setReferrer] = useState<string>('');
   const [platform, setPlatform] = useState<string | null>(null);
+  const [holders, setHolders] = useState<number>(0);
 
   const [cookies] = useCookies(['walley']);
   const params = useSearchParams();
@@ -288,6 +291,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         xrpRewardsDistributed: number;
         userBalance: number;
         tokenBalance: string;
+        holders: number;
       } = await response.json();
 
       setPoolXrpBalance(data.poolXrpBalance);
@@ -295,6 +299,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setXrpRewardsDistributed(data.xrpRewardsDistributed);
       setXrpBalance(Number(data.userBalance.toFixed(2)));
       setTokenBalance(Number(data.tokenBalance).toFixed(2));
+      setHolders(data.holders);
+      console.log(data);
     } catch (error) {
       console.error('Error fetching overview:', error);
       handleError('Error fetching overview');
@@ -345,6 +351,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         ref: referrer,
         platform,
         setPlatform,
+        holders,
+        setHolders,
       }}
     >
       {children}

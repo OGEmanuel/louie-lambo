@@ -138,7 +138,7 @@ const WalletSummary = () => {
             No. of wallets staked
           </p>
           <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
-            {appContext.stakedWallets}
+            {appContext.stakedWallets} / {appContext.holders} $LAMBO holders
           </p>
         </div>
       </div>
@@ -178,14 +178,11 @@ const TierItem = (props: {
         htmlFor={props.tier}
         className={cn(
           'flex flex-col gap-[19px] rounded-2xl border-2 p-4',
-          props.tier === 'T1 Max' &&
+          props.tier === 'T1' &&
             'border-[var(--color-lambo-black)] bg-[#B9DFFF] dark:border-[var(--color-lambo-green)]',
-          props.tier === 'T2 Max' &&
-            'border-[var(--color-stroke)] bg-[#D1FFED]',
-          props.tier === 'T3 Max' &&
-            'border-[var(--color-stroke)] bg-[#FFE4FC]',
-          props.tier === 'T4 Max' &&
-            'border-[var(--color-stroke)] bg-[#E8FFCF]',
+          props.tier === 'T2' && 'border-[var(--color-stroke)] bg-[#D1FFED]',
+          props.tier === 'T3' && 'border-[var(--color-stroke)] bg-[#FFE4FC]',
+          props.tier === 'T4' && 'border-[var(--color-stroke)] bg-[#E8FFCF]',
         )}
       >
         <div className="flex items-center justify-between">

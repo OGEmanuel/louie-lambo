@@ -138,7 +138,10 @@ const MinerForm = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
-        <TransactionDetails balance={balance} />
+        <TransactionDetails
+          balance={balance}
+          xrpBalance={appContext.xrpBalance}
+        />
         <FormField
           control={form.control}
           name="amount"
@@ -234,7 +237,10 @@ export const MinerFormWithdraw = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
-        <TransactionDetails balance={balance} />
+        <TransactionDetails
+          balance={balance}
+          xrpBalance={appContext.xrpBalance}
+        />
         <FormField
           control={form.control}
           name="amount"
@@ -263,9 +269,13 @@ export const MinerFormWithdraw = (props: {
 
 export default MinerForm;
 
-const TransactionDetails = (props: { balance: number }) => {
+const TransactionDetails = (props: { balance: number; xrpBalance: number }) => {
   return (
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
+      <div className="flex items-center justify-between">
+        <p className="text-[var(--color-gray)]">XRP Balance</p>
+        <p className="font-medium">{props.xrpBalance} XRP</p>
+      </div>
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
         <p className="font-medium">{props.balance} XRP</p>

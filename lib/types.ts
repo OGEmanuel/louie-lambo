@@ -29,6 +29,8 @@ export interface AppContextInterface {
   setActiveMine: (mine: MineType) => void;
   platform: string | null;
   setPlatform: React.Dispatch<React.SetStateAction<string | null>>;
+  holders: number;
+  setHolders: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export type StakeType = {
