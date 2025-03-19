@@ -8,6 +8,7 @@ import Head from 'next/head';
 import { ThemeProvider } from '@/components/theme-provider';
 import { AppContextProvider } from '@/context/AppContext';
 import { Suspense } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 const dmSans = DM_Sans({
   variable: '--font-dm-sans',
@@ -53,6 +54,7 @@ export default function RootLayout({
                       <Sidenav />
                       {children}
                     </div>
+                    <ToastContainer position="bottom-right" theme="dark" />
                   </div>
                 </QueryProvider>
               </section>

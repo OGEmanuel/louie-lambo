@@ -252,7 +252,7 @@ const WarningModal = (props: {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose>
+          <DialogClose asChild>
             <Button variant={'destructive'}>Cancel</Button>
           </DialogClose>
           <ButtonLoading
