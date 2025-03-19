@@ -34,7 +34,7 @@ const FormSchema = z.object({
       return val;
     }),
   duration: z.string().min(2, {
-    message: 'Duration must be at least 2 characters.',
+    message: 'Duration must be at least 2 characters. ',
   }),
 });
 
