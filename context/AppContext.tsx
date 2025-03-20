@@ -5,7 +5,7 @@ import { AppContextInterface, MineType, StakeType } from '@/lib/types';
 import { useSearchParams } from 'next/navigation';
 import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 export const AppContext = createContext<AppContextInterface>({
   error: '',
@@ -19,7 +19,7 @@ export const AppContext = createContext<AppContextInterface>({
   xrpRewardsDistributed: 0,
   setError: () => {},
   unstake: () => {},
-  unMine: () => {},
+  unMine: () => Promise.resolve(false),
   setSuccess: () => {},
   walletAddress: '',
   isMobile: false,
@@ -120,6 +120,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
             address: walletAddress,
             amount: amount,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       await payload.json();
@@ -142,15 +145,30 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
             address: walletAddress,
             amount: amount,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       await payload.json();
-      setActiveStake(undefined);
-      await handleSuccess('successfully unstaked tokens');
+      if (payload.ok) {
+        setActiveStake(undefined);
+        toast.success('Successfully withdrawn XRP', {
+          position: 'bottom-right',
+        });
+
+        return true;
+      }
+      toast.error('Error claiming XRP', {
+        position: 'bottom-right',
+      });
+      return false;
     } catch (error) {
       console.error('Error creating stake:', error);
-      handleError('Error placing stake');
-      throw new Error('Failed to creating stake');
+      toast.error('Error claiming XRP', {
+        position: 'bottom-right',
+      });
+      return false;
     }
   };
 
@@ -354,6 +372,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setHolders,
       }}
     >
+      <ToastContainer position="bottom-right" theme="dark" />
+
       {children}
     </AppContext.Provider>
   );

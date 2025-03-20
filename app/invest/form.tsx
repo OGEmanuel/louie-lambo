@@ -6,7 +6,13 @@ import { z } from 'zod';
 import NumberInput from '@/components/ui/number-input';
 import { useForm } from 'react-hook-form';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { AppContext } from '@/context/AppContext';
 import { getDurationInDays } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
@@ -219,12 +225,18 @@ export const MinerFormWithdraw = (props: {
 
   const balance = appContext.activeMine!.tokensAmount;
 
+  useEffect(() => {
+    form.setValue('amount', balance);
+  }, [balance, form]);
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data.amount);
     if (data.amount) {
       setIsloading(true);
-      await appContext.unMine(data.amount);
-      props.setIsSuccess(true);
+      const successful = await appContext.unMine(data.amount);
+      if (successful) {
+        props.setIsSuccess(true);
+      }
       setIsloading(false);
     }
   }

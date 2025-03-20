@@ -23,8 +23,8 @@ import {
   getApyBasedOnTierAndDuration,
 } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import axios, { AxiosError } from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Dialog,
   DialogClose,
@@ -91,10 +91,14 @@ export const Summary = () => {
 
       setOpen(false);
     },
-    onError: () => {
-      toast.error('Error claiming rewards', {
-        position: 'bottom-right',
-      });
+    onError: async data => {
+      const error = data as AxiosError;
+      const errorData = error.response?.data as { message: string };
+      if (errorData) {
+        toast.error(errorData.message, {
+          position: 'bottom-right',
+        });
+      }
     },
   });
 
@@ -113,10 +117,14 @@ export const Summary = () => {
       appContext.setActiveMine(data.data.mine as MineType);
       setOpenRemine(false);
     },
-    onError: () => {
-      toast.error('Error restaking xrp', {
-        position: 'bottom-right',
-      });
+    onError: async data => {
+      const error = data as AxiosError;
+      const errorData = error.response?.data as { message: string };
+      if (errorData) {
+        toast.error(errorData.message, {
+          position: 'bottom-right',
+        });
+      }
     },
   });
 
@@ -145,6 +153,8 @@ export const Summary = () => {
 
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+      <ToastContainer position="bottom-right" theme="dark" />
+
       {appContext.activeMine && (
         <>
           {' '}

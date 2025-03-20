@@ -16,7 +16,7 @@ export interface AppContextInterface {
   setWalletAddress: React.Dispatch<React.SetStateAction<string>>;
   setError: (text: string) => void;
   unstake: (amount: number) => void;
-  unMine: (amount: number) => void;
+  unMine: (amount: number) => Promise<boolean>;
   setSuccess: (text: string) => void;
   loginUser: (address: string, platform: string) => void;
   ref: string | null;
