@@ -52,13 +52,13 @@ const TierSelector = () => {
     },
   });
 
+  const appContext = useContext(AppContext);
+
   if (isPending) {
     return (
       <Skeleton className="h-[11.9rem] w-full animate-pulse rounded-[18px]" />
     );
   }
-
-  const appContext = useContext(AppContext);
 
   return (
     <div className="flex basis-full flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
