@@ -7,7 +7,13 @@ export const LAMBO_TOKEN_CODE = '4C414D424F000000000000000000000000000000';
 export const LAMBO_TOKEN_ISSUER = 'rJXsaaTBAqZRHeLLd13TpbZhraJnGunAvW';
 
 export interface Tier {
-  name: 'T1' | 'T2' | 'T3' | 'T4' | 'T5';
+  name:
+    | 'LAMBORGHINI AVENTADOR 🚨'
+    | 'LAMBORGHINI REVENTON 🚨'
+    | 'LAMBORGHINI CENTENARIO 🚨'
+    | 'LAMBORGHINI EGOISTA 🚨'
+    | 'LAMBORGHINI SIAN 🚨'
+    | 'LAMBORGHINI VENENO 🚨';
   description: string;
   minimumTokensHeld: number;
   maximumTokensHeld: number;
@@ -21,69 +27,82 @@ export interface Tier {
 
 export const tiers: Tier[] = [
   {
-    name: 'T1',
+    name: 'LAMBORGHINI AVENTADOR 🚨',
     description:
-      '🐠 up to 200 xrp per wallet mined All holders between 1M-2.99M $LAMBO',
-    minimumTokensHeld: 1_000_000,
-    maximumTokensHeld: 2_999_999,
-    oneWeekApy: 25,
+      '💎 Hold 250K-999K $LAMBO and pack up to 100 XRP in your trunk to fuel your rewards!',
+    minimumTokensHeld: 250_000,
+    maximumTokensHeld: 999_999,
+    oneWeekApy: 50,
     twoWeeksApy: 50,
     oneMonthApy: 100,
-    threeMonthsApy: 300,
-    sixMonthsApy: 500,
-    maxXrpMineable: 200,
+    threeMonthsApy: 200,
+    sixMonthsApy: 400,
+    maxXrpMineable: 100,
   },
   {
-    name: 'T2',
+    name: 'LAMBORGHINI REVENTON 🚨',
     description:
-      '🐬 up to 400 xrp per wallet mined All holders between 3M-5.99M $LAMBO',
-    minimumTokensHeld: 3_000_000,
-    maximumTokensHeld: 5_999_999,
-    oneWeekApy: 50,
+      '💎 Hold 1M-2.99M $LAMBO and pack up to 200 XRP in your trunk to fuel your rewards!',
+    minimumTokensHeld: 1_000_000,
+    maximumTokensHeld: 2_999_999,
+    oneWeekApy: 100,
     twoWeeksApy: 100,
     oneMonthApy: 200,
     threeMonthsApy: 400,
+    sixMonthsApy: 600,
+    maxXrpMineable: 200,
+  },
+  {
+    name: 'LAMBORGHINI CENTENARIO 🚨',
+    description:
+      '💎 Hold 3M-5.99M $LAMBO and pack up to 400 XRP in your trunk to fuel your rewards!',
+    minimumTokensHeld: 3_000_000,
+    maximumTokensHeld: 5_999_999,
+    oneWeekApy: 150,
+    twoWeeksApy: 150,
+    oneMonthApy: 300,
+    threeMonthsApy: 500,
     sixMonthsApy: 750,
     maxXrpMineable: 400,
   },
   {
-    name: 'T3',
+    name: 'LAMBORGHINI EGOISTA 🚨',
     description:
-      '🦈 up to 600 xrp per wallet mined All holders between 6M-11.99M $LAMBO',
+      '💎 Hold 6M-10.99M $LAMBO and pack up to 600 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 6_000_000,
-    maximumTokensHeld: 11_999_999,
-    oneWeekApy: 75,
-    twoWeeksApy: 150,
-    oneMonthApy: 250,
-    threeMonthsApy: 500,
-    sixMonthsApy: 1000,
-    maxXrpMineable: 600,
-  },
-  {
-    name: 'T4',
-    description:
-      '🐋 up to 1,000 xrp per wallet mined All holders between 12M-19.99M $LAMBO',
-    minimumTokensHeld: 12_000_000,
-    maximumTokensHeld: 19_999_999,
-    oneWeekApy: 100,
+    maximumTokensHeld: 10_999_999,
+    oneWeekApy: 200,
     twoWeeksApy: 200,
-    oneMonthApy: 300,
-    threeMonthsApy: 750,
-    sixMonthsApy: 1250,
-    maxXrpMineable: 1000,
+    oneMonthApy: 400,
+    threeMonthsApy: 650,
+    sixMonthsApy: 900,
+    maxXrpMineable: 600,
   },
 
   {
-    name: 'T5',
+    name: 'LAMBORGHINI SIAN 🚨',
     description:
-      '🐳 up to 2000 xrp per wallet mined All holders above 20M $LAMBO',
+      '💎 Hold 11M-19.99M $LAMBO and pack up to 1,000 XRP in your trunk to fuel your rewards!',
+    minimumTokensHeld: 11_000_000,
+    maximumTokensHeld: 19_999_999,
+    oneWeekApy: 250,
+    twoWeeksApy: 250,
+    oneMonthApy: 450,
+    threeMonthsApy: 700,
+    sixMonthsApy: 1000,
+    maxXrpMineable: 1000,
+  },
+  {
+    name: 'LAMBORGHINI VENENO 🚨',
+    description:
+      '💎 Hold 20M+ $LAMBO and pack up to 2,000 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 20_000_000,
     maximumTokensHeld: Infinity,
     oneWeekApy: 200,
-    twoWeeksApy: 300,
-    oneMonthApy: 500,
-    threeMonthsApy: 1000,
-    sixMonthsApy: 1500,
+    twoWeeksApy: 200,
+    oneMonthApy: 450,
+    threeMonthsApy: 700,
+    sixMonthsApy: 1000,
     maxXrpMineable: 2000,
   },
 ];

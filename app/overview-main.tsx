@@ -85,28 +85,42 @@ const TierSelector = () => {
             className="grid gap-6 md:grid-cols-2 md:gap-[2.63rem]"
           >
             <TierItem
-              tier="T1"
+              tier="LAMBORGHINI AVENTADOR 🚨"
               icon={<RibbonFirstSelect />}
               value={appContext.userTier.name}
             >
               <li>{tiers[0].description}</li>
             </TierItem>
             <TierItem
-              tier="T2"
+              tier="LAMBORGHINI REVENTON 🚨"
               icon={<RibbonSecondSelect />}
               value={appContext.userTier.name}
             >
               <li>{tiers[1].description}</li>
             </TierItem>
             <TierItem
-              tier="T3"
+              tier="LAMBORGHINI CENTENARIO 🚨"
               icon={<RibbonThirdSelect />}
               value={appContext.userTier.name}
             >
               <li>{tiers[2].description}</li>
             </TierItem>
             <TierItem
-              tier="T4"
+              tier="LAMBORGHINI EGOISTA 🚨"
+              icon={<RibbonFourthSelect />}
+              value={appContext.userTier.name}
+            >
+              <li>{tiers[3].description}</li>
+            </TierItem>
+            <TierItem
+              tier="LAMBORGHINI SIAN 🚨"
+              icon={<RibbonFourthSelect />}
+              value={appContext.userTier.name}
+            >
+              <li>{tiers[3].description}</li>
+            </TierItem>
+            <TierItem
+              tier="LAMBORGHINI VENENO 🚨"
               icon={<RibbonFourthSelect />}
               value={appContext.userTier.name}
             >
@@ -116,10 +130,24 @@ const TierSelector = () => {
         </PopoverContent>
       </Popover>
       <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
-        {appContext.userTier.name === 'T1' && <li>{tiers[0].description}</li>}
-        {appContext.userTier.name === 'T2' && <li>{tiers[1].description}</li>}
-        {appContext.userTier.name === 'T3' && <li>{tiers[2].description}</li>}
-        {appContext.userTier.name === 'T4' && <li>{tiers[3].description}</li>}
+        {appContext.userTier.name === 'LAMBORGHINI AVENTADOR 🚨' && (
+          <li>{tiers[0].description}</li>
+        )}
+        {appContext.userTier.name === 'LAMBORGHINI REVENTON 🚨' && (
+          <li>{tiers[1].description}</li>
+        )}
+        {appContext.userTier.name === 'LAMBORGHINI CENTENARIO 🚨' && (
+          <li>{tiers[2].description}</li>
+        )}
+        {appContext.userTier.name === 'LAMBORGHINI EGOISTA 🚨' && (
+          <li>{tiers[3].description}</li>
+        )}{' '}
+        {appContext.userTier.name === 'LAMBORGHINI SIAN 🚨' && (
+          <li>{tiers[3].description}</li>
+        )}{' '}
+        {appContext.userTier.name === 'LAMBORGHINI VENENO 🚨' && (
+          <li>{tiers[3].description}</li>
+        )}
       </ul>
     </div>
   );
