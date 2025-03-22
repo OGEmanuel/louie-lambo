@@ -7,7 +7,7 @@ export const LAMBO_TOKEN_CODE = '4C414D424F000000000000000000000000000000';
 export const LAMBO_TOKEN_ISSUER = 'rJXsaaTBAqZRHeLLd13TpbZhraJnGunAvW';
 
 export interface Tier {
-  name: 'T1' | 'T2' | 'T3' | 'T4' | 'T5';
+  name: string;
   description: string;
   minimumTokensHeld: number;
   maximumTokensHeld: number;

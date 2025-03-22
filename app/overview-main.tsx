@@ -24,6 +24,7 @@ import Trophy from './components/icons/trophy';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Tier, tiers } from '@/lib/constants';
 
 const OverviewMain = () => {
   return (
@@ -42,6 +43,7 @@ const OverviewMain = () => {
 export default OverviewMain;
 
 const TierSelector = () => {
+  const appContext = useContext(AppContext);
   const [open, setOpen] = useState(false);
 
   const { data: tiers, isPending } = useQuery({
@@ -52,13 +54,13 @@ const TierSelector = () => {
     },
   });
 
+  const tierData: Tier[] = tiers;
+
   if (isPending) {
     return (
       <Skeleton className="h-[11.9rem] w-full animate-pulse rounded-[18px]" />
     );
   }
-
-  const appContext = useContext(AppContext);
 
   return (
     <div className="flex basis-full flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
@@ -67,10 +69,10 @@ const TierSelector = () => {
           <Skeleton className="h-9 w-full" />
         ) : (
           <PopoverTrigger className="flex items-center gap-[11px]">
-            <span className="flex items-center gap-[14px] text-[18px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
+            <span className="flex items-center gap-[14px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
-              {appContext.userTier.name}
+              <span className="text-left text-lg">{tiers[0].name}</span>
             </span>
             <ArrowDown />
           </PopoverTrigger>
@@ -80,46 +82,65 @@ const TierSelector = () => {
           className="w-80 max-w-[700px] self-center rounded-[18px] p-4 dark:bg-[var(--color-lambo-black)] sm:w-full md:p-[2.63rem]"
         >
           <RadioGroup
-            defaultValue={appContext.userTier.name}
-            value={appContext.userTier.name}
+            defaultValue={tiers[0].name}
+            value={tiers[0].name}
             className="grid gap-6 md:grid-cols-2 md:gap-[2.63rem]"
           >
-            <TierItem
-              tier="T1"
-              icon={<RibbonFirstSelect />}
-              value={appContext.userTier.name}
-            >
-              <li>{tiers[0].description}</li>
-            </TierItem>
-            <TierItem
-              tier="T2"
+            {tierData.map(tier => (
+              <TierItem
+                key={tier.name}
+                updatedTier={appContext.userTier?.name}
+                tierList={tiers}
+                tier={tier.name}
+                icon={<RibbonFirstSelect />}
+                value={tier.name}
+              >
+                <li>{tier.description}</li>
+              </TierItem>
+            ))}
+            {/* <TierItem
+              updatedTier={appContext.userTier?.name}
+              tierList={tiers}
+              tier={tiers[1].name}
               icon={<RibbonSecondSelect />}
-              value={appContext.userTier.name}
+              value={tiers[1].name}
             >
               <li>{tiers[1].description}</li>
             </TierItem>
             <TierItem
-              tier="T3"
+              tierList={tiers}
+              updatedTier={appContext.userTier?.name}
+              tier={tiers[2].name}
               icon={<RibbonThirdSelect />}
-              value={appContext.userTier.name}
+              value={tiers[2].name}
             >
               <li>{tiers[2].description}</li>
             </TierItem>
             <TierItem
-              tier="T4"
+              tierList={tiers}
+              updatedTier={appContext.userTier?.name}
+              tier={tiers[3].name}
               icon={<RibbonFourthSelect />}
-              value={appContext.userTier.name}
+              value={tiers[3].name}
             >
               <li>{tiers[3].description}</li>
-            </TierItem>
+            </TierItem> */}
           </RadioGroup>
         </PopoverContent>
       </Popover>
       <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
-        {appContext.userTier.name === 'T1' && <li>{tiers[0].description}</li>}
-        {appContext.userTier.name === 'T2' && <li>{tiers[1].description}</li>}
-        {appContext.userTier.name === 'T3' && <li>{tiers[2].description}</li>}
-        {appContext.userTier.name === 'T4' && <li>{tiers[3].description}</li>}
+        {appContext.userTier?.name === tiers[0].name && (
+          <li>{tiers[0].description}</li>
+        )}
+        {appContext.userTier?.name === tiers[1].name && (
+          <li>{tiers[1].description}</li>
+        )}
+        {appContext.userTier?.name === tiers[2].name && (
+          <li>{tiers[2].description}</li>
+        )}
+        {appContext.userTier?.name === tiers[3].name && (
+          <li>{tiers[3].description}</li>
+        )}
       </ul>
     </div>
   );
@@ -176,7 +197,7 @@ const WalletSummary = () => {
             XRP rewards distributed
           </p>
           <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
-            {appContext.xrpRewardsDistributed} XRP
+            {appContext.xrpRewardsDistributed.toFixed(1)} XRP
           </p>
         </div>
       </div>
@@ -189,6 +210,8 @@ const TierItem = (props: {
   icon: ReactNode;
   children: ReactNode;
   value: string;
+  tierList: Tier[];
+  updatedTier: string;
 }) => {
   return (
     <div className="flex items-center">
@@ -197,22 +220,25 @@ const TierItem = (props: {
         htmlFor={props.tier}
         className={cn(
           'flex flex-col gap-[19px] rounded-2xl border-2 p-4',
-          props.tier === 'T1' &&
+          props.tierList[0].name === 'LAMBORGHINI AVENTADOR 🚨' &&
             'border-[var(--color-lambo-black)] bg-[#B9DFFF] dark:border-[var(--color-lambo-green)]',
-          props.tier === 'T2' && 'border-[var(--color-stroke)] bg-[#D1FFED]',
-          props.tier === 'T3' && 'border-[var(--color-stroke)] bg-[#FFE4FC]',
-          props.tier === 'T4' && 'border-[var(--color-stroke)] bg-[#E8FFCF]',
+          props.tier === 'LAMBORGHINI REVENTON 🚨' &&
+            'border-[var(--color-stroke)] bg-[#D1FFED]',
+          props.tier === 'LAMBORGHINI CENTENARIO 🚨' &&
+            'border-[var(--color-stroke)] bg-[#FFE4FC]',
+          props.tier === 'LAMBORGHINI EGOISTA 🚨' &&
+            'border-[var(--color-stroke)] bg-[#E8FFCF]',
         )}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {props.icon}
-            <p className="text-[18px] leading-[23.44px] text-[var(--color-black)]">
+            {/* {props.icon} */}
+            <p className="text-xs leading-[23.44px] text-[var(--color-black)]">
               {props.tier}
             </p>
           </div>
-          {props.tier === props.value && (
-            <p className="rounded-lg border border-transparent bg-[var(--color-lambo-black)] px-2 py-1 text-sm font-medium leading-[26px] text-[var(--color-lambo-green)] dark:border-[var(--color-lambo-green)]">
+          {props.tier === props.updatedTier && (
+            <p className="rounded-lg border border-transparent bg-[var(--color-lambo-black)] p-2 text-center text-xs font-medium leading-5 text-[var(--color-lambo-green)] dark:border-[var(--color-lambo-green)]">
               Current Tier
             </p>
           )}

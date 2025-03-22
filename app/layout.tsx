@@ -44,10 +44,10 @@ export default function RootLayout({
         className={`${dmSans.variable} flex justify-center dark:bg-[var(--color-lambo-black)]`}
       >
         <Suspense fallback={null}>
-          <AppContextProvider>
-            <ThemeProvider>
-              <section className="flex w-full max-w-[1728px] justify-center">
-                <QueryProvider>
+          <QueryProvider>
+            <AppContextProvider>
+              <ThemeProvider>
+                <section className="flex w-full max-w-[1728px] justify-center">
                   <div className="flex w-full max-w-[1488px] flex-col gap-6 pb-[30px] pt-6 md:gap-10 md:pt-[25px]">
                     <Navbar />
                     <div className="flex items-start gap-10">
@@ -56,10 +56,10 @@ export default function RootLayout({
                     </div>
                     <ToastContainer position="bottom-right" theme="dark" />
                   </div>
-                </QueryProvider>
-              </section>
-            </ThemeProvider>
-          </AppContextProvider>
+                </section>
+              </ThemeProvider>
+            </AppContextProvider>
+          </QueryProvider>
         </Suspense>
       </body>
     </html>

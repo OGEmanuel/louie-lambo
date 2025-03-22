@@ -4,6 +4,7 @@ export interface AppContextInterface {
   walletAddress: string;
   xrpBalance: number;
   userTier: Tier;
+  // setUserTier: React.Dispatch<React.SetStateAction<Tier>>;
   tokenBalance: string;
   poolXrpBalance: string;
   stakedWallets: number;

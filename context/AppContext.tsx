@@ -2,8 +2,11 @@
 
 import { Tier, tiers } from '@/lib/constants';
 import { AppContextInterface, MineType, StakeType } from '@/lib/types';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+import { set } from 'mongoose';
 import { useSearchParams } from 'next/navigation';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, use, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
@@ -48,16 +51,29 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [poolXrpBalance, setPoolXrpBalance] = useState<string>('0');
   const [stakedWallets, setStakedWallets] = useState<number>(0);
   const [xrpRewardsDistributed, setXrpRewardsDistributed] = useState<number>(0);
-  const [value, setValue] = useState<Tier>(tiers[0]);
+  const [value, setValue] = useState<Tier | null>(null);
   const [activeStake, setActiveStake] = useState<StakeType>();
   const [activeMine, setActiveMine] = useState<MineType>();
   const [referrer, setReferrer] = useState<string>('');
   const [platform, setPlatform] = useState<string | null>(null);
   const [holders, setHolders] = useState<number>(0);
-
   const [cookies] = useCookies(['walley']);
   const params = useSearchParams();
   const refQuery = params.get('ref');
+
+  const { data } = useQuery({
+    queryKey: ['tiers'],
+    queryFn: async () => {
+      const response = await axios.get('/api/admin/getTiers');
+      return response.data.tiers;
+    },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setValue(data[0]);
+    }
+  }, [data]);
 
   useEffect(() => {
     sessionStorage.setItem('ref', refQuery ? refQuery : '');
@@ -240,7 +256,12 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         'https://lambo-miner-backend.onrender.com/api/mine/record',
         {
           method: 'POST',
-          body: JSON.stringify({ address, amount, duration, tier: value.name }),
+          body: JSON.stringify({
+            address,
+            amount,
+            duration,
+            tier: value?.name,
+          }),
         },
       );
       const data = await response.json();
@@ -265,7 +286,12 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         'https://lambo-miner-backend.onrender.com/api/stake/record',
         {
           method: 'POST',
-          body: JSON.stringify({ address, amount, duration, tier: value.name }),
+          body: JSON.stringify({
+            address,
+            amount,
+            duration,
+            tier: value?.name,
+          }),
         },
       );
       const data = await response.json();
@@ -333,7 +359,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         poolXrpBalance,
         stakedWallets,
         unstake: unStake,
-        userTier: value,
+        userTier: value as Tier,
         xrpRewardsDistributed,
         walletAddress,
         activeMine,
