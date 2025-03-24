@@ -162,7 +162,7 @@ const StakeForm = () => {
               <NumberInput
                 label="Amount"
                 onSetMax={() =>
-                  form.setValue('amount', Math.round(Number(balance) - 10))
+                  form.setValue('amount', Math.round(Number(balance) - 1))
                 }
                 description={`Balance: ${balance} LAMBO`}
                 field={field}
