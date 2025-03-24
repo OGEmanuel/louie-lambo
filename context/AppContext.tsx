@@ -265,10 +265,10 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         'https://lambo-miner-backend.onrender.com/api/mine/record',
         {
           method: 'POST',
-          body: JSON.stringify({ address, amount, duration, tier: value.name }),
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ address, amount, duration, tier: value.name }),
         },
       );
       const data = await response.json();
@@ -293,10 +293,10 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         'https://lambo-miner-backend.onrender.com/api/stake/record',
         {
           method: 'POST',
-          body: JSON.stringify({ address, amount, duration, tier: value.name }),
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ address, amount, duration, tier: value.name }),
         },
       );
       const data = await response.json();

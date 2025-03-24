@@ -96,6 +96,9 @@ const StakeForm = () => {
             duration: duration,
             tier: appContext.userTier.name,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       const data = await payload.json();
