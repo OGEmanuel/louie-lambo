@@ -241,6 +241,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
             platform,
             referredBy: referrer,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       await response.json();
@@ -263,6 +266,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         {
           method: 'POST',
           body: JSON.stringify({ address, amount, duration, tier: value.name }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       const data = await response.json();
@@ -288,6 +294,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         {
           method: 'POST',
           body: JSON.stringify({ address, amount, duration, tier: value.name }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       const data = await response.json();
