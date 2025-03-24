@@ -43,12 +43,13 @@ export const POST = async (req: NextRequest) => {
 
     const newMine = await Mine.create({
       user: user.id,
-      tier: tierRec.id,
-      stake: stake.id,
+      tier: tierRec.name,
+      stake: stake?.id,
       tokensAmount: amount,
       stakingDurationInDays: duration,
       expectedAmount,
       unlockDate: date,
+      lastClaimDate: new Date(),
       status: 'ACTIVE',
       rewardsEarned: 0,
     });

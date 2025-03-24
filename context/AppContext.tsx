@@ -270,7 +270,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       //   },
       // );
       const resp = await axios.post(
-        `https://lambo-miner-backend.onrender.com/api/mine/record`,
+        `/api/mine/record`,
         { address, amount, duration, tier: value.name },
         {
           headers: {
