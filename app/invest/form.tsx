@@ -96,6 +96,9 @@ const MinerForm = (props: {
             address: appContext.walletAddress,
             amount: amount,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       const data = await payload.json();
@@ -120,14 +123,18 @@ const MinerForm = (props: {
           const checkSign = await fetch(
             `https://lambo-miner-backend.onrender.com/api/auth/xumm/checkSign?hex=${hex}`,
           );
-          await checkSign.json();
-          await appContext.createMineRecord(
-            appContext.walletAddress,
-            amount,
-            duration,
-          );
-          setDrawerOpen(false);
-          props.setIsSuccess(true);
+          if (checkSign.ok) {
+            await checkSign.json();
+            await appContext.createMineRecord(
+              appContext.walletAddress,
+              amount,
+              duration,
+            );
+            setDrawerOpen(false);
+            props.setIsSuccess(true);
+          } else {
+            appContext.setError('Error placing stake');
+          }
         }
       };
     } catch (error) {

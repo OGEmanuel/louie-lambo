@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
 
 export const AppContext = createContext<AppContextInterface>({
   error: '',
@@ -261,14 +262,23 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     duration: number,
   ) => {
     try {
-      const response = await fetch(
-        'https://lambo-miner-backend.onrender.com/api/mine/record',
+      // const response = await fetch(
+      //   'https://lambo-miner-backend.onrender.com/api/mine/record',
+      //   {
+      //     method: 'POST',
+      //     body: JSON.stringify({ address, amount, duration, tier: value.name }),
+      //   },
+      // );
+      const resp = await axios.post(
+        `https://lambo-miner-backend.onrender.com/api/mine/record`,
+        { address, amount, duration, tier: value.name },
         {
-          method: 'POST',
-          body: JSON.stringify({ address, amount, duration, tier: value.name }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
-      const data = await response.json();
+      const data = await resp.data;
       setActiveMine(data.mine);
       const newTokenBalance = Number(xrpBalance) - amount;
       setXrpBalance(newTokenBalance);
@@ -286,14 +296,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     duration: number,
   ) => {
     try {
-      const response = await fetch(
-        'https://lambo-miner-backend.onrender.com/api/stake/record',
+      const resp = await axios.post(
+        `https://lambo-miner-backend.onrender.com/api/stake/record`,
+        { address, amount, duration, tier: value.name },
         {
-          method: 'POST',
-          body: JSON.stringify({ address, amount, duration, tier: value.name }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
-      const data = await response.json();
+      const data = await resp.data;
       setActiveStake(data.stake);
       const newTokenBalance = Number(tokenBalance) - amount;
       setTokenBalance(String(newTokenBalance));

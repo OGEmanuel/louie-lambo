@@ -123,14 +123,19 @@ const StakeForm = () => {
           const checkSign = await fetch(
             `https://lambo-miner-backend.onrender.com/api/auth/xumm/checkSign?hex=${hex}`,
           );
-          await checkSign.json();
-          await appContext.createStakeRecord(
-            appContext.walletAddress,
-            amount,
-            duration,
-          );
-          form.setValue('amount', 0);
-          setDrawerOpen(false);
+
+          if (checkSign.ok) {
+            await checkSign.json();
+            await appContext.createStakeRecord(
+              appContext.walletAddress,
+              amount,
+              duration,
+            );
+            form.setValue('amount', 0);
+            setDrawerOpen(false);
+          } else {
+            appContext.setError('Error placing stake');
+          }
         }
       };
     } catch (error) {
