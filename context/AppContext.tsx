@@ -126,11 +126,15 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       );
       await payload.json();
+      toast.success('Successfully unstaked tokens', {
+        position: 'bottom-right',
+      });
       setActiveStake(undefined);
-      await handleSuccess('successfully unstaked tokens');
     } catch (error) {
       console.error('Error creating stake:', error);
-      handleError('Error placing stake');
+      toast.error('Error unstaking tokens', {
+        position: 'bottom-right',
+      });
       throw new Error('Failed to creating stake');
     }
   };
@@ -290,10 +294,14 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setActiveStake(data.stake);
       const newTokenBalance = Number(tokenBalance) - amount;
       setTokenBalance(String(newTokenBalance));
-      handleSuccess('Staked tokens✅');
+      toast.success('Staked tokens✅', {
+        position: 'bottom-right',
+      });
     } catch (error) {
       console.error('Error staking tokens', error);
-      handleError("Couldn't stake tokens");
+      toast.error('Error staking tokens', {
+        position: 'bottom-right',
+      });
       throw new Error('Failed to stake tokens');
     }
   };
