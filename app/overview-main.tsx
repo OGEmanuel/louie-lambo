@@ -117,14 +117,14 @@ const TierSelector = () => {
               icon={<RibbonFourthSelect />}
               value={appContext.userTier.name}
             >
-              <li>{tiers[3].description}</li>
+              <li>{tiers[4].description}</li>
             </TierItem>
             <TierItem
               tier="LAMBORGHINI VENENO 🚨"
               icon={<RibbonFourthSelect />}
               value={appContext.userTier.name}
             >
-              <li>{tiers[3].description}</li>
+              <li>{tiers[5].description}</li>
             </TierItem>
           </RadioGroup>
         </PopoverContent>
@@ -143,10 +143,10 @@ const TierSelector = () => {
           <li>{tiers[3].description}</li>
         )}{' '}
         {appContext.userTier.name === 'LAMBORGHINI SIAN 🚨' && (
-          <li>{tiers[3].description}</li>
+          <li>{tiers[4].description}</li>
         )}{' '}
         {appContext.userTier.name === 'LAMBORGHINI VENENO 🚨' && (
-          <li>{tiers[3].description}</li>
+          <li>{tiers[5].description}</li>
         )}
       </ul>
     </div>

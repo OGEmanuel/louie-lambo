@@ -314,7 +314,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setPoolXrpBalance(data.poolXrpBalance);
       setStakedWallets(data.stakedWallets);
-      setXrpRewardsDistributed(data.xrpRewardsDistributed);
+      setXrpRewardsDistributed(Number(data.xrpRewardsDistributed.toFixed(2)));
       setXrpBalance(Number(data.userBalance.toFixed(2)));
       setTokenBalance(Number(data.tokenBalance).toFixed(2));
       setHolders(data.holders);
