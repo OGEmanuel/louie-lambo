@@ -191,9 +191,9 @@ const WalletDialog = (props: {
     setQrcode(data.payload.refs.qr_png);
     setJumpLink(data.payload.next.always);
 
-    if (appContext.isMobile) {
-      window.open(data.payload.next.always, '_blank');
-    }
+    // if (appContext.isMobile) {
+    //   window.open(data.payload.next.always, '_blank');
+    // }
 
     const ws = new WebSocket(data.payload.refs.websocket_status);
 
