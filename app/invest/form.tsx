@@ -60,21 +60,46 @@ const MinerForm = (props: {
   const [qrcode, setQrcode] = useState<string>('');
   const [jumpLink, setJumpLink] = useState<string>('');
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [stakeDurationOptions, setStakeDurationOption] = useState([
+    { label: '7 days', value: 'oneWeek' },
+    { label: '1 month', value: 'oneMonth' },
+    { label: '3 months', value: 'threeMonths' },
+    { label: '6 months', value: 'sixMonths' },
+  ]);
+
+  useEffect(() => {
+    if (appContext.activeStake) {
+      const duration = appContext.activeStake.stakingDurationInDays;
+      const durationWord =
+        duration == 7
+          ? 'oneWeek'
+          : duration === 30
+            ? 'oneMonth'
+            : duration === 90
+              ? 'threeMonths'
+              : duration === 180
+                ? 'sixMonths'
+                : 'notFound';
+      const filteredOptions = stakeDurationOptions.filter(
+        stake => stake.value === durationWord,
+      );
+      setStakeDurationOption(filteredOptions);
+    }
+  }, [appContext.activeStake]);
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const getAPY = (): number => {
-    return convertedDuration === 'oneWeek'
+    return appContext.activeStake?.stakingDurationInDays === 7
       ? appContext.userTier?.oneWeekApy
-      : convertedDuration === 'twoWeeks'
-        ? appContext.userTier?.twoWeeksApy
-        : convertedDuration === 'oneMonth'
-          ? appContext.userTier?.oneMonthApy
-          : convertedDuration === 'threeMonths'
-            ? appContext.userTier?.threeMonthsApy
-            : appContext.userTier?.sixMonthsApy;
+      : appContext.activeStake?.stakingDurationInDays === 30
+        ? appContext.userTier?.oneMonthApy
+        : appContext.activeStake?.stakingDurationInDays === 90
+          ? appContext.userTier?.threeMonthsApy
+          : appContext.activeStake?.stakingDurationInDays === 180
+            ? appContext.userTier?.sixMonthsApy
+            : 0;
   };
-
   const balance = appContext.xrpBalance;
   const depBalance = appContext.activeMine!.tokensAmount;
 
@@ -170,12 +195,7 @@ const MinerForm = (props: {
               label="Duration"
               field={field}
               disabled={true}
-              options={[
-                { label: '7 days', value: 'oneWeek' },
-                { label: '1 month', value: 'oneMonth' },
-                { label: '3 months', value: 'threeMonths' },
-                { label: '6 months', value: 'sixMonths' },
-              ]}
+              options={stakeDurationOptions}
               onChange={() => {
                 field.onChange(convertedDuration);
               }}
@@ -214,7 +234,9 @@ export const MinerFormWithdraw = (props: {
         ? appContext.userTier?.oneMonthApy
         : appContext.activeMine?.stakingDurationInDays === 90
           ? appContext.userTier?.threeMonthsApy
-          : appContext.userTier?.sixMonthsApy;
+          : appContext.activeMine?.stakingDurationInDays === 180
+            ? appContext.userTier?.sixMonthsApy
+            : 0;
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -283,16 +305,20 @@ export const MinerFormWithdraw = (props: {
 export default MinerForm;
 
 const TransactionDetails = (props: { balance: number; xrpBalance: number }) => {
+  const appContext = useContext(AppContext);
   return (
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Balance</p>
         <p className="font-medium">{props.xrpBalance} XRP</p>
       </div>
-      <div className="flex items-center justify-between">
-        <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
-        <p className="font-medium">{props.balance} XRP</p>
-      </div>
+      {appContext.activeMine?.status === 'ACTIVE' && (
+        <div className="flex items-center justify-between">
+          <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
+          <p className="font-medium">{props.balance} XRP</p>
+        </div>
+      )}
+
       {/* <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Deposited</p>
         <p className="font-medium">28 XR P</p>

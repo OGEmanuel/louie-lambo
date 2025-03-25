@@ -105,12 +105,17 @@ export const Summary = (props: { tab: string }) => {
 export const EarlyWithdrawal = (props: { tab?: string }) => {
   return (
     <>
-      <p className="rounded-lg bg-[var(--color-bg)] p-3 leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.23px]">
-        All XRP rewards gained will be lost.{' '}
-        {props.tab === 'unlock' && (
-          <span>You will receive 50% $LAMBO if you eject early</span>
-        )}
-      </p>
+      {props.tab === 'unlock' && (
+        <>
+          <p className="rounded-lg bg-[var(--color-bg)] p-3 leading-[20.83px] text-[var(--color-black)] max-lg:text-sm max-lg:leading-[18.23px]">
+            If ejecting early
+            <span> 50% of $LAMBO tokens will be lost.</span>
+            <br />
+            <span> All XRP rewards earned will be lost. </span>
+            <span> All XRP you pack for the ride will be handed back.</span>
+          </p>
+        </>
+      )}
     </>
   );
 };

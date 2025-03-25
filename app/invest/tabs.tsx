@@ -45,19 +45,21 @@ const MinerTabs = () => {
 
   return (
     <Tabs
-      defaultValue={appContext.activeMine ? 'withdraw' : 'deposit'}
+      defaultValue={
+        appContext.activeMine?.status === 'ACTIVE' ? 'withdraw' : 'deposit'
+      }
       className=""
     >
       <TabsList>
         <TabsTrigger value="deposit">Deposit</TabsTrigger>
-        {appContext.activeMine && (
+        {appContext.activeMine?.status === 'ACTIVE' && (
           <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
         )}
       </TabsList>
       <TabsContent value="deposit" className="w-full">
         <Deposit />
       </TabsContent>
-      {appContext.activeMine && (
+      {appContext.activeMine?.status === 'ACTIVE' && (
         <TabsContent value="withdraw" className="w-full">
           <Withdraw />
         </TabsContent>
@@ -166,7 +168,7 @@ export const Summary = () => {
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <ToastContainer position="bottom-right" theme="dark" />
 
-      {appContext.activeMine && (
+      {appContext.activeMine?.status === 'ACTIVE' && (
         <>
           {' '}
           <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
@@ -207,10 +209,10 @@ export const Summary = () => {
               </Button>
             </WarningModal>
           </div>
+          <Separator className="bg-[var(--color-stroke)]" />
         </>
       )}
 
-      <Separator className="bg-[var(--color-stroke)]" />
       <Referral />
     </div>
   );
