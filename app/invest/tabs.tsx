@@ -21,6 +21,7 @@ import { AppContext } from '@/context/AppContext';
 import {
   calculateElapsedRewards,
   getApyBasedOnTierAndDuration,
+  isUnlockDateEarly,
 } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
@@ -223,6 +224,7 @@ export const Summary = ({
               <Button
                 variant={'outline'}
                 className="basis-full max-xl:h-[49px]"
+                disabled={isUnlockDateEarly(appContext.activeMine.unlockDate)}
               >
                 Claim reward
               </Button>
