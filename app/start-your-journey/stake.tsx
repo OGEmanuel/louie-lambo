@@ -185,6 +185,8 @@ const StakeForm = () => {
                 onSetMax={() =>
                   form.setValue('amount', Math.round(Number(balance) - 1))
                 }
+                max={appContext.userTier.maximumTokensHeld}
+                min={appContext.userTier.minimumTokensHeld}
                 description={`Balance: ${balance} LAMBO`}
                 field={field}
               />

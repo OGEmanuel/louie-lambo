@@ -17,6 +17,7 @@ import { AppContext } from '@/context/AppContext';
 import { getDurationInDays } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
+import { toast, ToastContainer } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
@@ -116,6 +117,15 @@ const MinerForm = (props: {
 
   const createStake = async (amount: number, duration: number) => {
     try {
+      const minAmount = appContext.userTier.maxXrpMineable;
+
+      if (amount < minAmount) {
+        toast.error('Maximum xrp amount for tier not reached', {
+          position: 'bottom-right',
+        });
+        return;
+      }
+
       setIsloading(true);
       setDrawerOpen(open => !open);
       const payload = await fetch(
@@ -178,6 +188,8 @@ const MinerForm = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
+        <ToastContainer position="bottom-right" theme="dark" />
+
         <TransactionDetails balance={depBalance} xrpBalance={balance} />
         <FormField
           control={form.control}
@@ -186,6 +198,7 @@ const MinerForm = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
+              max={appContext.userTier.maxXrpMineable}
               description={`Projected yield: APY ${getAPY()}%`}
               field={field}
             />
