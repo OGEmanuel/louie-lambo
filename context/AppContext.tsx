@@ -126,7 +126,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       );
-      await payload.json();
+      const data = await payload.json();
+      if (!payload.ok) {
+        toast.error(data.message, {
+          position: 'bottom-right',
+        });
+        return;
+      }
       toast.success('Successfully unstaked tokens', {
         position: 'bottom-right',
       });
