@@ -19,7 +19,7 @@ import Apy from '../components/icons/apy';
 import MinerSuccessDark from '../components/icons/miner-success-dark';
 import { AppContext } from '@/context/AppContext';
 import {
-  calculateStakeRewards,
+  calculateElapsedRewards,
   getApyBasedOnTierAndDuration,
 } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
@@ -136,7 +136,18 @@ export const Summary = () => {
 
   const calculateRewards = () => {
     if (appContext.activeMine) {
-      const amount = calculateStakeRewards(
+      // const amount = calculateStakeRewards(
+      //   appContext.activeMine?.tokensAmount,
+      //   getApyBasedOnTierAndDuration(
+      //     appContext.activeMine.tierData,
+      //     appContext.activeMine.stakingDurationInDays,
+      //   ),
+      //   appContext.activeMine?.stakingDurationInDays,
+      //   new Date(appContext.activeMine.lastClaimDate!),
+      //   new Date(),
+      // ).toFixed(5);
+
+      const amount = calculateElapsedRewards(
         appContext.activeMine?.tokensAmount,
         getApyBasedOnTierAndDuration(
           appContext.activeMine.tierData,

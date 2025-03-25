@@ -101,13 +101,38 @@ const CalculatorForm = () => {
             : tiers[Number(form.watch('tier'))].sixMonthsApy;
   };
 
-  function calculatePercentage(value: number, percentage: number) {
-    const calculatedValue = (value * percentage) / 100;
-    setCalculatedValue(calculatedValue);
+  const getDuration = (value: string): number => {
+    return value === 'oneWeek'
+      ? 7
+      : value === 'twoWeeks'
+        ? 14
+        : value === 'oneMonth'
+          ? 30
+          : value === 'threeMonths'
+            ? 60
+            : 180;
+  };
+
+  function calculatePercentage(
+    value: number,
+    percentage: number,
+    duration: number,
+  ) {
+    console.log(value, percentage, duration);
+    const annualRate = percentage / 100;
+    const dailyRate = (value * annualRate) / 365;
+
+    const totalRewards = dailyRate * duration;
+
+    setCalculatedValue(+totalRewards.toFixed(3));
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    calculatePercentage(Number(data?.amount), getAPY(data.duration));
+    calculatePercentage(
+      Number(data?.amount),
+      getAPY(data.duration),
+      getDuration(data.duration),
+    );
   }
 
   return (

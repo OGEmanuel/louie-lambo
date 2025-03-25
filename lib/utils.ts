@@ -76,11 +76,44 @@ export const getApyBasedOnTierAndDuration = (tier: TierI, duration: number) => {
         ? tier.twoWeeksApy
         : duration == 30
           ? tier.oneMonthApy
-          : duration == 60
+          : duration == 90
             ? tier.threeMonthsApy
-            : duration == 90
+            : duration == 180
               ? tier.sixMonthsApy
               : 0;
 
   return perc;
 };
+
+export function calculateStakingRewards(
+  initialStake: number,
+  apy: number,
+  days: number,
+): number {
+  const annualRate = apy / 100;
+  const dailyRate = (initialStake * annualRate) / 365;
+
+  const totalRewards = dailyRate * days;
+  return totalRewards;
+}
+
+export function calculateElapsedRewards(
+  initialStake: number,
+  apy: number,
+  duration: number,
+  startDate: Date,
+  endDate: Date,
+): number {
+  const annualRate = apy / 100;
+  const dailyRate = (initialStake * annualRate) / 365;
+  const minuteRate = dailyRate / (24 * 60);
+  // const totalRewards = dailyRate * duration;
+
+  const elapsedMinutes = Math.floor(
+    (endDate.getTime() - startDate.getTime()) / (1000 * 60),
+  );
+
+  const rewardPerMinute = minuteRate * elapsedMinutes;
+
+  return rewardPerMinute;
+}
