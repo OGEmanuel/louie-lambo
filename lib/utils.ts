@@ -19,13 +19,26 @@ export const getDurationInDays = (duration: string): number => {
   switch (duration) {
     case '7-days':
       return 7;
-    case '14-days':
-      return 14;
     case '1-month':
       return 30;
     case '3-months':
       return 90;
     case '6-months':
+      return 180;
+    default:
+      throw new Error('Invalid duration');
+  }
+};
+
+export const getDurationInDaysWords = (duration: string): number => {
+  switch (duration) {
+    case 'oneWeek':
+      return 7;
+    case 'oneMonth':
+      return 30;
+    case 'threeMonths':
+      return 90;
+    case 'sixMonths':
       return 180;
     default:
       throw new Error('Invalid duration');

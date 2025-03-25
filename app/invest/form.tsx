@@ -14,7 +14,7 @@ import {
   useState,
 } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { getDurationInDays } from '@/lib/utils';
+import { getDurationInDaysWords } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
 import { toast, ToastContainer } from 'react-toastify';
@@ -111,7 +111,7 @@ const MinerForm = (props: {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount && data.duration) {
-      await createStake(data.amount, getDurationInDays(data.duration));
+      await createStake(data.amount, getDurationInDaysWords(data.duration));
     }
   }
 
@@ -119,7 +119,7 @@ const MinerForm = (props: {
     try {
       const minAmount = appContext.userTier.maxXrpMineable;
 
-      if (amount < minAmount) {
+      if (amount > minAmount) {
         toast.error('Maximum xrp amount for tier not reached', {
           position: 'bottom-right',
         });
