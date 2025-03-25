@@ -13,6 +13,7 @@ import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import WalletScanDrawer from '@/components/walletScanDrawer';
 import { getDurationInDays } from '@/lib/utils';
+import { toast, ToastContainer } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
@@ -119,24 +120,31 @@ const StakeForm = () => {
           const checkSign = await fetch(
             `https://lambo-miner-backend.onrender.com/api/auth/xumm/checkSign?hex=${hex}`,
           );
+          const data = await checkSign.json();
 
           if (checkSign.ok) {
-            await checkSign.json();
             await appContext.createStakeRecord(
               appContext.walletAddress,
               amount,
               duration,
             );
+            toast.success('Successfully staked tokens', {
+              position: 'bottom-right',
+            });
             form.setValue('amount', 0);
             setDrawerOpen(false);
           } else {
-            appContext.setError('Error placing stake');
+            toast.error(data.message, {
+              position: 'bottom-right',
+            });
           }
         }
       };
     } catch (error) {
       console.error('Error creating stake:', error);
-      appContext.setError('Error placing stake');
+      toast.error('Error placing stake', {
+        position: 'bottom-right',
+      });
       throw new Error('Failed to creating stake');
     } finally {
       setIsloading(false);
@@ -146,6 +154,8 @@ const StakeForm = () => {
   return (
     <>
       <Form {...form}>
+        <ToastContainer position="bottom-right" theme="dark" />
+
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"

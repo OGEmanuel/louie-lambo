@@ -10,6 +10,7 @@ import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
+import { ToastContainer } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
@@ -62,12 +63,15 @@ const UnstakeForm = (props: { tab?: string }) => {
     if (data.amount) {
       setIsloading(true);
       await appContext.unstake(data.amount);
+
       setIsloading(false);
     }
   }
 
   return (
     <Form {...form}>
+      <ToastContainer position="bottom-right" theme="dark" />
+
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
