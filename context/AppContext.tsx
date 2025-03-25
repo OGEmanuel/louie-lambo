@@ -161,9 +161,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       );
-      await payload.json();
+      // const data = await payload.json();
       if (payload.ok) {
-        setActiveStake(undefined);
+        setActiveMine(undefined);
         toast.success('Successfully withdrawn XRP', {
           position: 'bottom-right',
         });
