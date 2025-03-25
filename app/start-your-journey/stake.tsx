@@ -85,6 +85,21 @@ const StakeForm = () => {
   }
   const createStake = async (amount: number, duration: number) => {
     try {
+      const minAmount = appContext.userTier.minimumTokensHeld;
+      const maxAmount = appContext.userTier.maximumTokensHeld;
+
+      if (amount < minAmount) {
+        toast.error('Minimum amount for tier not reached', {
+          position: 'bottom-right',
+        });
+        return;
+      }
+      if (amount > maxAmount) {
+        toast.error('Maximum amount for tier not reached', {
+          position: 'bottom-right',
+        });
+      }
+
       setIsloading(true);
       setDrawerOpen(open => !open);
       const payload = await fetch(
