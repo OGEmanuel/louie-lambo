@@ -297,6 +297,8 @@ export const MinerFormWithdraw = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
+        <ToastContainer position="bottom-right" theme="dark" />
+
         <TransactionDetails
           balance={balance}
           xrpBalance={appContext.xrpBalance}
