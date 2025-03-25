@@ -68,7 +68,10 @@ const MinerForm = (props: {
   ]);
 
   useEffect(() => {
+    console.log(appContext.activeStake);
+
     if (appContext.activeStake) {
+      console.log(appContext.activeStake);
       const duration = appContext.activeStake.stakingDurationInDays;
       const durationWord =
         duration == 7
@@ -101,7 +104,9 @@ const MinerForm = (props: {
             : 0;
   };
   const balance = appContext.xrpBalance;
-  const depBalance = appContext.activeMine!.tokensAmount;
+  const depBalance = appContext.activeMine
+    ? appContext.activeMine?.tokensAmount
+    : 0;
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount && data.duration) {
@@ -208,7 +213,12 @@ const MinerForm = (props: {
           type="submit"
           label={`${props.type} XRP`}
           isPending={isLoading}
-          disabled={appContext.activeMine?.status === 'ACTIVE' || isLoading}
+          disabled={
+            appContext.activeMine?.status === 'ACTIVE' ||
+            isLoading ||
+            appContext.activeMine?.status === 'UNSTAKED' ||
+            !appContext.activeStake
+          }
         />
         <WalletScanDrawer
           drawerOpen={drawerOpen}
@@ -242,13 +252,15 @@ export const MinerFormWithdraw = (props: {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      amount: appContext.activeMine?.tokensAmount,
+      amount: appContext.activeMine ? appContext.activeMine?.tokensAmount : 0,
       duration: '22888',
     },
   });
   const [isLoading, setIsloading] = useState<boolean>(false);
 
-  const balance = appContext.activeMine!.tokensAmount;
+  const balance = appContext.activeMine
+    ? appContext.activeMine?.tokensAmount
+    : 0;
 
   useEffect(() => {
     form.setValue('amount', balance);

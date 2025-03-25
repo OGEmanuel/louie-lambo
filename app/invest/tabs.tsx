@@ -70,10 +70,16 @@ const MinerTabs = () => {
 
 export default MinerTabs;
 
-export const Summary = () => {
+export const Summary = ({
+  setIsSuccess,
+}: {
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
+}) => {
   const appContext = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [openRemine, setOpenRemine] = useState(false);
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
   const [rewards, setRewards] = useState<number>(0);
 
   const { mutate, isPending } = useMutation({
@@ -164,6 +170,19 @@ export const Summary = () => {
     }
   };
 
+  async function onSubmit() {
+    if (appContext.activeMine?.tokensAmount) {
+      setIsloading(true);
+      const successful = await appContext.unMine(
+        appContext.activeMine?.tokensAmount,
+      );
+      if (successful) {
+        setIsSuccess(true);
+      }
+      setIsloading(false);
+    }
+  }
+
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <ToastContainer position="bottom-right" theme="dark" />
@@ -213,6 +232,32 @@ export const Summary = () => {
         </>
       )}
 
+      {appContext.activeMine?.status === 'UNSTAKED' && (
+        <>
+          <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
+            <div className="flex items-center gap-1 text-[var(--color-black)]">
+              <p className="leading-[20.83px]">Pending XRP Withdrawal</p>
+              <Apy className="lg:hidden" />
+            </div>
+
+            <p className="text-[28px] leading-[36.46px]">
+              {appContext.activeMine ? appContext.activeMine?.tokensAmount : 0}{' '}
+              XRP
+            </p>
+          </div>
+          <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
+            <ButtonLoading
+              className="w-full"
+              variant={'secondary'}
+              label={`Withdraw XRP`}
+              isPending={isLoading}
+              onClick={onSubmit}
+              disabled={isLoading}
+            />
+          </div>
+        </>
+      )}
+
       <Referral />
     </div>
   );
@@ -235,7 +280,7 @@ export const SuccessPage = (props: {
       <p className="text-[var(--color-black)]">
         You have successfully {props.type}{' '}
         <span className="text-black dark:text-white">
-          {appContext.activeMine?.tokensAmount} XRP
+          {appContext.activeMine ? appContext.activeMine?.tokensAmount : 0} XRP
         </span>{' '}
         to your wallet
       </p>
