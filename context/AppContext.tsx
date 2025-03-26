@@ -89,13 +89,15 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchBalance = async (address: string) => {
       await fetchOverview(address);
-      await getActiveStake();
-      await getActiveMine();
+      if (address) {
+        await getActiveStake();
+        await getActiveMine();
+      }
     };
 
-    if (walletAddress) {
-      fetchBalance(walletAddress);
-    }
+    // if (walletAddress) {
+    fetchBalance(walletAddress);
+    // }
   }, [walletAddress]);
 
   useEffect(() => {
@@ -137,6 +139,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         position: 'bottom-right',
       });
       setActiveStake(undefined);
+      setActiveMine(data.mine);
     } catch (error) {
       console.error('Error creating stake:', error);
       toast.error('Error unstaking tokens', {
@@ -161,9 +164,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       );
-      const data = await payload.json();
+      // const data = await payload.json();
       if (payload.ok) {
-        setActiveMine(data.mine);
+        setActiveMine(undefined);
         toast.success('Successfully withdrawn XRP', {
           position: 'bottom-right',
         });

@@ -18,7 +18,7 @@ import ArrowDown from './components/icons/arrow-down';
 import RibbonSelectMobile from './components/icons/ribbon-select-mobile';
 import { Separator } from '@/components/ui/separator';
 import { AppContext } from '@/context/AppContext';
-import Pooled from './components/icons/pooled';
+// import Pooled from './components/icons/pooled';
 import Wallet from './components/icons/wallet';
 import Trophy from './components/icons/trophy';
 import { useQuery } from '@tanstack/react-query';
@@ -30,7 +30,8 @@ const OverviewMain = () => {
     <div className="flex flex-col gap-12 sm:gap-[61px] lg:max-xl:gap-6">
       <div className="flex justify-between gap-6 max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
         <TierSelector />
-        <Balance />
+
+        {/* <Balance /> */}
       </div>
       <div className="flex flex-col gap-[13px]">
         <WalletSummary />
@@ -153,22 +154,22 @@ const TierSelector = () => {
   );
 };
 
-const Balance = () => {
-  const appContext = useContext(AppContext);
+// const Balance = () => {
+//   const appContext = useContext(AppContext);
 
-  return (
-    <div className="flex w-full flex-col gap-[1.13rem] rounded-2xl border border-[var(--color-lambo-green)] p-[2.63rem] text-xl font-medium leading-[100%] text-[var(--color-black)] md:basis-full lg:max-xl:w-full">
-      <div className="flex items-center gap-5">
-        <div className="rounded-lg bg-[var(--color-bg)] p-3">
-          <Pooled fill="#313131" className="dark:hidden" />
-          <Pooled fill="#8a8a8a" className="hidden dark:block" />
-        </div>
-        <p>XRP pooled</p>
-      </div>
-      <p>{appContext.poolXrpBalance} XRP</p>
-    </div>
-  );
-};
+//   return (
+//     <div className="flex w-full flex-col gap-[1.13rem] rounded-2xl border border-[var(--color-lambo-green)] p-[2.63rem] text-xl font-medium leading-[100%] text-[var(--color-black)] md:basis-full lg:max-xl:w-full">
+//       <div className="flex items-center gap-5">
+//         <div className="rounded-lg bg-[var(--color-bg)] p-3">
+//           <Pooled fill="#313131" className="dark:hidden" />
+//           <Pooled fill="#8a8a8a" className="hidden dark:block" />
+//         </div>
+//         <p>XRP pooled</p>
+//       </div>
+//       <p>{appContext.poolXrpBalance} XRP</p>
+//     </div>
+//   );
+// };
 
 const WalletSummary = () => {
   const appContext = useContext(AppContext);

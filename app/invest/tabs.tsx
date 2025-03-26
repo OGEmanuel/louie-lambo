@@ -38,6 +38,7 @@ import {
 } from '@/components/ui/dialog';
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { MineType } from '@/lib/types';
+import { Timer } from '@/components/Timer';
 
 const BASE_URL = 'https://lambo-miner-backend.onrender.com/api';
 
@@ -201,7 +202,7 @@ export const Summary = ({
           </div>
           <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
             <WarningModal
-              title="Re-mine"
+              title="ReInvest"
               mutate={mutateReMine}
               isPending={isPendingReMine}
               open={openRemine}
@@ -214,23 +215,40 @@ export const Summary = ({
                 Re-invest XRP
               </Button>
             </WarningModal>
-            <WarningModal
-              title="Claim reward"
-              mutate={mutate}
-              isPending={isPending}
-              open={open}
-              setOpen={setOpen}
-            >
-              <Button
-                variant={'outline'}
-                className="basis-full max-xl:h-[49px]"
-                disabled={isUnlockDateEarly(appContext.activeMine.unlockDate)}
+            {!isUnlockDateEarly(appContext.activeMine.unlockDate) && (
+              <WarningModal
+                title="Claim reward"
+                mutate={mutate}
+                isPending={isPending}
+                open={open}
+                setOpen={setOpen}
               >
-                Claim reward
-              </Button>
-            </WarningModal>
+                <Button
+                  variant={'outline'}
+                  className="basis-full max-xl:h-[49px]"
+                  disabled={isUnlockDateEarly(appContext.activeMine.unlockDate)}
+                >
+                  Claim reward
+                </Button>
+              </WarningModal>
+            )}
           </div>
           <Separator className="bg-[var(--color-stroke)]" />
+          {appContext.activeStake && appContext.activeMine && (
+            <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[30.5px] pt-[48.25px] text-center font-medium">
+              <div className="flex items-center gap-1">
+                <p className="leading-[20.83px] text-[var(--color-black)]">
+                  Unlock Date
+                </p>
+                <Apy className="lg:hidden" />
+              </div>
+              <Timer
+                deadline={new Date(
+                  appContext.activeStake.unlockDate!,
+                ).toISOString()}
+              />
+            </div>
+          )}
         </>
       )}
 

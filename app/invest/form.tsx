@@ -269,7 +269,7 @@ export const MinerFormWithdraw = (props: {
       duration: '22888',
     },
   });
-  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [, setIsloading] = useState<boolean>(false);
 
   const balance = appContext.activeMine
     ? appContext.activeMine?.tokensAmount
@@ -316,14 +316,14 @@ export const MinerFormWithdraw = (props: {
           )}
         />
 
-        <ButtonLoading
+        {/* <ButtonLoading
           className="w-full"
           variant={'secondary'}
           type="submit"
           label={`${props.type} XRP`}
           isPending={isLoading}
           disabled={isLoading}
-        />
+        /> */}
       </form>
     </Form>
   );
