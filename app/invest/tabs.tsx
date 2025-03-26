@@ -39,6 +39,7 @@ import {
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { MineType } from '@/lib/types';
 import { Timer } from '@/components/Timer';
+import { Referral } from '../referral';
 
 const BASE_URL = 'https://lambo-miner-backend.onrender.com/api';
 
@@ -278,7 +279,7 @@ export const Summary = ({
         </>
       )}
 
-      {/* <Referral /> */}
+      {!appContext.activeMine && <Referral />}
     </div>
   );
 };
