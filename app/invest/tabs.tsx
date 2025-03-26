@@ -278,7 +278,7 @@ export const Summary = ({
         </>
       )}
 
-      <Referral />
+      {/* <Referral /> */}
     </div>
   );
 };
