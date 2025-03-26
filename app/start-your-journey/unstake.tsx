@@ -10,7 +10,7 @@ import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
 import { Separator } from '@/components/ui/separator';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
