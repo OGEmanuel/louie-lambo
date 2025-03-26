@@ -15,7 +15,7 @@ export interface AppContextInterface {
   activeMine: MineType | undefined;
   setWalletAddress: React.Dispatch<React.SetStateAction<string>>;
   setError: (text: string) => void;
-  unstake: (amount: number) => void;
+  unstake: (amount: number) => Promise<boolean>;
   unMine: (amount: number) => Promise<boolean>;
   setSuccess: (text: string) => void;
   loginUser: (address: string, platform: string) => void;

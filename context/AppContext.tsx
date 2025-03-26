@@ -19,7 +19,7 @@ export const AppContext = createContext<AppContextInterface>({
   stakedWallets: 0,
   xrpRewardsDistributed: 0,
   setError: () => {},
-  unstake: () => {},
+  unstake: () => Promise.resolve(false),
   unMine: () => Promise.resolve(false),
   setSuccess: () => {},
   walletAddress: '',
@@ -133,19 +133,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         toast.error(data.message, {
           position: 'bottom-right',
         });
-        return;
+        return false;
       }
-      toast.success('Successfully unstaked tokens', {
-        position: 'bottom-right',
-      });
+
       setActiveStake(undefined);
       setActiveMine(data.mine);
+      return true;
     } catch (error) {
       console.error('Error creating stake:', error);
-      toast.error('Error unstaking tokens', {
-        position: 'bottom-right',
-      });
-      throw new Error('Failed to creating stake');
+
+      return false;
     }
   };
 

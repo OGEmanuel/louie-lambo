@@ -62,7 +62,16 @@ const UnstakeForm = (props: { tab?: string }) => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount) {
       setIsloading(true);
-      await appContext.unstake(data.amount);
+      const isSuccess = await appContext.unstake(data.amount);
+      if (isSuccess) {
+        toast.success('Successfully unstaked tokens', {
+          position: 'bottom-right',
+        });
+      } else {
+        toast.error('Error unstaking tokens', {
+          position: 'bottom-right',
+        });
+      }
 
       setIsloading(false);
     }
