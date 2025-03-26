@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Deposit from './deposit';
 import Withdraw from './withdraw';
 import { Button } from '@/components/ui/button';
-import { Referral } from '../referral';
+// import { Referral } from '../referral';
 import { Separator } from '@/components/ui/separator';
 import {
   Dispatch,
