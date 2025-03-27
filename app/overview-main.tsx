@@ -183,7 +183,7 @@ const WalletSummary = () => {
         </div>
         <div className="flex flex-col gap-6">
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
-            No. of wallets staked
+            No. of holders earning XRP
           </p>
           <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
             {appContext.stakedWallets} / {appContext.holders} $LAMBO holders
