@@ -216,23 +216,23 @@ export const Summary = ({
                 Re-invest XRP
               </Button>
             </WarningModal>
-            {!isUnlockDateEarly(appContext.activeMine.unlockDate) && (
-              <WarningModal
-                title="Claim reward"
-                mutate={mutate}
-                isPending={isPending}
-                open={open}
-                setOpen={setOpen}
+            {/* {!isUnlockDateEarly(appContext.activeMine.unlockDate) && ( */}
+            <WarningModal
+              title="Claim reward"
+              mutate={mutate}
+              isPending={isPending}
+              open={open}
+              setOpen={setOpen}
+            >
+              <Button
+                variant={'outline'}
+                className={`basis-full max-xl:h-[49px] ${!isUnlockDateEarly(appContext.activeMine.unlockDate) && 'border-[var(--color-lambo-green)]'}`}
+                disabled={isUnlockDateEarly(appContext.activeMine.unlockDate)}
               >
-                <Button
-                  variant={'outline'}
-                  className="basis-full max-xl:h-[49px]"
-                  disabled={isUnlockDateEarly(appContext.activeMine.unlockDate)}
-                >
-                  Claim reward
-                </Button>
-              </WarningModal>
-            )}
+                Claim reward
+              </Button>
+            </WarningModal>
+            {/* )} */}
           </div>
           <Separator className="bg-[var(--color-stroke)]" />
           {appContext.activeStake && appContext.activeMine && (
