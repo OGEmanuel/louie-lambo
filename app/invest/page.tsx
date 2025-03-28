@@ -4,15 +4,15 @@ import SectionCard from '@/components/section-card';
 import MinerTabs from './tabs';
 import { AppContext } from '@/context/AppContext';
 import { useContext } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 
 const Miner = () => {
   const appContext = useContext(AppContext);
-  const router = useRouter();
+  // const router = useRouter();
 
   if (!appContext.activeStake) {
-    router.push('/');
-    return null;
+    // router.push('/');
+    // return null;
   }
 
   return (

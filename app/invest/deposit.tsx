@@ -22,7 +22,7 @@ const Deposit = () => {
         <div className="py-[18.5px] max-lg:py-0"></div>
         <HowItWorks />
       </div>
-      <Summary />
+      <Summary setIsSuccess={setIsSuccess} />
     </div>
   );
 };

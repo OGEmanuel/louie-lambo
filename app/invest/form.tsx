@@ -14,9 +14,10 @@ import {
   useState,
 } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { getDurationInDays } from '@/lib/utils';
+import { getDurationInDaysWords } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
+import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '@/components/ui/button';
 import { WithdrawWarningModal } from './tabs';
 
@@ -62,32 +63,71 @@ const MinerForm = (props: {
   const [qrcode, setQrcode] = useState<string>('');
   const [jumpLink, setJumpLink] = useState<string>('');
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [stakeDurationOptions, setStakeDurationOption] = useState([
+    { label: '7 days', value: 'oneWeek' },
+    { label: '1 month', value: 'oneMonth' },
+    { label: '3 months', value: 'threeMonths' },
+    { label: '6 months', value: 'sixMonths' },
+  ]);
+
+  useEffect(() => {
+    console.log(appContext.activeStake);
+
+    if (appContext.activeStake) {
+      console.log(appContext.activeStake);
+      const duration = appContext.activeStake.stakingDurationInDays;
+      const durationWord =
+        duration == 7
+          ? 'oneWeek'
+          : duration === 30
+            ? 'oneMonth'
+            : duration === 90
+              ? 'threeMonths'
+              : duration === 180
+                ? 'sixMonths'
+                : 'notFound';
+      const filteredOptions = stakeDurationOptions.filter(
+        stake => stake.value === durationWord,
+      );
+      setStakeDurationOption(filteredOptions);
+    }
+  }, [appContext.activeStake]);
 
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 
   const getAPY = (): number => {
-    return convertedDuration === 'oneWeek'
+    return appContext.activeStake?.stakingDurationInDays === 7
       ? appContext.userTier?.oneWeekApy
-      : convertedDuration === 'twoWeeks'
-        ? appContext.userTier?.twoWeeksApy
-        : convertedDuration === 'oneMonth'
-          ? appContext.userTier?.oneMonthApy
-          : convertedDuration === 'threeMonths'
-            ? appContext.userTier?.threeMonthsApy
-            : appContext.userTier?.sixMonthsApy;
+      : appContext.activeStake?.stakingDurationInDays === 30
+        ? appContext.userTier?.oneMonthApy
+        : appContext.activeStake?.stakingDurationInDays === 90
+          ? appContext.userTier?.threeMonthsApy
+          : appContext.activeStake?.stakingDurationInDays === 180
+            ? appContext.userTier?.sixMonthsApy
+            : 0;
   };
-
   const balance = appContext.xrpBalance;
-  const depBalance = appContext.activeMine!?.tokensAmount;
+  const depBalance = appContext.activeMine
+    ? appContext.activeMine?.tokensAmount
+    : 0;
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount && data.duration) {
-      await createStake(data.amount, getDurationInDays(data.duration));
+      await createStake(data.amount, getDurationInDaysWords(data.duration));
     }
   }
 
   const createStake = async (amount: number, duration: number) => {
     try {
+      const minAmount = appContext.userTier.maxXrpMineable;
+
+      if (amount > minAmount) {
+        toast.error('Maximum xrp amount for tier not reached', {
+          position: 'bottom-right',
+        });
+        return;
+      }
+
       setIsloading(true);
       setDrawerOpen(open => !open);
       const payload = await fetch(
@@ -98,16 +138,15 @@ const MinerForm = (props: {
             address: appContext.walletAddress,
             amount: amount,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       const data = await payload.json();
 
       setQrcode(data.payload.refs.qr_png);
       setJumpLink(data.payload.next.always);
-
-      if (appContext.isMobile) {
-        window.open(data.payload.next.always, '_blank');
-      }
 
       const ws = new WebSocket(data.payload.refs.websocket_status);
 
@@ -122,14 +161,18 @@ const MinerForm = (props: {
           const checkSign = await fetch(
             `https://lambo-miner-backend.onrender.com/api/auth/xumm/checkSign?hex=${hex}`,
           );
-          await checkSign.json();
-          await appContext.createMineRecord(
-            appContext.walletAddress,
-            amount,
-            duration,
-          );
-          setDrawerOpen(false);
-          props.setIsSuccess(true);
+          if (checkSign.ok) {
+            await checkSign.json();
+            await appContext.createMineRecord(
+              appContext.walletAddress,
+              amount,
+              duration,
+            );
+            setDrawerOpen(false);
+            props.setIsSuccess(true);
+          } else {
+            appContext.setError('Error placing stake');
+          }
         }
       };
     } catch (error) {
@@ -147,6 +190,8 @@ const MinerForm = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
+        <ToastContainer position="bottom-right" theme="dark" />
+
         <TransactionDetails balance={depBalance} xrpBalance={balance} />
         <FormField
           control={form.control}
@@ -155,6 +200,7 @@ const MinerForm = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
+              max={appContext.userTier.maxXrpMineable}
               description={`Projected yield: APY ${getAPY()}%`}
               field={field}
             />
@@ -169,12 +215,7 @@ const MinerForm = (props: {
               label="Duration"
               field={field}
               disabled={true}
-              options={[
-                { label: '7 days', value: 'oneWeek' },
-                { label: '1 month', value: 'oneMonth' },
-                { label: '3 months', value: 'threeMonths' },
-                { label: '6 months', value: 'sixMonths' },
-              ]}
+              options={stakeDurationOptions}
               onChange={() => {
                 field.onChange(convertedDuration);
               }}
@@ -187,7 +228,12 @@ const MinerForm = (props: {
           type="submit"
           label={`${props.type} XRP`}
           isPending={isLoading}
-          disabled={appContext.activeMine?.status === 'ACTIVE' || isLoading}
+          disabled={
+            appContext.activeMine?.status === 'ACTIVE' ||
+            isLoading ||
+            appContext.activeMine?.status === 'UNSTAKED' ||
+            !appContext.activeStake
+          }
         />
         <WalletScanDrawer
           drawerOpen={drawerOpen}
@@ -214,19 +260,23 @@ export const MinerFormWithdraw = (props: {
         ? appContext.userTier?.oneMonthApy
         : appContext.activeMine?.stakingDurationInDays === 90
           ? appContext.userTier?.threeMonthsApy
-          : appContext.userTier?.sixMonthsApy;
+          : appContext.activeMine?.stakingDurationInDays === 180
+            ? appContext.userTier?.sixMonthsApy
+            : 0;
   };
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      amount: appContext.activeMine?.tokensAmount,
+      amount: appContext.activeMine ? appContext.activeMine?.tokensAmount : 0,
       duration: '22888',
     },
   });
   const [isLoading, setIsloading] = useState<boolean>(false);
 
-  const balance = appContext.activeMine!.tokensAmount;
+  const balance = appContext.activeMine
+    ? appContext.activeMine?.tokensAmount
+    : 0;
 
   useEffect(() => {
     form.setValue('amount', balance);
@@ -251,6 +301,8 @@ export const MinerFormWithdraw = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
+        <ToastContainer position="bottom-right" theme="dark" />
+
         <TransactionDetails
           balance={balance}
           xrpBalance={appContext.xrpBalance}
@@ -293,16 +345,20 @@ export const MinerFormWithdraw = (props: {
 export default MinerForm;
 
 const TransactionDetails = (props: { balance: number; xrpBalance: number }) => {
+  const appContext = useContext(AppContext);
   return (
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Balance</p>
         <p className="font-medium">{props.xrpBalance} XRP</p>
       </div>
-      <div className="flex items-center justify-between">
-        <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
-        <p className="font-medium">{props.balance} XRP</p>
-      </div>
+      {appContext.activeMine?.status === 'ACTIVE' && (
+        <div className="flex items-center justify-between">
+          <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
+          <p className="font-medium">{props.balance} XRP</p>
+        </div>
+      )}
+
       {/* <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Deposited</p>
         <p className="font-medium">28 XR P</p>

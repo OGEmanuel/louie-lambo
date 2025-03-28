@@ -17,7 +17,7 @@ const Withdraw = () => {
         )}
         <div className="py-[17.5px] max-lg:py-0"></div>
       </div>
-      <Summary />
+      <Summary setIsSuccess={setIsSuccess} />
     </div>
   );
 };

@@ -29,7 +29,7 @@ const WalletScanDrawer: React.FC<WalletScanDrawerI> = ({
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent className="bg-white p-4">
           <DrawerHeader className="flex flex-col items-center">
-            <DrawerTitle>Scann this qr code to sign in with xaman!</DrawerTitle>
+            <DrawerTitle>Scan this qr code to sign in with xaman!</DrawerTitle>
           </DrawerHeader>
           <DrawerDescription className="sr-only">
             Scan the QR code with Xaman to sign in.

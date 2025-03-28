@@ -12,13 +12,12 @@ import { cn } from '@/lib/utils';
 import { MenuIcon, MoonIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ComponentProps, useContext, useEffect, useState } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
 import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Poppins } from 'next/font/google';
-import { AppContext } from '@/context/AppContext';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -27,7 +26,7 @@ const poppins = Poppins({
 });
 
 const Sidenav = () => {
-  const appContext = useContext(AppContext);
+  // const appContext = useContext(AppContext);
   return (
     <aside className="flex flex-col gap-8 max-2xl:pl-[120px] max-lg:hidden">
       <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] p-6 text-[18px] font-semibold leading-[23.44px] xl:[&>li]:w-[238px]">
@@ -37,11 +36,11 @@ const Sidenav = () => {
         <li>
           <NavLink href="/start-your-journey">Your $LAMBO Awaits</NavLink>
         </li>
-        {appContext.activeStake && (
-          <li>
-            <NavLink href="/invest">{"Let's Ride"}</NavLink>
-          </li>
-        )}
+        {/* {appContext.activeStake && ( */}
+        <li>
+          <NavLink href="/invest">{"Let's Ride"}</NavLink>
+        </li>
+        {/* // )} */}
         {/* <li>
           <NavLink href="/portfolio">My Portfolio</NavLink>
         </li> */}
@@ -58,7 +57,7 @@ export default Sidenav;
 
 export const MobileSidenav = () => {
   const [open, setOpen] = useState(false);
-  const appContext = useContext(AppContext);
+  // const appContext = useContext(AppContext);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger>
@@ -82,12 +81,12 @@ export const MobileSidenav = () => {
           <li onClick={() => setOpen(false)}>
             <NavLink href="/start-your-journey">Your $LAMBO Awaits</NavLink>
           </li>
+          <li onClick={() => setOpen(false)}>
+            <NavLink href="/invest">{"Let's Ride"}</NavLink>
+          </li>
+          {/* {appContext.activeStake && ( */}
 
-          {appContext.activeStake && (
-            <li onClick={() => setOpen(false)}>
-              <NavLink href="/invest">{"Let's Ride"}</NavLink>
-            </li>
-          )}
+          {/* // )} */}
           {/* <li onClick={() => setOpen(false)}>
             <NavLink href="/portfolio">My Portfolio</NavLink>
           </li> */}

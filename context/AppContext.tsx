@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import React, { createContext, use, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast, ToastContainer } from 'react-toastify';
+import axios from 'axios';
 
 export const AppContext = createContext<AppContextInterface>({
   error: '',
@@ -21,7 +22,7 @@ export const AppContext = createContext<AppContextInterface>({
   stakedWallets: 0,
   xrpRewardsDistributed: 0,
   setError: () => {},
-  unstake: () => {},
+  unstake: () => Promise.resolve(false),
   unMine: () => Promise.resolve(false),
   setSuccess: () => {},
   walletAddress: '',
@@ -104,13 +105,15 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchBalance = async (address: string) => {
       await fetchOverview(address);
-      await getActiveStake();
-      await getActiveMine();
+      if (address) {
+        await getActiveStake();
+        await getActiveMine();
+      }
     };
 
-    if (walletAddress) {
-      fetchBalance(walletAddress);
-    }
+    // if (walletAddress) {
+    fetchBalance(walletAddress);
+    // }
   }, [walletAddress]);
 
   useEffect(() => {
@@ -141,13 +144,21 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       );
-      await payload.json();
+      const data = await payload.json();
+      if (!payload.ok) {
+        toast.error(data.message, {
+          position: 'bottom-right',
+        });
+        return false;
+      }
+
       setActiveStake(undefined);
-      await handleSuccess('successfully unstaked tokens');
+      setActiveMine(data.mine);
+      return true;
     } catch (error) {
       console.error('Error creating stake:', error);
-      handleError('Error placing stake');
-      throw new Error('Failed to creating stake');
+
+      return false;
     }
   };
 
@@ -166,9 +177,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       );
-      await payload.json();
+      // const data = await payload.json();
       if (payload.ok) {
-        setActiveStake(undefined);
+        setActiveMine(undefined);
         toast.success('Successfully withdrawn XRP', {
           position: 'bottom-right',
         });
@@ -253,6 +264,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
             platform,
             referredBy: referrer,
           }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
       );
       await response.json();
@@ -270,9 +284,18 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     duration: number,
   ) => {
     try {
-      const response = await fetch(
-        'https://lambo-miner-backend.onrender.com/api/mine/record',
+      // const response = await fetch(
+      //   'https://lambo-miner-backend.onrender.com/api/mine/record',
+      //   {
+      //     method: 'POST',
+      //     body: JSON.stringify({ address, amount, duration, tier: value.name }),
+      //   },
+      // );
+      const resp = await axios.post(
+        `/api/mine/record`,
+        { address, amount, duration, tier: value.name },
         {
+<<<<<<< HEAD
           method: 'POST',
           body: JSON.stringify({
             address,
@@ -280,9 +303,14 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
             duration,
             tier: value?.name,
           }),
+=======
+          headers: {
+            'Content-Type': 'application/json',
+          },
+>>>>>>> e715c512ed13db6f2559aca540a7e90140aea2af
         },
       );
-      const data = await response.json();
+      const data = await resp.data;
       setActiveMine(data.mine);
       const newTokenBalance = Number(xrpBalance) - amount;
       setXrpBalance(newTokenBalance);
@@ -300,9 +328,11 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     duration: number,
   ) => {
     try {
-      const response = await fetch(
-        'https://lambo-miner-backend.onrender.com/api/stake/record',
+      const resp = await axios.post(
+        `/api/stake/record`,
+        { address, amount, duration, tier: value.name },
         {
+<<<<<<< HEAD
           method: 'POST',
           body: JSON.stringify({
             address,
@@ -310,16 +340,25 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
             duration,
             tier: value?.name,
           }),
+=======
+          headers: {
+            'Content-Type': 'application/json',
+          },
+>>>>>>> e715c512ed13db6f2559aca540a7e90140aea2af
         },
       );
-      const data = await response.json();
+      const data = await resp.data;
       setActiveStake(data.stake);
       const newTokenBalance = Number(tokenBalance) - amount;
       setTokenBalance(String(newTokenBalance));
-      handleSuccess('Staked tokens✅');
+      toast.success('Staked tokens✅', {
+        position: 'bottom-right',
+      });
     } catch (error) {
       console.error('Error staking tokens', error);
-      handleError("Couldn't stake tokens");
+      toast.error('Error staking tokens', {
+        position: 'bottom-right',
+      });
       throw new Error('Failed to stake tokens');
     }
   };
@@ -340,7 +379,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setPoolXrpBalance(data.poolXrpBalance);
       setStakedWallets(data.stakedWallets);
-      setXrpRewardsDistributed(data.xrpRewardsDistributed);
+      setXrpRewardsDistributed(Number(data.xrpRewardsDistributed.toFixed(2)));
       setXrpBalance(Number(data.userBalance.toFixed(2)));
       setTokenBalance(Number(data.tokenBalance).toFixed(2));
       setHolders(data.holders);

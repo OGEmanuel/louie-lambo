@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Deposit from './deposit';
 import Withdraw from './withdraw';
 import { Button } from '@/components/ui/button';
-import { Referral } from '../referral';
+// import { Referral } from '../referral';
 import { Separator } from '@/components/ui/separator';
 import {
   Dispatch,
@@ -19,8 +19,9 @@ import Apy from '../components/icons/apy';
 import MinerSuccessDark from '../components/icons/miner-success-dark';
 import { AppContext } from '@/context/AppContext';
 import {
-  calculateStakeRewards,
+  calculateElapsedRewards,
   getApyBasedOnTierAndDuration,
+  isUnlockDateEarly,
 } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
@@ -37,6 +38,8 @@ import {
 } from '@/components/ui/dialog';
 import { ButtonLoading } from '@/components/ui/button-loading';
 import { MineType } from '@/lib/types';
+import { Timer } from '@/components/Timer';
+import { Referral } from '../referral';
 
 const BASE_URL = 'https://lambo-miner-backend.onrender.com/api';
 
@@ -45,19 +48,21 @@ const MinerTabs = () => {
 
   return (
     <Tabs
-      defaultValue={appContext.activeMine ? 'withdraw' : 'deposit'}
+      defaultValue={
+        appContext.activeMine?.status === 'ACTIVE' ? 'withdraw' : 'deposit'
+      }
       className=""
     >
       <TabsList>
         <TabsTrigger value="deposit">Deposit</TabsTrigger>
-        {appContext.activeMine && (
+        {appContext.activeMine?.status === 'ACTIVE' && (
           <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
         )}
       </TabsList>
       <TabsContent value="deposit" className="w-full">
         <Deposit />
       </TabsContent>
-      {appContext.activeMine && (
+      {appContext.activeMine?.status === 'ACTIVE' && (
         <TabsContent value="withdraw" className="w-full">
           <Withdraw />
         </TabsContent>
@@ -68,10 +73,16 @@ const MinerTabs = () => {
 
 export default MinerTabs;
 
-export const Summary = () => {
+export const Summary = ({
+  setIsSuccess,
+}: {
+  setIsSuccess: Dispatch<SetStateAction<boolean>>;
+}) => {
   const appContext = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const [openRemine, setOpenRemine] = useState(false);
+  const [isLoading, setIsloading] = useState<boolean>(false);
+
   const [rewards, setRewards] = useState<number>(0);
 
   const { mutate, isPending } = useMutation({
@@ -136,7 +147,18 @@ export const Summary = () => {
 
   const calculateRewards = () => {
     if (appContext.activeMine) {
-      const amount = calculateStakeRewards(
+      // const amount = calculateStakeRewards(
+      //   appContext.activeMine?.tokensAmount,
+      //   getApyBasedOnTierAndDuration(
+      //     appContext.activeMine.tierData,
+      //     appContext.activeMine.stakingDurationInDays,
+      //   ),
+      //   appContext.activeMine?.stakingDurationInDays,
+      //   new Date(appContext.activeMine.lastClaimDate!),
+      //   new Date(),
+      // ).toFixed(5);
+
+      const amount = calculateElapsedRewards(
         appContext.activeMine?.tokensAmount,
         getApyBasedOnTierAndDuration(
           appContext.activeMine.tierData,
@@ -151,11 +173,24 @@ export const Summary = () => {
     }
   };
 
+  async function onSubmit() {
+    if (appContext.activeMine?.tokensAmount) {
+      setIsloading(true);
+      const successful = await appContext.unMine(
+        appContext.activeMine?.tokensAmount,
+      );
+      if (successful) {
+        setIsSuccess(true);
+      }
+      setIsloading(false);
+    }
+  }
+
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <ToastContainer position="bottom-right" theme="dark" />
 
-      {appContext.activeMine && (
+      {appContext.activeMine?.status === 'ACTIVE' && (
         <>
           {' '}
           <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
@@ -168,7 +203,7 @@ export const Summary = () => {
           </div>
           <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
             <WarningModal
-              title="Re-mine"
+              title="ReInvest"
               mutate={mutateReMine}
               isPending={isPendingReMine}
               open={openRemine}
@@ -181,6 +216,7 @@ export const Summary = () => {
                 Re-invest XRP
               </Button>
             </WarningModal>
+            {/* {!isUnlockDateEarly(appContext.activeMine.unlockDate) && ( */}
             <WarningModal
               title="Claim reward"
               mutate={mutate}
@@ -190,17 +226,60 @@ export const Summary = () => {
             >
               <Button
                 variant={'outline'}
-                className="basis-full max-xl:h-[49px]"
+                className={`basis-full max-xl:h-[49px] ${!isUnlockDateEarly(appContext.activeMine.unlockDate) && 'border-[var(--color-lambo-green)]'}`}
+                disabled={isUnlockDateEarly(appContext.activeMine.unlockDate)}
               >
                 Claim reward
               </Button>
             </WarningModal>
+            {/* )} */}
+          </div>
+          <Separator className="bg-[var(--color-stroke)]" />
+          {appContext.activeStake && appContext.activeMine && (
+            <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[30.5px] pt-[48.25px] text-center font-medium">
+              <div className="flex items-center gap-1">
+                <p className="leading-[20.83px] text-[var(--color-black)]">
+                  Unlock Date
+                </p>
+                <Apy className="lg:hidden" />
+              </div>
+              <Timer
+                deadline={new Date(
+                  appContext.activeStake.unlockDate!,
+                ).toISOString()}
+              />
+            </div>
+          )}
+        </>
+      )}
+
+      {appContext.activeMine?.status === 'UNSTAKED' && (
+        <>
+          <div className="flex flex-col items-center gap-[18px] rounded-[20px] border border-[var(--color-stroke)] px-[46px] pb-[47.5px] pt-[48.25px] text-center font-medium">
+            <div className="flex items-center gap-1 text-[var(--color-black)]">
+              <p className="leading-[20.83px]">Pending XRP Withdrawal</p>
+              <Apy className="lg:hidden" />
+            </div>
+
+            <p className="text-[28px] leading-[36.46px]">
+              {appContext.activeMine ? appContext.activeMine?.tokensAmount : 0}{' '}
+              XRP
+            </p>
+          </div>
+          <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
+            <ButtonLoading
+              className="w-full"
+              variant={'secondary'}
+              label={`Withdraw XRP`}
+              isPending={isLoading}
+              onClick={onSubmit}
+              disabled={isLoading}
+            />
           </div>
         </>
       )}
 
-      <Separator className="bg-[var(--color-stroke)]" />
-      <Referral />
+      {!appContext.activeMine && <Referral />}
     </div>
   );
 };
@@ -209,7 +288,7 @@ export const SuccessPage = (props: {
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
   type: string;
 }) => {
-  const appContext = useContext(AppContext);
+  // const appContext = useContext(AppContext);
   return (
     <div className="flex flex-col items-center justify-center">
       <MinerSuccess className="dark:hidden" />
@@ -221,10 +300,7 @@ export const SuccessPage = (props: {
       <div className="py-[10.5px]"></div>
       <p className="text-[var(--color-black)]">
         You have successfully {props.type}{' '}
-        <span className="text-black dark:text-white">
-          {appContext.activeMine?.tokensAmount} XRP
-        </span>{' '}
-        to your wallet
+        <span className="text-black dark:text-white">XRP</span> to your wallet
       </p>
       <div className="py-[17.5px]"></div>
       <Button

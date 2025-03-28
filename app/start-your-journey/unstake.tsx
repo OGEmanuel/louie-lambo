@@ -15,6 +15,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
+import { toast, ToastContainer } from 'react-toastify';
 import { Button } from '@/components/ui/button';
 
 const FormSchema = z.object({
@@ -68,7 +69,17 @@ const UnstakeForm = (props: { tab?: string }) => {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount) {
       setIsloading(true);
-      await appContext.unstake(data.amount);
+      const isSuccess = await appContext.unstake(data.amount);
+      if (isSuccess) {
+        toast.success('Successfully unstaked tokens', {
+          position: 'bottom-right',
+        });
+      } else {
+        toast.error('Error unstaking tokens', {
+          position: 'bottom-right',
+        });
+      }
+
       setIsloading(false);
     }
   }
@@ -79,6 +90,8 @@ const UnstakeForm = (props: { tab?: string }) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
       >
+        <ToastContainer position="bottom-right" theme="dark" />
+
         <FormField
           control={form.control}
           name="amount"
