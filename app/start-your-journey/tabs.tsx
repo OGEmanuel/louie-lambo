@@ -3,11 +3,30 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Stake from './stake';
 import UnStake from './unstake';
-import { useContext, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import Apy from '../components/icons/apy';
 import { AppContext } from '@/context/AppContext';
 import { Timer } from '@/components/Timer';
 import { isUnlockDateEarly } from '@/lib/utils';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { ButtonLoading } from '@/components/ui/button-loading';
 
 const StakeTabs = () => {
   const [, setValue] = useState('lock');
@@ -45,7 +64,7 @@ export const Summary = (props: { tab: string }) => {
   useEffect(() => {
     const userTier = appContext.userTier;
 
-    setApy(userTier.maxXrpMineable);
+    setApy(userTier?.maxXrpMineable);
   }, [appContext.userTier]);
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
@@ -70,7 +89,7 @@ export const Summary = (props: { tab: string }) => {
             Current tier
           </p>
           <p className="text-2xl font-medium leading-[31.25px]">
-            {appContext.userTier.name}
+            {appContext.userTier?.name}
           </p>
         </div>
       </div>
@@ -143,5 +162,43 @@ export const TransactionDetails = () => {
         </div>
       )}
     </div>
+  );
+};
+
+export const UnstakeWarningModal = (props: {
+  children: ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  isPending: boolean;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  onClick: () => void;
+}) => {
+  return (
+    <Dialog open={props.open} onOpenChange={props.setOpen}>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
+      <DialogContent className="flex w-full flex-col gap-8 rounded-3xl px-6 pt-6 max-sm:h-[38.5rem] max-sm:w-4/5 sm:max-w-[47.5rem] sm:gap-[3.5rem] sm:rounded-[2.5rem] sm:px-[2.69rem] sm:pt-8 [&>button]:right-[2.69rem] [&>button]:top-6 sm:[&>button]:top-7 [&>button_svg]:size-6 sm:[&>button_svg]:size-8">
+        <DialogHeader className="space-y-6 max-sm:text-left">
+          <DialogTitle className="text-xl leading-[1.38rem] sm:text-[1.75rem]">
+            Confirm Action
+          </DialogTitle>
+          <DialogDescription className="text-lg sm:text-xl">
+            Are you sure you want to Eject from this ride?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant={'destructive'}>Cancel</Button>
+          </DialogClose>
+          <ButtonLoading
+            label="Confirm"
+            type="submit"
+            onClick={props.onClick}
+            isPending={props.isPending}
+            disabled={props.isPending}
+            className="h-48 py-2"
+          />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };

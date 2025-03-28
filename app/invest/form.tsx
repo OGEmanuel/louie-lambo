@@ -6,11 +6,19 @@ import { z } from 'zod';
 import NumberInput from '@/components/ui/number-input';
 import { useForm } from 'react-hook-form';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { AppContext } from '@/context/AppContext';
 import { getDurationInDays } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
+import { Button } from '@/components/ui/button';
+import { WithdrawWarningModal } from './tabs';
 
 const FormSchema = z.object({
   amount: z
@@ -70,7 +78,7 @@ const MinerForm = (props: {
   };
 
   const balance = appContext.xrpBalance;
-  const depBalance = appContext.activeMine!.tokensAmount;
+  const depBalance = appContext.activeMine!?.tokensAmount;
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (data.amount && data.duration) {
@@ -197,6 +205,7 @@ export const MinerFormWithdraw = (props: {
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) => {
   const appContext = useContext(AppContext);
+  const [open, setOpen] = useState(false);
 
   const getAPY = (): number => {
     return appContext.activeMine?.stakingDurationInDays === 7
@@ -219,12 +228,19 @@ export const MinerFormWithdraw = (props: {
 
   const balance = appContext.activeMine!.tokensAmount;
 
+  useEffect(() => {
+    form.setValue('amount', balance);
+  }, [balance, form]);
+
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data.amount);
     if (data.amount) {
       setIsloading(true);
-      await appContext.unMine(data.amount);
-      props.setIsSuccess(true);
+      const successful = await appContext.unMine(data.amount);
+      if (successful) {
+        props.setIsSuccess(true);
+        setOpen(false);
+      }
       setIsloading(false);
     }
   }
@@ -251,15 +267,24 @@ export const MinerFormWithdraw = (props: {
             />
           )}
         />
-
-        <ButtonLoading
+        <WithdrawWarningModal
+          isPending={isLoading}
+          open={open}
+          setOpen={setOpen}
+          onClick={() => form.handleSubmit(onSubmit)()}
+        >
+          <Button type="button" className="w-full" variant={'secondary'}>
+            Withdraw XRP
+          </Button>
+        </WithdrawWarningModal>
+        {/* <ButtonLoading
           className="w-full"
           variant={'secondary'}
           type="submit"
           label={`${props.type} XRP`}
           isPending={isLoading}
           disabled={isLoading}
-        />
+        /> */}
       </form>
     </Form>
   );

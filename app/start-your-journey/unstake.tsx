@@ -6,10 +6,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { ButtonLoading } from '@/components/ui/button-loading';
-import { EarlyWithdrawal, Summary, TransactionDetails } from './tabs';
+import {
+  EarlyWithdrawal,
+  Summary,
+  TransactionDetails,
+  UnstakeWarningModal,
+} from './tabs';
 import { Separator } from '@/components/ui/separator';
 import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
+import { Button } from '@/components/ui/button';
 
 const FormSchema = z.object({
   amount: z
@@ -48,6 +54,7 @@ export default UnStake;
 const UnstakeForm = (props: { tab?: string }) => {
   const appContext = useContext(AppContext);
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -87,14 +94,16 @@ const UnstakeForm = (props: { tab?: string }) => {
         <EarlyWithdrawal tab={props.tab} />
         <Separator className="my-4 bg-[var(--color-stroke)]" />
         <TransactionDetails />
-        <ButtonLoading
-          className="w-full"
-          variant={'secondary'}
-          type="submit"
-          label="Eject from your ride"
+        <UnstakeWarningModal
+          open={open}
+          setOpen={setOpen}
+          onClick={() => form.handleSubmit(onSubmit)()}
           isPending={isLoading}
-          disabled={isLoading}
-        />
+        >
+          <Button variant={'secondary'} className="w-full">
+            Eject from your ride
+          </Button>
+        </UnstakeWarningModal>
       </form>
     </Form>
   );

@@ -54,8 +54,6 @@ const TierSelector = () => {
     },
   });
 
-  const tierData: Tier[] = tiers;
-
   if (isPending) {
     return (
       <Skeleton className="h-[11.9rem] w-full animate-pulse rounded-[18px]" />
@@ -86,59 +84,68 @@ const TierSelector = () => {
             value={tiers[0].name}
             className="grid gap-6 md:grid-cols-2 md:gap-[2.63rem]"
           >
-            {tierData.map(tier => (
-              <TierItem
-                key={tier.name}
-                updatedTier={appContext.userTier?.name}
-                tierList={tiers}
-                tier={tier.name}
-                icon={<RibbonFirstSelect />}
-                value={tier.name}
-              >
-                <li>{tier.description}</li>
-              </TierItem>
-            ))}
-            {/* <TierItem
-              updatedTier={appContext.userTier?.name}
-              tierList={tiers}
-              tier={tiers[1].name}
+            <TierItem
+              tier="LAMBORGHINI AVENTADOR 🚨"
+              icon={<RibbonFirstSelect />}
+              value={appContext.userTier?.name}
+            >
+              <li>{tiers[0].description}</li>
+            </TierItem>
+            <TierItem
+              tier="LAMBORGHINI REVENTON 🚨"
               icon={<RibbonSecondSelect />}
-              value={tiers[1].name}
+              value={appContext.userTier?.name}
             >
               <li>{tiers[1].description}</li>
             </TierItem>
             <TierItem
-              tierList={tiers}
-              updatedTier={appContext.userTier?.name}
-              tier={tiers[2].name}
+              tier="LAMBORGHINI CENTENARIO 🚨"
               icon={<RibbonThirdSelect />}
-              value={tiers[2].name}
+              value={appContext.userTier?.name}
             >
               <li>{tiers[2].description}</li>
             </TierItem>
             <TierItem
-              tierList={tiers}
-              updatedTier={appContext.userTier?.name}
-              tier={tiers[3].name}
+              tier="LAMBORGHINI EGOISTA 🚨"
               icon={<RibbonFourthSelect />}
-              value={tiers[3].name}
+              value={appContext.userTier?.name}
             >
               <li>{tiers[3].description}</li>
-            </TierItem> */}
+            </TierItem>
+            <TierItem
+              tier="LAMBORGHINI SIAN 🚨"
+              icon={<RibbonFourthSelect />}
+              value={appContext.userTier?.name}
+            >
+              <li>{tiers[3].description}</li>
+            </TierItem>
+            <TierItem
+              tier="LAMBORGHINI VENENO 🚨"
+              icon={<RibbonFourthSelect />}
+              value={appContext.userTier?.name}
+            >
+              <li>{tiers[3].description}</li>
+            </TierItem>
           </RadioGroup>
         </PopoverContent>
       </Popover>
       <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
-        {appContext.userTier?.name === tiers[0].name && (
+        {appContext.userTier?.name === 'LAMBORGHINI AVENTADOR 🚨' && (
           <li>{tiers[0].description}</li>
         )}
-        {appContext.userTier?.name === tiers[1].name && (
+        {appContext.userTier?.name === 'LAMBORGHINI REVENTON 🚨' && (
           <li>{tiers[1].description}</li>
         )}
-        {appContext.userTier?.name === tiers[2].name && (
+        {appContext.userTier?.name === 'LAMBORGHINI CENTENARIO 🚨' && (
           <li>{tiers[2].description}</li>
         )}
-        {appContext.userTier?.name === tiers[3].name && (
+        {appContext.userTier?.name === 'LAMBORGHINI EGOISTA 🚨' && (
+          <li>{tiers[3].description}</li>
+        )}{' '}
+        {appContext.userTier?.name === 'LAMBORGHINI SIAN 🚨' && (
+          <li>{tiers[3].description}</li>
+        )}{' '}
+        {appContext.userTier?.name === 'LAMBORGHINI VENENO 🚨' && (
           <li>{tiers[3].description}</li>
         )}
       </ul>
@@ -210,8 +217,6 @@ const TierItem = (props: {
   icon: ReactNode;
   children: ReactNode;
   value: string;
-  tierList: Tier[];
-  updatedTier: string;
 }) => {
   return (
     <div className="flex items-center">
@@ -220,25 +225,22 @@ const TierItem = (props: {
         htmlFor={props.tier}
         className={cn(
           'flex flex-col gap-[19px] rounded-2xl border-2 p-4',
-          props.tierList[0].name === 'LAMBORGHINI AVENTADOR 🚨' &&
+          props.tier === 'T1' &&
             'border-[var(--color-lambo-black)] bg-[#B9DFFF] dark:border-[var(--color-lambo-green)]',
-          props.tier === 'LAMBORGHINI REVENTON 🚨' &&
-            'border-[var(--color-stroke)] bg-[#D1FFED]',
-          props.tier === 'LAMBORGHINI CENTENARIO 🚨' &&
-            'border-[var(--color-stroke)] bg-[#FFE4FC]',
-          props.tier === 'LAMBORGHINI EGOISTA 🚨' &&
-            'border-[var(--color-stroke)] bg-[#E8FFCF]',
+          props.tier === 'T2' && 'border-[var(--color-stroke)] bg-[#D1FFED]',
+          props.tier === 'T3' && 'border-[var(--color-stroke)] bg-[#FFE4FC]',
+          props.tier === 'T4' && 'border-[var(--color-stroke)] bg-[#E8FFCF]',
         )}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            {/* {props.icon} */}
-            <p className="text-xs leading-[23.44px] text-[var(--color-black)]">
+            {props.icon}
+            <p className="text-[18px] leading-[23.44px] text-[var(--color-black)]">
               {props.tier}
             </p>
           </div>
-          {props.tier === props.updatedTier && (
-            <p className="rounded-lg border border-transparent bg-[var(--color-lambo-black)] p-2 text-center text-xs font-medium leading-5 text-[var(--color-lambo-green)] dark:border-[var(--color-lambo-green)]">
+          {props.tier === props.value && (
+            <p className="rounded-lg border border-transparent bg-[var(--color-lambo-black)] px-2 py-1 text-sm font-medium leading-[26px] text-[var(--color-lambo-green)] dark:border-[var(--color-lambo-green)]">
               Current Tier
             </p>
           )}

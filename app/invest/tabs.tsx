@@ -23,8 +23,8 @@ import {
   getApyBasedOnTierAndDuration,
 } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
-import { toast } from 'react-toastify';
+import axios, { AxiosError } from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Dialog,
   DialogClose,
@@ -91,10 +91,14 @@ export const Summary = () => {
 
       setOpen(false);
     },
-    onError: () => {
-      toast.error('Error claiming rewards', {
-        position: 'bottom-right',
-      });
+    onError: async data => {
+      const error = data as AxiosError;
+      const errorData = error.response?.data as { message: string };
+      if (errorData) {
+        toast.error(errorData.message, {
+          position: 'bottom-right',
+        });
+      }
     },
   });
 
@@ -113,10 +117,14 @@ export const Summary = () => {
       appContext.setActiveMine(data.data.mine as MineType);
       setOpenRemine(false);
     },
-    onError: () => {
-      toast.error('Error restaking xrp', {
-        position: 'bottom-right',
-      });
+    onError: async data => {
+      const error = data as AxiosError;
+      const errorData = error.response?.data as { message: string };
+      if (errorData) {
+        toast.error(errorData.message, {
+          position: 'bottom-right',
+        });
+      }
     },
   });
 
@@ -145,6 +153,8 @@ export const Summary = () => {
 
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+      <ToastContainer position="bottom-right" theme="dark" />
+
       {appContext.activeMine && (
         <>
           {' '}
@@ -261,6 +271,44 @@ const WarningModal = (props: {
             disabled={props.isPending}
             className="h-48 py-2"
             onClick={() => props.mutate({ address: appContext.walletAddress })}
+          />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export const WithdrawWarningModal = (props: {
+  children: ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  isPending: boolean;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  onClick: () => void;
+}) => {
+  return (
+    <Dialog open={props.open} onOpenChange={props.setOpen}>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
+      <DialogContent className="flex w-full flex-col gap-8 rounded-3xl px-6 pt-6 max-sm:h-[38.5rem] max-sm:w-4/5 sm:max-w-[47.5rem] sm:gap-[3.5rem] sm:rounded-[2.5rem] sm:px-[2.69rem] sm:pt-8 [&>button]:right-[2.69rem] [&>button]:top-6 sm:[&>button]:top-7 [&>button_svg]:size-6 sm:[&>button_svg]:size-8">
+        <DialogHeader className="space-y-6 max-sm:text-left">
+          <DialogTitle className="text-xl leading-[1.38rem] sm:text-[1.75rem]">
+            Confirm Action
+          </DialogTitle>
+          <DialogDescription className="text-lg sm:text-xl">
+            Are you sure you want to Withdraw?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant={'destructive'}>Cancel</Button>
+          </DialogClose>
+          <ButtonLoading
+            label="Confirm"
+            type="submit"
+            onClick={props.onClick}
+            isPending={props.isPending}
+            disabled={props.isPending}
+            className="h-48 py-2"
           />
         </DialogFooter>
       </DialogContent>
