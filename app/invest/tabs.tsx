@@ -279,7 +279,9 @@ export const Summary = ({
         </>
       )}
 
-      {!appContext.activeMine && <Referral />}
+      {(!appContext.activeMine ||
+        appContext.activeMine == undefined ||
+        appContext.activeMine == null) && <Referral />}
     </div>
   );
 };

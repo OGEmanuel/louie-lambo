@@ -24,7 +24,7 @@ import Trophy from './components/icons/trophy';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tier, tiers } from '@/lib/constants';
+// import { Tier, tiers } from '@/lib/constants';
 
 const OverviewMain = () => {
   return (
@@ -143,10 +143,10 @@ const TierSelector = () => {
         {appContext.userTier?.name === 'LAMBORGHINI EGOISTA 🚨' && (
           <li>{tiers[3].description}</li>
         )}{' '}
-        {appContext.userTier.name === 'LAMBORGHINI SIAN 🚨' && (
+        {appContext.userTier?.name === 'LAMBORGHINI SIAN 🚨' && (
           <li>{tiers[4].description}</li>
         )}{' '}
-        {appContext.userTier.name === 'LAMBORGHINI VENENO 🚨' && (
+        {appContext.userTier?.name === 'LAMBORGHINI VENENO 🚨' && (
           <li>{tiers[5].description}</li>
         )}
       </ul>

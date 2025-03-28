@@ -18,8 +18,8 @@ import { getDurationInDaysWords } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
 import { toast, ToastContainer } from 'react-toastify';
-import { Button } from '@/components/ui/button';
-import { WithdrawWarningModal } from './tabs';
+// import { Button } from '@/components/ui/button';
+// import { WithdrawWarningModal } from './tabs';
 
 const FormSchema = z.object({
   amount: z
@@ -200,7 +200,7 @@ const MinerForm = (props: {
             <NumberInput
               label="Amount"
               onSetMax={() => form.setValue('amount', balance)}
-              max={appContext.userTier.maxXrpMineable}
+              max={appContext.userTier?.maxXrpMineable}
               description={`Projected yield: APY ${getAPY()}%`}
               field={field}
             />
@@ -251,7 +251,7 @@ export const MinerFormWithdraw = (props: {
   setIsSuccess: Dispatch<SetStateAction<boolean>>;
 }) => {
   const appContext = useContext(AppContext);
-  const [open, setOpen] = useState(false);
+  const [, setOpen] = useState(false);
 
   const getAPY = (): number => {
     return appContext.activeMine?.stakingDurationInDays === 7
@@ -272,7 +272,7 @@ export const MinerFormWithdraw = (props: {
       duration: '22888',
     },
   });
-  const [isLoading, setIsloading] = useState<boolean>(false);
+  const [, setIsloading] = useState<boolean>(false);
 
   const balance = appContext.activeMine
     ? appContext.activeMine?.tokensAmount
@@ -319,7 +319,7 @@ export const MinerFormWithdraw = (props: {
             />
           )}
         />
-        <WithdrawWarningModal
+        {/* <WithdrawWarningModal
           isPending={isLoading}
           open={open}
           setOpen={setOpen}
@@ -328,7 +328,7 @@ export const MinerFormWithdraw = (props: {
           <Button type="button" className="w-full" variant={'secondary'}>
             Withdraw XRP
           </Button>
-        </WithdrawWarningModal>
+        </WithdrawWarningModal> */}
         {/* <ButtonLoading
           className="w-full"
           variant={'secondary'}

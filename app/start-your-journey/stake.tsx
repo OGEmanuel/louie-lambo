@@ -85,8 +85,8 @@ const StakeForm = () => {
   }
   const createStake = async (amount: number, duration: number) => {
     try {
-      const minAmount = appContext.userTier.minimumTokensHeld;
-      const maxAmount = appContext.userTier.maximumTokensHeld;
+      const minAmount = appContext.userTier?.minimumTokensHeld;
+      const maxAmount = appContext.userTier?.maximumTokensHeld;
 
       if (amount < minAmount) {
         toast.error('Minimum amount for tier not reached', {
@@ -185,8 +185,8 @@ const StakeForm = () => {
                 onSetMax={() =>
                   form.setValue('amount', Math.round(Number(balance) - 1))
                 }
-                max={appContext.userTier.maximumTokensHeld}
-                min={appContext.userTier.minimumTokensHeld}
+                max={appContext.userTier?.maximumTokensHeld}
+                min={appContext.userTier?.minimumTokensHeld}
                 description={`Balance: ${balance} LAMBO`}
                 field={field}
               />

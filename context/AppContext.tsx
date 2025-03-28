@@ -2,11 +2,8 @@
 
 import { Tier, tiers } from '@/lib/constants';
 import { AppContextInterface, MineType, StakeType } from '@/lib/types';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { set } from 'mongoose';
 import { useSearchParams } from 'next/navigation';
-import React, { createContext, use, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
@@ -52,29 +49,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [poolXrpBalance, setPoolXrpBalance] = useState<string>('0');
   const [stakedWallets, setStakedWallets] = useState<number>(0);
   const [xrpRewardsDistributed, setXrpRewardsDistributed] = useState<number>(0);
-  const [value, setValue] = useState<Tier | null>(null);
+  const [value, setValue] = useState<Tier>(tiers[0]);
   const [activeStake, setActiveStake] = useState<StakeType>();
   const [activeMine, setActiveMine] = useState<MineType>();
   const [referrer, setReferrer] = useState<string>('');
   const [platform, setPlatform] = useState<string | null>(null);
   const [holders, setHolders] = useState<number>(0);
+
   const [cookies] = useCookies(['walley']);
   const params = useSearchParams();
   const refQuery = params.get('ref');
-
-  const { data } = useQuery({
-    queryKey: ['tiers'],
-    queryFn: async () => {
-      const response = await axios.get('/api/admin/getTiers');
-      return response.data.tiers;
-    },
-  });
-
-  useEffect(() => {
-    if (data) {
-      setValue(data[0]);
-    }
-  }, [data]);
 
   useEffect(() => {
     sessionStorage.setItem('ref', refQuery ? refQuery : '');
@@ -295,19 +279,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         `/api/mine/record`,
         { address, amount, duration, tier: value.name },
         {
-<<<<<<< HEAD
-          method: 'POST',
-          body: JSON.stringify({
-            address,
-            amount,
-            duration,
-            tier: value?.name,
-          }),
-=======
           headers: {
             'Content-Type': 'application/json',
           },
->>>>>>> e715c512ed13db6f2559aca540a7e90140aea2af
         },
       );
       const data = await resp.data;
@@ -332,19 +306,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         `/api/stake/record`,
         { address, amount, duration, tier: value.name },
         {
-<<<<<<< HEAD
-          method: 'POST',
-          body: JSON.stringify({
-            address,
-            amount,
-            duration,
-            tier: value?.name,
-          }),
-=======
           headers: {
             'Content-Type': 'application/json',
           },
->>>>>>> e715c512ed13db6f2559aca540a7e90140aea2af
         },
       );
       const data = await resp.data;
@@ -416,7 +380,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         poolXrpBalance,
         stakedWallets,
         unstake: unStake,
-        userTier: value as Tier,
+        userTier: value,
         xrpRewardsDistributed,
         walletAddress,
         activeMine,
