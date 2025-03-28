@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { DM_Sans } from 'next/font/google';
+import { DynaPuff } from 'next/font/google';
 import './globals.css';
 import Navbar from './navbar';
 import Sidenav from './sidenav';
@@ -10,8 +10,8 @@ import { AppContextProvider } from '@/context/AppContext';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 
-const dmSans = DM_Sans({
-  variable: '--font-dm-sans',
+const dynaPuff = DynaPuff({
+  variable: '--font-dyna-puff',
   subsets: ['latin'],
 });
 
@@ -41,7 +41,7 @@ export default function RootLayout({
         />
       </Head>
       <body
-        className={`${dmSans.variable} flex justify-center dark:bg-[var(--color-lambo-black)]`}
+        className={`${dynaPuff.className} relative z-10 flex min-h-screen justify-center overflow-x-hidden before:absolute before:inset-0 before:-z-10 before:bg-[url('/images/light-lambo-bg.jpeg')] before:bg-cover before:bg-fixed before:bg-no-repeat before:opacity-20 dark:bg-[var(--color-lambo-black)] dark:before:bg-[url('/images/dark-lambo-bg.png')]`}
       >
         <Suspense fallback={null}>
           <QueryProvider>

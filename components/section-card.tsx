@@ -15,7 +15,7 @@ const SectionCard = (props: {
     >
       <div
         className={cn(
-          'rounded-[20px] border-[var(--color-stroke)] sm:border sm:p-8',
+          'rounded-[20px] border-[var(--color-stroke)] bg-white dark:bg-[var(--color-lambo-black)] sm:border sm:p-8',
           props.className,
         )}
       >

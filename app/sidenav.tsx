@@ -17,35 +17,70 @@ import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Poppins } from 'next/font/google';
+import { DynaPuff } from 'next/font/google';
+import Active from './components/icons/active';
 
-const poppins = Poppins({
-  variable: '--font-poppins',
+const dynaPuff = DynaPuff({
+  variable: '--font-dyna-puff',
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
 });
 
 const Sidenav = () => {
-  // const appContext = useContext(AppContext);
+  const pathname = usePathname();
   return (
     <aside className="flex flex-col gap-8 max-2xl:pl-[120px] max-lg:hidden">
-      <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] p-6 text-[18px] font-semibold leading-[23.44px] xl:[&>li]:w-[238px]">
+      <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] bg-white p-6 text-[18px] font-semibold leading-[23.44px] dark:bg-[var(--color-lambo-black)] xl:[&>li]:w-[238px]">
         <li>
-          <NavLink href="/">Overview</NavLink>
+          <NavLink href="/">
+            Overview
+            <span
+              className={cn(
+                'absolute right-[18px] translate-y-full transition-all',
+                pathname === '/' && 'translate-y-0',
+              )}
+            >
+              <Active />
+            </span>
+          </NavLink>
         </li>
         <li>
-          <NavLink href="/start-your-journey">Your $LAMBO Awaits</NavLink>
+          <NavLink href="/start-your-journey">
+            Your $LAMBO Awaits
+            <span
+              className={cn(
+                'absolute right-[18px] translate-y-full transition-all',
+                pathname === '/start-your-journey' && 'translate-y-0',
+              )}
+            >
+              <Active />
+            </span>
+          </NavLink>
         </li>
-        {/* {appContext.activeStake && ( */}
         <li>
-          <NavLink href="/invest">{"Let's Ride"}</NavLink>
+          <NavLink href="/invest">
+            {"Let's Ride"}
+            <span
+              className={cn(
+                'absolute right-[18px] translate-y-full transition-all',
+                pathname === '/invest' && 'translate-y-0',
+              )}
+            >
+              <Active />
+            </span>
+          </NavLink>
         </li>
-        {/* // )} */}
-        {/* <li>
-          <NavLink href="/portfolio">My Portfolio</NavLink>
-        </li> */}
         <li>
-          <NavLink href="/calculator">APY Calculator</NavLink>
+          <NavLink href="/calculator">
+            APY Calculator
+            <span
+              className={cn(
+                'absolute right-[18px] translate-y-full transition-all',
+                pathname === '/calculator' && 'translate-y-0',
+              )}
+            >
+              <Active />
+            </span>
+          </NavLink>
         </li>
       </ul>
       <ThemeSwitch />
@@ -57,7 +92,6 @@ export default Sidenav;
 
 export const MobileSidenav = () => {
   const [open, setOpen] = useState(false);
-  // const appContext = useContext(AppContext);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger>
@@ -84,12 +118,6 @@ export const MobileSidenav = () => {
           <li onClick={() => setOpen(false)}>
             <NavLink href="/invest">{"Let's Ride"}</NavLink>
           </li>
-          {/* {appContext.activeStake && ( */}
-
-          {/* // )} */}
-          {/* <li onClick={() => setOpen(false)}>
-            <NavLink href="/portfolio">My Portfolio</NavLink>
-          </li> */}
           <li onClick={() => setOpen(false)}>
             <NavLink href="/calculator">APY Calculator</NavLink>
           </li>
@@ -131,7 +159,7 @@ const ThemeSwitch = () => {
 
   return (
     <div
-      className={`flex items-center justify-between rounded-[18px] border border-[var(--color-stroke)] p-6 dark:border-[#2B2B34] ${poppins.className}`}
+      className={`flex items-center justify-between rounded-[18px] border border-[var(--color-stroke)] bg-white p-6 dark:border-[#2B2B34] dark:bg-[var(--color-lambo-black)] ${dynaPuff.className}`}
     >
       <Label
         htmlFor="theme-switch"
@@ -157,9 +185,9 @@ export const NavLink = (
     <Link
       {...props}
       className={cn(
-        'block text-nowrap rounded-xl p-4 text-[var(--color-black)] transition-all dark:text-[#8A8A8A]',
+        'relative block overflow-hidden text-nowrap rounded-xl p-4 text-[var(--color-black)] transition-all dark:text-[#8A8A8A]',
         pathname === props.href &&
-          'bg-[var(--color-off-white)] font-bold dark:bg-[#42434B] dark:text-[var(--color-lambo-green)]',
+          'bg-[var(--color-black)] text-[18px] font-medium text-[var(--color-lambo-green)] dark:bg-[#42434B] dark:text-[var(--color-lambo-green)]',
       )}
     />
   );

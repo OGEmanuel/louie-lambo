@@ -18,8 +18,6 @@ import { getDurationInDaysWords } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
 import { toast, ToastContainer } from 'react-toastify';
-// import { Button } from '@/components/ui/button';
-// import { WithdrawWarningModal } from './tabs';
 
 const FormSchema = z.object({
   amount: z
@@ -190,8 +188,6 @@ const MinerForm = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
-        <ToastContainer position="bottom-right" theme="dark" />
-
         <TransactionDetails balance={depBalance} xrpBalance={balance} />
         <FormField
           control={form.control}
@@ -302,7 +298,6 @@ export const MinerFormWithdraw = (props: {
         className="space-y-[46px] max-lg:space-y-6"
       >
         <ToastContainer position="bottom-right" theme="dark" />
-
         <TransactionDetails
           balance={balance}
           xrpBalance={appContext.xrpBalance}

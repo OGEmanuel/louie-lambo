@@ -187,7 +187,7 @@ export const Summary = ({
   }
 
   return (
-    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[#1F2029] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <ToastContainer position="bottom-right" theme="dark" />
 
       {appContext.activeMine?.status === 'ACTIVE' && (

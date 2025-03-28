@@ -18,21 +18,23 @@ import ArrowDown from './components/icons/arrow-down';
 import RibbonSelectMobile from './components/icons/ribbon-select-mobile';
 import { Separator } from '@/components/ui/separator';
 import { AppContext } from '@/context/AppContext';
-// import Pooled from './components/icons/pooled';
-import Wallet from './components/icons/wallet';
-import Trophy from './components/icons/trophy';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Skeleton } from '@/components/ui/skeleton';
-// import { Tier, tiers } from '@/lib/constants';
+import wallets from '@/public/images/wallets-illus.jpeg';
+import rewards from '@/public/images/rewards-illus.jpeg';
+import Image from 'next/image';
+import token from '@/public/images/token.png';
 
 const OverviewMain = () => {
   return (
     <div className="flex flex-col gap-12 sm:gap-[61px] lg:max-xl:gap-6">
-      <div className="flex justify-between gap-6 max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
+      <div className="relative flex justify-between gap-6 max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
         <TierSelector />
 
-        {/* <Balance /> */}
+        <div className="absolute bottom-0 right-0 h-[10rem] w-[10.69rem] shrink-0 overflow-hidden">
+          <Image src={token} alt="token" fill />
+        </div>
       </div>
       <div className="flex flex-col gap-[13px]">
         <WalletSummary />
@@ -62,7 +64,7 @@ const TierSelector = () => {
   }
 
   return (
-    <div className="flex basis-full flex-col gap-5 rounded-[18px] border border-[var(--color-stroke)] p-4 sm:p-6">
+    <div className="bg-custom-gradient dark:bg-dark-gradient flex basis-full flex-col gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] p-4 sm:px-8 sm:py-9">
       <Popover onOpenChange={setOpen} open={open}>
         {isPending ? (
           <Skeleton className="h-9 w-full" />
@@ -71,7 +73,7 @@ const TierSelector = () => {
             <span className="flex items-center gap-[14px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
-              <span className="text-left text-lg">{tiers[0].name}</span>
+              <span className="text-left text-2xl">{tiers[0].name}</span>
             </span>
             <ArrowDown />
           </PopoverTrigger>
@@ -130,7 +132,7 @@ const TierSelector = () => {
           </RadioGroup>
         </PopoverContent>
       </Popover>
-      <ul className="ml-2 list-inside list-disc leading-[20.83px] text-[var(--color-black)]">
+      <ul className="ml-4 max-w-[33.44rem] list-disc leading-[20.83px] text-[var(--color-black)] [&>li]:leading-[26px]">
         {appContext.userTier?.name === 'LAMBORGHINI AVENTADOR 🚨' && (
           <li>{tiers[0].description}</li>
         )}
@@ -154,32 +156,14 @@ const TierSelector = () => {
   );
 };
 
-// const Balance = () => {
-//   const appContext = useContext(AppContext);
-
-//   return (
-//     <div className="flex w-full flex-col gap-[1.13rem] rounded-2xl border border-[var(--color-lambo-green)] p-[2.63rem] text-xl font-medium leading-[100%] text-[var(--color-black)] md:basis-full lg:max-xl:w-full">
-//       <div className="flex items-center gap-5">
-//         <div className="rounded-lg bg-[var(--color-bg)] p-3">
-//           <Pooled fill="#313131" className="dark:hidden" />
-//           <Pooled fill="#8a8a8a" className="hidden dark:block" />
-//         </div>
-//         <p>XRP pooled</p>
-//       </div>
-//       <p>{appContext.poolXrpBalance} XRP</p>
-//     </div>
-//   );
-// };
-
 const WalletSummary = () => {
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-md:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem]">
-      <div className="flex items-center gap-6 rounded-[1.25rem] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
-        <div className="rounded-[1.13rem] bg-[var(--color-bg)] p-6">
-          <Wallet className="hidden dark:block" />
-          <Wallet className="dark:hidden" fill="#8A8A8A" />
+    <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-md:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem] lg:max-2xl:px-10 lg:max-2xl:py-10">
+      <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
+        <div className="relative h-24 w-[7.06rem] shrink-0 overflow-hidden rounded-[1.13rem]">
+          <Image src={wallets} alt="wallets" fill />
         </div>
         <div className="flex flex-col gap-6">
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
@@ -191,14 +175,13 @@ const WalletSummary = () => {
         </div>
       </div>
       <Separator
-        className="my-2 hidden h-auto bg-[var(--color-stroke)] md:block"
+        className="my-2 hidden h-auto bg-[var(--color-stroke)] dark:bg-[#E4E4E4] md:block"
         orientation="vertical"
       />
-      <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] md:hidden" />
-      <div className="flex items-center gap-6 rounded-[1.25rem] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
-        <div className="rounded-[1.13rem] bg-[var(--color-bg)] p-6">
-          <Trophy className="hidden dark:block" />
-          <Trophy className="dark:hidden" fill="#8A8A8A" />
+      <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] dark:bg-[#E4E4E4] md:hidden" />
+      <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
+        <div className="relative h-24 w-[7.06rem] shrink-0 overflow-hidden rounded-[1.13rem]">
+          <Image src={rewards} alt="rewards" fill />
         </div>
         <div className="flex flex-col gap-6">
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">

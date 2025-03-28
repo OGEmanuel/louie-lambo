@@ -67,7 +67,7 @@ export const Summary = (props: { tab: string }) => {
     setApy(userTier?.maxXrpMineable);
   }, [appContext.userTier]);
   return (
-    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[var(--color-lambo-black)] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
+    <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[#1F2029] max-xl:w-full max-lg:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
       <div className="flex w-full max-w-[217px] flex-col gap-7 self-center text-center">
         {props.tab === 'lock' && (
           <>
