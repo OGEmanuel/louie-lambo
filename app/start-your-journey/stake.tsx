@@ -13,7 +13,7 @@ import { useContext, useState } from 'react';
 import { AppContext } from '@/context/AppContext';
 import WalletScanDrawer from '@/components/walletScanDrawer';
 import { getDurationInDays } from '@/lib/utils';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
