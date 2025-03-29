@@ -32,54 +32,57 @@ const Sidenav = () => {
       <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] bg-white p-6 text-[18px] font-semibold leading-[23.44px] dark:bg-[var(--color-lambo-black)] xl:[&>li]:w-[238px]">
         <li>
           <NavLink href="/">
-            Overview
             <span
               className={cn(
-                'absolute right-[18px] translate-y-full transition-all',
-                pathname === '/' && 'translate-y-0',
+                'absolute left-0 translate-y-full opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100',
+                pathname === '/' && 'translate-x-44 translate-y-0 opacity-100',
               )}
             >
               <Active />
             </span>
+            Overview
           </NavLink>
         </li>
         <li>
           <NavLink href="/start-your-journey">
-            Your $LAMBO Awaits
             <span
               className={cn(
-                'absolute right-[18px] translate-y-full transition-all',
-                pathname === '/start-your-journey' && 'translate-y-0',
+                'absolute left-0 translate-y-full opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100',
+                pathname === '/start-your-journey' &&
+                  'translate-x-44 translate-y-0 opacity-100',
               )}
             >
               <Active />
             </span>
+            Your $LAMBO Awaits
           </NavLink>
         </li>
         <li>
           <NavLink href="/invest">
-            {"Let's Ride"}
             <span
               className={cn(
-                'absolute right-[18px] translate-y-full transition-all',
-                pathname === '/invest' && 'translate-y-0',
+                'absolute left-0 translate-y-full opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100',
+                pathname === '/invest' &&
+                  'translate-x-44 translate-y-0 opacity-100',
               )}
             >
               <Active />
             </span>
+            {"Let's Ride"}
           </NavLink>
         </li>
         <li>
           <NavLink href="/calculator">
-            APY Calculator
             <span
               className={cn(
-                'absolute right-[18px] translate-y-full transition-all',
-                pathname === '/calculator' && 'translate-y-0',
+                'absolute left-0 translate-y-full opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100',
+                pathname === '/calculator' &&
+                  'translate-x-44 translate-y-0 opacity-100',
               )}
             >
               <Active />
             </span>
+            APY Calculator
           </NavLink>
         </li>
       </ul>
@@ -185,7 +188,7 @@ export const NavLink = (
     <Link
       {...props}
       className={cn(
-        'relative block overflow-hidden text-nowrap rounded-xl p-4 text-[var(--color-black)] transition-all dark:text-[#8A8A8A]',
+        'group relative block overflow-hidden text-nowrap rounded-xl p-4 text-[var(--color-black)] transition-all hover:bg-[var(--color-black)] hover:text-[18px] hover:font-medium hover:text-[var(--color-lambo-green)] dark:text-[#8A8A8A] dark:hover:bg-[#42434B] dark:hover:text-[var(--color-lambo-green)]',
         pathname === props.href &&
           'bg-[var(--color-black)] text-[18px] font-medium text-[var(--color-lambo-green)] dark:bg-[#42434B] dark:text-[var(--color-lambo-green)]',
       )}

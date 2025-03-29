@@ -54,9 +54,19 @@ const MinerTabs = () => {
       className=""
     >
       <TabsList>
-        <TabsTrigger value="deposit">Deposit</TabsTrigger>
+        <TabsTrigger
+          value="deposit"
+          className="transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150"
+        >
+          Deposit
+        </TabsTrigger>
         {appContext.activeMine?.status === 'ACTIVE' && (
-          <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
+          <TabsTrigger
+            value="withdraw"
+            className="transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150"
+          >
+            Withdraw
+          </TabsTrigger>
         )}
       </TabsList>
       <TabsContent value="deposit" className="w-full">
@@ -188,8 +198,6 @@ export const Summary = ({
 
   return (
     <div className="flex w-[36.4705882353%] flex-col gap-[76px] bg-white p-12 dark:bg-[#1F2029] max-xl:w-full max-xl:gap-12 max-lg:px-6 md:rounded-[20px] lg:max-xl:rounded-none">
-      <ToastContainer position="bottom-right" theme="dark" />
-
       {appContext.activeMine?.status === 'ACTIVE' && (
         <>
           {' '}

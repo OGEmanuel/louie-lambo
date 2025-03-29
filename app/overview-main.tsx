@@ -1,5 +1,6 @@
 'use client';
 
+import { DM_Sans } from 'next/font/google';
 import { ReactNode, useContext, useState } from 'react';
 import RibbonFirst from './components/icons/ribbon-first';
 import {
@@ -25,6 +26,11 @@ import wallets from '@/public/images/wallets-illus.jpeg';
 import rewards from '@/public/images/rewards-illus.jpeg';
 import Image from 'next/image';
 import token from '@/public/images/token.png';
+
+const dmSans = DM_Sans({
+  variable: '--font-dm-sans',
+  subsets: ['latin'],
+});
 
 const OverviewMain = () => {
   return (
@@ -61,7 +67,7 @@ const TierSelector = () => {
 
   return (
     <div className="bg-custom-gradient dark:bg-dark-gradient flex basis-full flex-col gap-5 overflow-hidden rounded-[1.25rem] border border-[var(--color-stroke)] p-4 sm:px-8 sm:py-9">
-      <div className="absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 overflow-hidden">
+      <div className="animate-slide-in absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 overflow-hidden">
         <Image src={token} alt="token" fill />
       </div>
       <Popover onOpenChange={setOpen} open={open}>
@@ -72,7 +78,9 @@ const TierSelector = () => {
             <span className="flex items-center gap-[14px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
-              <span className="text-left text-2xl">{tiers[0]?.name}</span>
+              <span className="text-left text-2xl transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150">
+                {tiers[0]?.name}
+              </span>
             </span>
             <ArrowDown />
           </PopoverTrigger>
@@ -168,7 +176,12 @@ const WalletSummary = () => {
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
             No. of holders earning XRP
           </p>
-          <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
+          <p
+            className={cn(
+              `text-[2rem] font-medium leading-[100%] text-[var(--color-black)]`,
+              dmSans.className,
+            )}
+          >
             {appContext.stakedWallets} / {appContext.holders} $LAMBO holders
           </p>
         </div>
@@ -186,7 +199,12 @@ const WalletSummary = () => {
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
             XRP rewards distributed
           </p>
-          <p className="text-[2rem] font-medium leading-[100%] text-[var(--color-black)]">
+          <p
+            className={cn(
+              `text-[2rem] font-medium leading-[100%] text-[var(--color-black)]`,
+              dmSans.className,
+            )}
+          >
             {appContext.xrpRewardsDistributed.toFixed(1)} XRP
           </p>
         </div>

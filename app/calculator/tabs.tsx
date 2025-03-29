@@ -6,7 +6,12 @@ const CalculatorTabs = () => {
     <Tabs defaultValue="miner" className="">
       <TabsList>
         {/* <TabsTrigger value="stake">Stake</TabsTrigger> */}
-        <TabsTrigger value="miner">Calculate your XRP rewards</TabsTrigger>
+        <TabsTrigger
+          value="miner"
+          className="transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150"
+        >
+          Calculate your XRP rewards
+        </TabsTrigger>
       </TabsList>
       {/* <TabsContent value="stake" className="w-full">
         <Stake />

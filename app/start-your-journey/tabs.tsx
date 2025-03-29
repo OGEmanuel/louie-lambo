@@ -39,9 +39,19 @@ const StakeTabs = () => {
       className=""
     >
       <TabsList className="">
-        <TabsTrigger value="lock">Start your journey</TabsTrigger>
+        <TabsTrigger
+          value="lock"
+          className="transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150"
+        >
+          Start your journey
+        </TabsTrigger>
         {appContext.activeStake && (
-          <TabsTrigger value="unlock">Eject from your ride</TabsTrigger>
+          <TabsTrigger
+            value="unlock"
+            className="transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150"
+          >
+            Eject from your ride
+          </TabsTrigger>
         )}
       </TabsList>
       <TabsContent value="lock" className="w-full">

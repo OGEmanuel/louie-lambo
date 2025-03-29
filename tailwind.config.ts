@@ -58,9 +58,9 @@ export default {
       },
       backgroundImage: {
         'custom-gradient':
-          'linear-gradient(92.33deg, #FFFFFF 38.51%, rgba(163, 255, 59, 0.1) 139.98%)',
+          'linear-gradient(92.33deg, #FFFFFF 38.51%, rgba(163, 255, 59, 0.9) 139.98%)',
         'dark-gradient':
-          'linear-gradient(92.33deg, #1F2029 38.51%, rgba(109, 172, 39, 0.06) 139.98%)',
+          'linear-gradient(92.33deg, #1F2029 38.51%, rgba(109, 172, 39, 0.9) 139.98%)',
       },
       keyframes: {
         'accordion-down': {
@@ -79,10 +79,19 @@ export default {
             height: '0',
           },
         },
+        'slide-in': {
+          from: {
+            transform: 'translateX(-500px)',
+          },
+          to: {
+            transform: 'translateX(0)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'slide-in': 'slide-in 0.3s ease-out',
       },
     },
   },
