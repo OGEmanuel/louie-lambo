@@ -17,7 +17,7 @@ import { AppContext } from '@/context/AppContext';
 import { getDurationInDaysWords } from '@/lib/utils';
 import RadioInput from '@/components/ui/radio-input';
 import WalletScanDrawer from '@/components/walletScanDrawer';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
@@ -297,7 +297,6 @@ export const MinerFormWithdraw = (props: {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-[46px] max-lg:space-y-6"
       >
-        <ToastContainer position="bottom-right" theme="dark" />
         <TransactionDetails
           balance={balance}
           xrpBalance={appContext.xrpBalance}
@@ -345,12 +344,12 @@ const TransactionDetails = (props: { balance: number; xrpBalance: number }) => {
     <div className="flex flex-col gap-6 leading-[20.83px] max-lg:text-sm max-lg:leading-[18.23px]">
       <div className="flex items-center justify-between">
         <p className="text-[var(--color-gray)]">XRP Balance</p>
-        <p className="font-medium">{props.xrpBalance} XRP</p>
+        <p className="font-medium">{props.xrpBalance.toFixed(2)} XRP</p>
       </div>
       {appContext.activeMine?.status === 'ACTIVE' && (
         <div className="flex items-center justify-between">
           <p className="text-[var(--color-gray)]">Deposited XRP Balance</p>
-          <p className="font-medium">{props.balance} XRP</p>
+          <p className="font-medium">{props.balance.toFixed(2)} XRP</p>
         </div>
       )}
 

@@ -31,10 +31,6 @@ const OverviewMain = () => {
     <div className="flex flex-col gap-12 sm:gap-[61px] lg:max-xl:gap-6">
       <div className="relative flex justify-between gap-6 max-md:flex-col max-md:gap-12 lg:max-xl:flex-col lg:max-xl:gap-6">
         <TierSelector />
-
-        <div className="absolute bottom-0 right-0 h-[10rem] w-[10.69rem] shrink-0 overflow-hidden">
-          <Image src={token} alt="token" fill />
-        </div>
       </div>
       <div className="flex flex-col gap-[13px]">
         <WalletSummary />
@@ -64,12 +60,15 @@ const TierSelector = () => {
   }
 
   return (
-    <div className="bg-custom-gradient dark:bg-dark-gradient flex basis-full flex-col gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] p-4 sm:px-8 sm:py-9">
+    <div className="bg-custom-gradient dark:bg-dark-gradient flex basis-full flex-col gap-5 overflow-hidden rounded-[1.25rem] border border-[var(--color-stroke)] p-4 sm:px-8 sm:py-9">
+      <div className="absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 overflow-hidden">
+        <Image src={token} alt="token" fill />
+      </div>
       <Popover onOpenChange={setOpen} open={open}>
         {isPending ? (
           <Skeleton className="h-9 w-full" />
         ) : (
-          <PopoverTrigger className="flex items-center gap-[11px]">
+          <PopoverTrigger className="z-20 flex items-center gap-[11px]">
             <span className="flex items-center gap-[14px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
@@ -80,7 +79,7 @@ const TierSelector = () => {
         )}
         <PopoverContent
           align="center"
-          className="w-80 max-w-[700px] self-center rounded-[18px] p-4 dark:bg-[var(--color-lambo-black)] sm:w-full md:p-[2.63rem]"
+          className="h-[30rem] w-80 max-w-[700px] self-center overflow-auto rounded-[18px] p-4 dark:bg-[var(--color-lambo-black)] sm:h-[35rem] sm:w-full md:p-[2.63rem]"
         >
           <RadioGroup
             defaultValue={tiers[0].name}
@@ -132,7 +131,7 @@ const TierSelector = () => {
           </RadioGroup>
         </PopoverContent>
       </Popover>
-      <ul className="ml-4 max-w-[33.44rem] list-disc leading-[20.83px] text-[var(--color-black)] [&>li]:leading-[26px]">
+      <ul className="z-20 ml-4 max-w-[33.44rem] list-disc leading-[20.83px] text-[var(--color-black)] [&>li]:leading-[26px]">
         {appContext.userTier?.name === 'LAMBORGHINI AVENTADOR 🚨' && (
           <li>{tiers[0].description}</li>
         )}
@@ -160,12 +159,12 @@ const WalletSummary = () => {
   const appContext = useContext(AppContext);
 
   return (
-    <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-md:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem] lg:max-2xl:px-10 lg:max-2xl:py-10">
-      <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
+    <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-lg:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem] lg:max-2xl:px-10 lg:max-2xl:py-10">
+      <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-sm:flex-col">
         <div className="relative h-24 w-[7.06rem] shrink-0 overflow-hidden rounded-[1.13rem]">
           <Image src={wallets} alt="wallets" fill />
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-sm:text-center">
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
             No. of holders earning XRP
           </p>
@@ -175,15 +174,15 @@ const WalletSummary = () => {
         </div>
       </div>
       <Separator
-        className="my-2 hidden h-auto bg-[var(--color-stroke)] dark:bg-[#E4E4E4] md:block"
+        className="my-2 hidden h-auto bg-[var(--color-stroke)] dark:bg-[#E4E4E4] lg:block"
         orientation="vertical"
       />
-      <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] dark:bg-[#E4E4E4] md:hidden" />
-      <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)]">
+      <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] dark:bg-[#E4E4E4] lg:hidden" />
+      <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-sm:flex-col">
         <div className="relative h-24 w-[7.06rem] shrink-0 overflow-hidden rounded-[1.13rem]">
           <Image src={rewards} alt="rewards" fill />
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 max-sm:text-center">
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
             XRP rewards distributed
           </p>

@@ -25,7 +25,6 @@ import { z } from 'zod';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ToastContainer } from 'react-toastify';
 
 const FormSchema = z.object({
   amount: z
@@ -55,20 +54,6 @@ const FormSchema = z.object({
     message: 'Tier must be at least 1 character.',
   }),
 });
-
-// type Tier = {
-//   _id: string;
-//   name: string;
-//   description: string;
-//   oneWeekApy: number;
-//   twoWeeksApy: number;
-//   oneMonthApy: number;
-//   threeMonthsApy: number;
-//   sixMonthsApy: number;
-//   createdAt: string; // ISO date string
-//   updatedAt: string; // ISO date string
-//   __v: number;
-// };
 
 const CalculatorForm = () => {
   const [calculatedValue, setCalculatedValue] = useState<number>(0);
@@ -138,8 +123,6 @@ const CalculatorForm = () => {
 
   return (
     <Form {...form}>
-      <ToastContainer position="bottom-right" theme="dark" />
-
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-[63.5294117647%] space-y-[46px] rounded-[20px] bg-white p-8 dark:bg-[#1F2029] max-xl:w-full max-lg:space-y-8 max-lg:p-6 max-md:rounded-none lg:max-xl:rounded-none"
@@ -163,7 +146,7 @@ const CalculatorForm = () => {
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger className="text-[var(--color-black)]">
+                    <SelectTrigger className="border border-[var(--color-stroke)] text-[var(--color-black)]">
                       <SelectValue placeholder="Select a tier" />
                     </SelectTrigger>
                   </FormControl>
