@@ -72,7 +72,7 @@ const TierSelector = () => {
             <span className="flex items-center gap-[14px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
-              <span className="text-left text-2xl">{tiers[0].name}</span>
+              <span className="text-left text-2xl">{tiers[0]?.name}</span>
             </span>
             <ArrowDown />
           </PopoverTrigger>

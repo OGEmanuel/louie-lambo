@@ -201,7 +201,7 @@ export const Summary = ({
 
             <p className="text-[28px] leading-[36.46px]">{rewards} XRP</p>
           </div>
-          <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row 2xl:gap-12">
+          <div className="flex gap-6 max-2xl:flex-col max-xl:flex-row">
             <WarningModal
               title="ReInvest"
               mutate={mutateReMine}
