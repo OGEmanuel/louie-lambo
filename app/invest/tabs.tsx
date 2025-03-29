@@ -25,7 +25,7 @@ import {
 } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   Dialog,
   DialogClose,
