@@ -289,7 +289,7 @@ export const MinerFormWithdraw = (props: {
       }
       setIsloading(false);
     }
-  }
+  } // done
 
   return (
     <Form {...form}>
