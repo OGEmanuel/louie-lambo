@@ -70,13 +70,7 @@ const UnstakeForm = (props: { tab?: string }) => {
       setIsloading(true);
       const isSuccess = await appContext.unstake(data.amount);
       if (isSuccess) {
-        toast.success('Successfully unstaked tokens', {
-          position: 'bottom-right',
-        });
       } else {
-        toast.error('Error unstaking tokens', {
-          position: 'bottom-right',
-        });
       }
 
       setIsloading(false);

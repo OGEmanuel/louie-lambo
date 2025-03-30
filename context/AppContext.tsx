@@ -138,6 +138,9 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
       setActiveStake(undefined);
       setActiveMine(data.mine);
+      toast.success('Successfully unstaked tokens', {
+        position: 'bottom-right',
+      });
       return true;
     } catch (error) {
       console.error('Error creating stake:', error);
