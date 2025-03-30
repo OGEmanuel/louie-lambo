@@ -124,7 +124,7 @@ const Navbar = () => {
       setCookie('walley', checkSignJson.token, { path: '/' });
     }
   };
-
+  // done
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
       <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] md:rounded-[30px] md:px-[33px] md:py-[19px]">
