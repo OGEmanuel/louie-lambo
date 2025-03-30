@@ -14,9 +14,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import MinerSuccess from '../components/icons/miner-success';
 import Apy from '../components/icons/apy';
-import MinerSuccessDark from '../components/icons/miner-success-dark';
 import { AppContext } from '@/context/AppContext';
 import {
   calculateElapsedRewards,
@@ -40,6 +38,8 @@ import { ButtonLoading } from '@/components/ui/button-loading';
 import { MineType } from '@/lib/types';
 import { Timer } from '@/components/Timer';
 import { Referral } from '../referral';
+import success from '@/public/success.gif';
+import Image from 'next/image';
 
 const BASE_URL = 'https://lambo-miner-backend.onrender.com/api';
 
@@ -301,8 +301,9 @@ export const SuccessPage = (props: {
   // const appContext = useContext(AppContext);
   return (
     <div className="flex flex-col items-center justify-center">
-      <MinerSuccess className="dark:hidden" />
-      <MinerSuccessDark className="hidden dark:block" />
+      <div className="relative size-[13.75rem]">
+        <Image src={success} alt="success" fill />
+      </div>
       <div className="py-[23.5px]"></div>
       <p className="text-[28px] font-semibold leading-[36.46px] text-[var(--color-black)]">
         Congratulations!
