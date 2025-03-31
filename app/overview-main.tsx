@@ -26,6 +26,8 @@ import wallets from '@/public/images/wallets-illus.jpeg';
 import rewards from '@/public/images/rewards-illus.jpeg';
 import Image from 'next/image';
 import token from '@/public/images/token.png';
+import RibbonFifthSelect from './components/icons/ribbon-fifth-select';
+import RibbonSixthSelect from './components/icons/ribbon-sixth-select';
 
 const dmSans = DM_Sans({
   variable: '--font-dm-sans',
@@ -124,14 +126,14 @@ const TierSelector = () => {
             </TierItem>
             <TierItem
               tier="LAMBORGHINI SIAN 🚨"
-              icon={<RibbonFourthSelect />}
+              icon={<RibbonFifthSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[4].description}</li>
             </TierItem>
             <TierItem
               tier="LAMBORGHINI VENENO 🚨"
-              icon={<RibbonFourthSelect />}
+              icon={<RibbonSixthSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[5].description}</li>
