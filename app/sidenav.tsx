@@ -56,7 +56,7 @@ const Sidenav = () => {
             >
               <Active />
             </span>
-            Your $LAMBO Awaits
+            Fuel Up
           </NavLink>
         </li>
         <li>

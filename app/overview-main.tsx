@@ -184,7 +184,7 @@ const WalletSummary = () => {
               dmSans.className,
             )}
           >
-            {appContext.stakedSupply} / {appContext.holders} $LAMBO holders
+            {appContext.stakedSupply} $LAMBO
           </p>
         </div>
       </div>
