@@ -142,22 +142,22 @@ const TierSelector = () => {
         </PopoverContent>
       </Popover>
       <ul className="z-20 ml-4 max-w-[33.44rem] list-disc leading-[20.83px] text-[var(--color-black)] [&>li]:leading-[26px]">
-        {appContext.userTier?.name === 'LAMBORGHINI AVENTADOR 🚨' && (
+        {appContext.userTier?.name === 'T1 - LAMBORGHINI AVENTADOR 🚨' && (
           <li>{tiers[0].description}</li>
         )}
-        {appContext.userTier?.name === 'LAMBORGHINI REVENTON 🚨' && (
+        {appContext.userTier?.name === 'T2 - LAMBORGHINI REVENTON 🚨' && (
           <li>{tiers[1].description}</li>
         )}
-        {appContext.userTier?.name === 'LAMBORGHINI CENTENARIO 🚨' && (
+        {appContext.userTier?.name === 'T3 - LAMBORGHINI CENTENARIO 🚨' && (
           <li>{tiers[2].description}</li>
         )}
-        {appContext.userTier?.name === 'LAMBORGHINI EGOISTA 🚨' && (
+        {appContext.userTier?.name === 'T4 - LAMBORGHINI EGOISTA 🚨' && (
           <li>{tiers[3].description}</li>
         )}{' '}
-        {appContext.userTier?.name === 'LAMBORGHINI SIAN 🚨' && (
+        {appContext.userTier?.name === 'T5 - LAMBORGHINI SIAN 🚨' && (
           <li>{tiers[4].description}</li>
         )}{' '}
-        {appContext.userTier?.name === 'LAMBORGHINI VENENO 🚨' && (
+        {appContext.userTier?.name === 'T6 - LAMBORGHINI VENENO 🚨' && (
           <li>{tiers[5].description}</li>
         )}
       </ul>

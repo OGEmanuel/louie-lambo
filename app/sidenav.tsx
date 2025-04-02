@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { MenuIcon, MoonIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ComponentProps, useEffect, useState } from 'react';
+import { ComponentProps, useContext, useEffect, useState } from 'react';
 import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
@@ -20,7 +20,13 @@ import { Label } from '@/components/ui/label';
 import { DynaPuff } from 'next/font/google';
 // import Active from './components/icons/active';
 import Image from 'next/image';
-import sideIllus from '@/public/images/side-image.jpeg';
+import Tier1 from '@/public/images/tier1.jpg';
+import Tier2 from '@/public/images/tier2.jpg';
+import Tier3 from '@/public/images/tier3.jpg';
+import Tier4 from '@/public/images/tier4.jpg';
+import Tier5 from '@/public/images/tier5.jpg';
+import Tier6 from '@/public/images/tier6.jpg';
+import { AppContext } from '@/context/AppContext';
 import activeGecko from '@/public/images/active-gecko.png';
 import inactiveGecko from '@/public/images/inactive-gecko.png';
 
@@ -31,6 +37,7 @@ const dynaPuff = DynaPuff({
 
 const Sidenav = () => {
   const pathname = usePathname();
+  const appContext = useContext(AppContext);
   return (
     <aside className="flex flex-col gap-8 max-2xl:pl-[120px] max-lg:hidden">
       <ul className="relative flex flex-col gap-3 rounded-[20px] border border-[var(--color-lambo-green)] bg-white p-6 text-[18px] font-semibold leading-[23.44px] dark:bg-[var(--color-lambo-black)] xl:[&>li]:w-[238px]">
@@ -86,7 +93,7 @@ const Sidenav = () => {
                 />
               </span>
             </span>
-            Your $LAMBO Awaits
+            Fuel Up
           </NavLink>
         </li>
         <li>
@@ -148,7 +155,26 @@ const Sidenav = () => {
       </ul>
       <ThemeSwitch />
       <div className="relative size-[283px] overflow-hidden rounded-2xl">
-        <Image src={sideIllus} alt="side-image" fill />
+        <Image
+          src={
+            appContext.userTier.name === 'T1 - LAMBORGHINI AVENTADOR 🚨'
+              ? Tier1
+              : appContext.userTier.name === 'T2 - LAMBORGHINI REVENTON 🚨'
+                ? Tier2
+                : appContext.userTier.name === 'T3 - LAMBORGHINI CENTENARIO 🚨'
+                  ? Tier3
+                  : appContext.userTier.name === 'T4 - LAMBORGHINI EGOISTA 🚨'
+                    ? Tier4
+                    : appContext.userTier.name === 'T5 - LAMBORGHINI SIAN 🚨'
+                      ? Tier5
+                      : appContext.userTier.name ===
+                          'T6 - LAMBORGHINI VENENO 🚨'
+                        ? Tier6
+                        : Tier1
+          }
+          alt="side-image"
+          fill
+        />
       </div>
     </aside>
   );
