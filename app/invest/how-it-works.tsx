@@ -57,7 +57,8 @@ const HowItWorks = () => {
                 ) : (
                   tiers.map((tier: Tier) => (
                     <li key={tier.name}>
-                      {tier.name}: {tier.description}
+                      {tier.name}:{' '}
+                      {`${tier.oneWeekApy}% (7 days) to ${tier.sixMonthsApy}% (6 months), max ${tier.maxXrpMineable} XRP`}
                     </li>
                   ))
                 )}
