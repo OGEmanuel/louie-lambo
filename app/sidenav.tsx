@@ -19,6 +19,8 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { DynaPuff } from 'next/font/google';
 import Active from './components/icons/active';
+import Image from 'next/image';
+import sideIllus from '@/public/images/side-image.jpeg';
 
 const dynaPuff = DynaPuff({
   variable: '--font-dyna-puff',
@@ -87,6 +89,9 @@ const Sidenav = () => {
         </li>
       </ul>
       <ThemeSwitch />
+      <div className="relative size-[283px] overflow-hidden rounded-2xl">
+        <Image src={sideIllus} alt="side-image" fill />
+      </div>
     </aside>
   );
 };

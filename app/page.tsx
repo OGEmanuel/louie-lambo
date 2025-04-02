@@ -25,7 +25,7 @@ export default function Home() {
   }, [appContext.error, appContext.success]);
 
   return (
-    <SectionCard>
+    <SectionCard className="dark:bg-[var(--color-lambo-black)]">
       <OverviewMain />
 
       <ToastContainer position="bottom-right" theme="dark" />
