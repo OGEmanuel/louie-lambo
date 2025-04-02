@@ -10,7 +10,7 @@ const HowItWorks = () => {
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem
         value="item-1"
-        className="rounded-xl border-none bg-[var(--color-bg)]"
+        className="rounded-xl border-none bg-[var(--color-bg)] dark:bg-[var(--color-bg)]"
       >
         <AccordionTrigger className="p-4 text-[var(--color-black)] hover:no-underline">
           How to Earn XRP

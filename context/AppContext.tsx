@@ -35,6 +35,7 @@ export const AppContext = createContext<AppContextInterface>({
   setPlatform: () => {},
   holders: 0,
   setHolders: () => {},
+  stakedSupply: 0,
 });
 
 export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -55,6 +56,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [referrer, setReferrer] = useState<string>('');
   const [platform, setPlatform] = useState<string | null>(null);
   const [holders, setHolders] = useState<number>(0);
+  const [stakedSupply, setStakedSupply] = useState<number>(0);
 
   const [cookies] = useCookies(['walley']);
   const params = useSearchParams();
@@ -342,6 +344,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         userBalance: number;
         tokenBalance: string;
         holders: number;
+        stakedSupply: number;
       } = await response.json();
 
       setPoolXrpBalance(data.poolXrpBalance);
@@ -350,6 +353,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setXrpBalance(Number(data.userBalance.toFixed(2)));
       setTokenBalance(Number(data.tokenBalance).toFixed(2));
       setHolders(data.holders);
+      setStakedSupply(data.stakedSupply);
     } catch (error) {
       console.error('Error fetching overview:', error);
       handleError('Error fetching overview');
@@ -402,6 +406,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
         setPlatform,
         holders,
         setHolders,
+        stakedSupply,
       }}
     >
       <ToastContainer position="bottom-right" theme="dark" />

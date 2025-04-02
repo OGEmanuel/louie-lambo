@@ -16,8 +16,7 @@ import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import comingSoonLight from '@/public/images/coming-soon-light.png';
-import commingSoonDark from '@/public/images/coming-soon-dark.png';
+import refer from '@/public/images/refer.jpeg';
 // import { useForm } from 'react-hook-form';
 // import { z } from 'zod';
 
@@ -84,16 +83,9 @@ export const Referral = () => {
           <p className="text-xl leading-[100%] text-[var(--text-black)]">
             Coming soon!
           </p>
-          <Image
-            src={comingSoonLight}
-            alt="coming soon light"
-            className="dark:hidden"
-          />
-          <Image
-            src={commingSoonDark}
-            alt="coming soon dark"
-            className="hidden dark:block"
-          />
+          <div className="relative size-[159px] overflow-hidden rounded-[10px]">
+            <Image src={refer} alt="refer" />
+          </div>
         </div>
       </div>
     </>
