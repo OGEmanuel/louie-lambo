@@ -127,11 +127,11 @@ const Navbar = () => {
   // done
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
-      <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] md:rounded-[30px] md:px-[33px] md:py-[19px]">
+      <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] bg-no-repeat py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] md:rounded-[30px] md:px-[33px] md:py-[19px] lg:justify-end lg:bg-[url('/images/lambo-header.png')]">
         <div>
-          <Link href="/">
+          {/* <Link href="/">
             <LamboLogo className="hidden md:block" />
-          </Link>
+          </Link> */}
           <Link href="/">
             <LamboLogoSmall className="md:hidden" />
           </Link>
@@ -306,7 +306,7 @@ const ProfileDropdown = () => {
           <Image src={avatar} alt="avatar" />
         </div>
         <p className="text-sm leading-[100%] max-sm:hidden">
-          {appContext.walletAddress.slice(0, 13)}
+          {appContext.walletAddress.slice(0, 7)}
         </p>
         <ChevronDown className="size-7" />
       </DropdownMenuTrigger>

@@ -186,8 +186,8 @@ export const MobileSidenav = () => {
   const [open, setOpen] = useState(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger>
-        <MenuIcon className="hidden h-7 w-7 text-white max-lg:block" />
+      <SheetTrigger className="hidden max-lg:block">
+        <MenuIcon className="h-7 w-7 text-white" />
       </SheetTrigger>
       <SheetContent className="flex min-h-screen flex-col gap-8 overflow-auto px-0 [&>button]:top-8">
         <SheetHeader className="sr-only">
