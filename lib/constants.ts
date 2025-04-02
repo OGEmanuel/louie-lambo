@@ -8,12 +8,12 @@ export const LAMBO_TOKEN_ISSUER = 'rJXsaaTBAqZRHeLLd13TpbZhraJnGunAvW';
 
 export interface Tier {
   name:
-    | 'LAMBORGHINI AVENTADOR 🚨'
-    | 'LAMBORGHINI REVENTON 🚨'
-    | 'LAMBORGHINI CENTENARIO 🚨'
-    | 'LAMBORGHINI EGOISTA 🚨'
-    | 'LAMBORGHINI SIAN 🚨'
-    | 'LAMBORGHINI VENENO 🚨';
+    | 'T1 - LAMBORGHINI AVENTADOR 🚨'
+    | 'T2 - LAMBORGHINI REVENTON 🚨'
+    | 'T3 - LAMBORGHINI CENTENARIO 🚨'
+    | 'T4 - LAMBORGHINI EGOISTA 🚨'
+    | 'T5 - LAMBORGHINI SIAN 🚨'
+    | 'T6 - LAMBORGHINI VENENO 🚨';
   description: string;
   minimumTokensHeld: number;
   maximumTokensHeld: number;
@@ -27,7 +27,7 @@ export interface Tier {
 
 export const tiers: Tier[] = [
   {
-    name: 'LAMBORGHINI AVENTADOR 🚨',
+    name: 'T1 - LAMBORGHINI AVENTADOR 🚨',
     description:
       '💎 Hold 250K-999K $LAMBO and pack up to 100 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 250_000,
@@ -40,7 +40,7 @@ export const tiers: Tier[] = [
     maxXrpMineable: 100,
   },
   {
-    name: 'LAMBORGHINI REVENTON 🚨',
+    name: 'T2 - LAMBORGHINI REVENTON 🚨',
     description:
       '💎 Hold 1M-2.99M $LAMBO and pack up to 200 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 1_000_000,
@@ -53,7 +53,7 @@ export const tiers: Tier[] = [
     maxXrpMineable: 200,
   },
   {
-    name: 'LAMBORGHINI CENTENARIO 🚨',
+    name: 'T3 - LAMBORGHINI CENTENARIO 🚨',
     description:
       '💎 Hold 3M-5.99M $LAMBO and pack up to 400 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 3_000_000,
@@ -66,7 +66,7 @@ export const tiers: Tier[] = [
     maxXrpMineable: 400,
   },
   {
-    name: 'LAMBORGHINI EGOISTA 🚨',
+    name: 'T4 - LAMBORGHINI EGOISTA 🚨',
     description:
       '💎 Hold 6M-10.99M $LAMBO and pack up to 600 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 6_000_000,
@@ -80,7 +80,7 @@ export const tiers: Tier[] = [
   },
 
   {
-    name: 'LAMBORGHINI SIAN 🚨',
+    name: 'T5 - LAMBORGHINI SIAN 🚨',
     description:
       '💎 Hold 11M-19.99M $LAMBO and pack up to 1,000 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 11_000_000,
@@ -93,7 +93,7 @@ export const tiers: Tier[] = [
     maxXrpMineable: 1000,
   },
   {
-    name: 'LAMBORGHINI VENENO 🚨',
+    name: 'T6 - LAMBORGHINI VENENO 🚨',
     description:
       '💎 Hold 20M+ $LAMBO and pack up to 2,000 XRP in your trunk to fuel your rewards!',
     minimumTokensHeld: 20_000_000,
