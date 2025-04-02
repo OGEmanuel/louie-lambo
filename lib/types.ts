@@ -32,6 +32,7 @@ export interface AppContextInterface {
   setPlatform: React.Dispatch<React.SetStateAction<string | null>>;
   holders: number;
   setHolders: React.Dispatch<React.SetStateAction<number>>;
+  stakedSupply: number;
 }
 
 export type StakeType = {

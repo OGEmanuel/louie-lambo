@@ -68,8 +68,8 @@ const TierSelector = () => {
   }
 
   return (
-    <div className="bg-custom-gradient dark:bg-dark-gradient flex basis-full flex-col gap-5 overflow-hidden rounded-[1.25rem] border border-[var(--color-stroke)] p-4 sm:px-8 sm:py-9">
-      <div className="animate-slide-in absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 overflow-hidden">
+    <div className="flex basis-full flex-col gap-5 overflow-hidden rounded-[1.25rem] border border-[var(--color-stroke)] bg-custom-gradient p-4 dark:bg-dark-gradient sm:px-8 sm:py-9">
+      <div className="absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 animate-slide-in overflow-hidden">
         <Image src={token} alt="token" fill />
       </div>
       <Popover onOpenChange={setOpen} open={open}>
@@ -176,7 +176,7 @@ const WalletSummary = () => {
         </div>
         <div className="flex flex-col gap-6 max-sm:text-center">
           <p className="text-xl leading-[100%] text-[var(--color-gray)]">
-            No. of holders earning XRP
+            Staked Supply
           </p>
           <p
             className={cn(
@@ -184,7 +184,7 @@ const WalletSummary = () => {
               dmSans.className,
             )}
           >
-            {appContext.stakedWallets} / {appContext.holders} $LAMBO holders
+            {appContext.stakedSupply} / {appContext.holders} $LAMBO holders
           </p>
         </div>
       </div>
