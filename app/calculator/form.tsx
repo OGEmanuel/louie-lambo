@@ -95,7 +95,7 @@ const CalculatorForm = () => {
         : value === 'oneMonth'
           ? 30
           : value === 'threeMonths'
-            ? 60
+            ? 90
             : 180;
   };
 
