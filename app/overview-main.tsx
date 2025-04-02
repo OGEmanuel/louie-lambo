@@ -187,6 +187,7 @@ const WalletSummary = () => {
             {appContext.stakedSupply.toLocaleString()} $LAMBO
           </p>
         </div>
+        {/* //done */}
       </div>
       <Separator
         className="my-2 hidden h-auto bg-[var(--color-stroke)] dark:bg-[#E4E4E4] lg:block"
