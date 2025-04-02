@@ -4,8 +4,24 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tier } from '@/lib/constants';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
+
+const useTiers = () => {
+  return useQuery({
+    queryKey: ['tiers'],
+    queryFn: async () => {
+      const response = await axios.get('/api/admin/getTiers');
+      return response.data.tiers;
+    },
+  });
+};
 
 const HowItWorks = () => {
+  const { data: tiers, isPending } = useTiers();
+
   return (
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem
@@ -36,31 +52,15 @@ const HowItWorks = () => {
                 holdings and longer staking periods yield greater returns.
               </span>
               <ul className="ml-6 list-disc font-normal">
-                <li>
-                  LAMBORGHINI AVENTADOR 🚨: 50% (7 days) to 400% (6 months), max
-                  100 XRP
-                </li>
-                <li>
-                  {' '}
-                  LAMBORGHINI REVENTON 🚨: 100% (7 days) to 600% (6 months), max
-                  200 XRP
-                </li>
-                <li>
-                  LAMBORGHINI CENTENARIO 🚨: 150% (7 days) to 750% (6 months),
-                  max 400 XRP
-                </li>
-                <li>
-                  LAMBORGHINI EGOISTA 🚨: 200% (7 days) to 900% (6 months), max
-                  600 XRP
-                </li>
-                <li>
-                  LAMBORGHINI SIAN 🚨: 250% (7 days) to 1000% (6 months), max
-                  1000 XRP
-                </li>
-                <li>
-                  LAMBORGHINI VENENO 🚨: 250% (7 days) to 1000% (6 months), max
-                  2000 XRP
-                </li>
+                {isPending ? (
+                  <Skeleton className="mt-5 h-[20rem] w-full animate-pulse" />
+                ) : (
+                  tiers.map((tier: Tier) => (
+                    <li key={tier.name}>
+                      {tier.name}: {tier.description}
+                    </li>
+                  ))
+                )}
               </ul>
             </li>
             <li className="font-bold leading-[20.83px] text-[var(--color-black)] [&>span]:font-normal">
