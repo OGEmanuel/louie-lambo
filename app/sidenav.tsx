@@ -21,6 +21,8 @@ import { DynaPuff } from 'next/font/google';
 import Active from './components/icons/active';
 import Image from 'next/image';
 import sideIllus from '@/public/images/side-image.jpeg';
+import activeGecko from '@/public/images/active-gecko.png';
+import inactiveGecko from '@/public/images/inactive-gecko.png';
 
 const dynaPuff = DynaPuff({
   variable: '--font-dyna-puff',
@@ -40,7 +42,21 @@ const Sidenav = () => {
                 pathname === '/' && 'translate-x-44 translate-y-0 opacity-100',
               )}
             >
-              <Active />
+              <span className="relative block h-[42px] w-[53px]">
+                <Image
+                  src={activeGecko}
+                  alt="active gecko"
+                  fill
+                  className={cn(pathname !== '/' && 'hidden')}
+                />
+                <Image
+                  src={inactiveGecko}
+                  alt="inactive gecko"
+                  fill
+                  className={cn(pathname === '/' && 'hidden')}
+                />
+              </span>
+              {/* <Active /> */}
             </span>
             Overview
           </NavLink>
@@ -54,7 +70,21 @@ const Sidenav = () => {
                   'translate-x-44 translate-y-0 opacity-100',
               )}
             >
-              <Active />
+              {/* <Active /> */}
+              <span className="relative block h-[42px] w-[53px]">
+                <Image
+                  src={activeGecko}
+                  alt="active gecko"
+                  fill
+                  className={cn(pathname !== '/start-your-journey' && 'hidden')}
+                />
+                <Image
+                  src={inactiveGecko}
+                  alt="inactive gecko"
+                  fill
+                  className={cn(pathname === '/start-your-journey' && 'hidden')}
+                />
+              </span>
             </span>
             Your $LAMBO Awaits
           </NavLink>
@@ -68,7 +98,21 @@ const Sidenav = () => {
                   'translate-x-44 translate-y-0 opacity-100',
               )}
             >
-              <Active />
+              {/* <Active /> */}
+              <span className="relative block h-[42px] w-[53px]">
+                <Image
+                  src={activeGecko}
+                  alt="active gecko"
+                  fill
+                  className={cn(pathname !== '/invest' && 'hidden')}
+                />
+                <Image
+                  src={inactiveGecko}
+                  alt="inactive gecko"
+                  fill
+                  className={cn(pathname === '/invest' && 'hidden')}
+                />
+              </span>
             </span>
             {"Let's Ride"}
           </NavLink>
@@ -82,7 +126,21 @@ const Sidenav = () => {
                   'translate-x-44 translate-y-0 opacity-100',
               )}
             >
-              <Active />
+              {/* <Active /> */}
+              <span className="relative block h-[42px] w-[53px]">
+                <Image
+                  src={activeGecko}
+                  alt="active gecko"
+                  fill
+                  className={cn(pathname !== '/calculator' && 'hidden')}
+                />
+                <Image
+                  src={inactiveGecko}
+                  alt="inactive gecko"
+                  fill
+                  className={cn(pathname === '/calculator' && 'hidden')}
+                />
+              </span>
             </span>
             APY Calculator
           </NavLink>

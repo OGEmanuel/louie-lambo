@@ -171,7 +171,7 @@ const WalletSummary = () => {
   return (
     <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-lg:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem] lg:max-2xl:px-10 lg:max-2xl:py-10">
       <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-sm:flex-col">
-        <div className="relative h-24 w-[7.06rem] shrink-0 overflow-hidden rounded-[1.13rem]">
+        <div className="relative size-36 shrink-0 overflow-hidden rounded-[1.13rem]">
           <Image src={wallets} alt="wallets" fill />
         </div>
         <div className="flex flex-col gap-6 max-sm:text-center">
@@ -184,7 +184,8 @@ const WalletSummary = () => {
               dmSans.className,
             )}
           >
-            {appContext.stakedSupply} / {appContext.holders} $LAMBO holders
+            {appContext.stakedSupply} / <br /> {appContext.holders} $LAMBO
+            holders
           </p>
         </div>
       </div>
@@ -194,7 +195,7 @@ const WalletSummary = () => {
       />
       <Separator className="my-2 h-[1px] w-full bg-[var(--color-stroke)] dark:bg-[#E4E4E4] lg:hidden" />
       <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-sm:flex-col">
-        <div className="relative h-24 w-[7.06rem] shrink-0 overflow-hidden rounded-[1.13rem]">
+        <div className="relative size-36 shrink-0 overflow-hidden rounded-[1.13rem]">
           <Image src={rewards} alt="rewards" fill />
         </div>
         <div className="flex flex-col gap-6 max-sm:text-center">
