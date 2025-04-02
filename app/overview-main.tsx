@@ -184,8 +184,7 @@ const WalletSummary = () => {
               dmSans.className,
             )}
           >
-            {appContext.stakedSupply} / <br /> {appContext.holders} $LAMBO
-            holders
+            {appContext.stakedSupply.toLocaleString()} $LAMBO
           </p>
         </div>
       </div>
