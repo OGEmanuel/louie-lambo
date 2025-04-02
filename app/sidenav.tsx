@@ -18,7 +18,7 @@ import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { DynaPuff } from 'next/font/google';
-import Active from './components/icons/active';
+// import Active from './components/icons/active';
 import Image from 'next/image';
 import sideIllus from '@/public/images/side-image.jpeg';
 import activeGecko from '@/public/images/active-gecko.png';
