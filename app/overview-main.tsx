@@ -97,42 +97,42 @@ const TierSelector = () => {
             className="grid gap-6 md:grid-cols-2 md:gap-[2.63rem]"
           >
             <TierItem
-              tier="LAMBORGHINI AVENTADOR 🚨"
+              tier="T1 - LAMBORGHINI AVENTADOR 🚨"
               icon={<RibbonFirstSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[0].description}</li>
             </TierItem>
             <TierItem
-              tier="LAMBORGHINI REVENTON 🚨"
+              tier="T2 - LAMBORGHINI REVENTON 🚨"
               icon={<RibbonSecondSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[1].description}</li>
             </TierItem>
             <TierItem
-              tier="LAMBORGHINI CENTENARIO 🚨"
+              tier="T3 - LAMBORGHINI CENTENARIO 🚨"
               icon={<RibbonThirdSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[2].description}</li>
             </TierItem>
             <TierItem
-              tier="LAMBORGHINI EGOISTA 🚨"
+              tier="T4 - LAMBORGHINI EGOISTA 🚨"
               icon={<RibbonFourthSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[3].description}</li>
             </TierItem>
             <TierItem
-              tier="LAMBORGHINI SIAN 🚨"
+              tier="T5 - LAMBORGHINI SIAN 🚨"
               icon={<RibbonFifthSelect />}
               value={appContext.userTier?.name}
             >
               <li>{tiers[4].description}</li>
             </TierItem>
             <TierItem
-              tier="LAMBORGHINI VENENO 🚨"
+              tier="T6 - LAMBORGHINI VENENO 🚨"
               icon={<RibbonSixthSelect />}
               value={appContext.userTier?.name}
             >
