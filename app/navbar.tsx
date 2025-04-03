@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 // import LamboLogo from './components/icons/lambo-logo';
 // import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { MobileSidenav } from './sidenav';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { SetStateAction, useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 // import { truncateXrpAddress } from '@/lib/utils';
