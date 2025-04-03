@@ -187,7 +187,7 @@ const WalletSummary = () => {
               dmSans.className,
             )}
           >
-            {stakedPercentage.toFixed(2)}% $LAMBO
+            {stakedPercentage ? stakedPercentage.toFixed(2) : 0}% $LAMBO
           </p>
         </div>
         {/* //done */}
