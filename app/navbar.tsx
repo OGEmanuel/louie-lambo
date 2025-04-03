@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 // import LamboLogo from './components/icons/lambo-logo';
-import LamboLogoSmall from './components/icons/lambo-logo-mobile';
+// import LamboLogoSmall from './components/icons/lambo-logo-mobile';
 import { MobileSidenav } from './sidenav';
 import Link from 'next/link';
 import { SetStateAction, useContext, useState } from 'react';
@@ -127,15 +127,15 @@ const Navbar = () => {
   // done
   return (
     <nav className="max-2xl:px-[120px] max-lg:px-6">
-      <div className="flex items-center justify-between rounded-[18px] bg-[var(--color-black)] bg-no-repeat py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] md:rounded-[30px] md:px-[33px] md:py-[19px] lg:justify-end lg:bg-[url('/images/lambo-header.png')]">
-        <div>
-          {/* <Link href="/">
+      <div className="flex items-center justify-end rounded-[18px] bg-[var(--color-black)] bg-[url('/images/lambo-header-mobile.png')] bg-no-repeat py-[9px] pl-[14px] pr-[9px] dark:bg-[#42434B] max-sm:bg-cover md:rounded-[30px] md:px-[33px] md:py-[19px] lg:justify-end lg:bg-[url('/images/lambo-header.png')]">
+        {/* <div>
+          <Link href="/">
             <LamboLogo className="hidden md:block" />
-          </Link> */}
+          </Link>
           <Link href="/">
             <LamboLogoSmall className="md:hidden" />
           </Link>
-        </div>
+        </div> */}
         <div className="flex items-center gap-[25px]">
           {appContext.walletAddress ? (
             <>

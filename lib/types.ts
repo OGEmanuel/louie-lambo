@@ -33,6 +33,7 @@ export interface AppContextInterface {
   holders: number;
   setHolders: React.Dispatch<React.SetStateAction<number>>;
   stakedSupply: number;
+  totalSupply: number;
 }
 
 export type StakeType = {

@@ -69,7 +69,7 @@ const TierSelector = () => {
 
   return (
     <div className="flex basis-full flex-col gap-5 overflow-hidden rounded-[1.25rem] border border-[var(--color-stroke)] bg-custom-gradient p-4 dark:bg-dark-gradient sm:px-8 sm:py-9">
-      <div className="absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 animate-slide-in overflow-hidden">
+      <div className="absolute bottom-0 right-0 z-10 h-[10rem] w-[10.69rem] shrink-0 animate-slide-in overflow-hidden max-sm:opacity-50">
         <Image src={token} alt="token" fill />
       </div>
       <Popover onOpenChange={setOpen} open={open}>
@@ -77,7 +77,7 @@ const TierSelector = () => {
           <Skeleton className="h-9 w-full" />
         ) : (
           <PopoverTrigger className="z-20 flex items-center gap-[11px]">
-            <span className="flex items-center gap-[14px] text-[var(--color-black)] sm:text-2xl sm:leading-[31.25px]">
+            <span className="flex items-center gap-[14px] text-[var(--color-black)] max-sm:text-[var(--color-gray)] sm:text-2xl sm:leading-[31.25px]">
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
               <span className="text-left text-2xl transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150">
@@ -141,7 +141,7 @@ const TierSelector = () => {
           </RadioGroup>
         </PopoverContent>
       </Popover>
-      <ul className="z-20 ml-4 max-w-[33.44rem] list-disc leading-[20.83px] text-[var(--color-black)] [&>li]:leading-[26px]">
+      <ul className="z-20 ml-4 max-w-[33.44rem] list-disc leading-[20.83px] text-[var(--color-black)] max-sm:max-w-60 max-sm:text-[var(--color-gray)] [&>li]:leading-[26px]">
         {appContext.userTier?.name === 'T1 - LAMBORGHINI AVENTADOR 🚨' && (
           <li>{tiers[0].description}</li>
         )}
@@ -168,6 +168,9 @@ const TierSelector = () => {
 const WalletSummary = () => {
   const appContext = useContext(AppContext);
 
+  const stakedPercentage =
+    (appContext.stakedSupply / appContext.totalSupply) * 100;
+
   return (
     <div className="flex justify-center gap-6 rounded-[20px] bg-[var(--color-bg)] p-6 max-lg:flex-col sm:gap-12 sm:px-16 sm:py-[4.38rem] lg:max-2xl:px-10 lg:max-2xl:py-10">
       <div className="flex items-center gap-6 rounded-[1.25rem] border border-[var(--color-lambo-green)] bg-white p-8 dark:bg-[var(--color-lambo-black)] max-sm:flex-col">
@@ -184,7 +187,7 @@ const WalletSummary = () => {
               dmSans.className,
             )}
           >
-            {appContext.stakedSupply.toLocaleString()} $LAMBO
+            {stakedPercentage.toFixed(2)}% $LAMBO
           </p>
         </div>
         {/* //done */}

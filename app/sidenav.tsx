@@ -205,7 +205,7 @@ export const MobileSidenav = () => {
             <NavLink href="/">Overview</NavLink>
           </li>
           <li onClick={() => setOpen(false)}>
-            <NavLink href="/start-your-journey">Your $LAMBO Awaits</NavLink>
+            <NavLink href="/start-your-journey"> Fuel Up</NavLink>
           </li>
           <li onClick={() => setOpen(false)}>
             <NavLink href="/invest">{"Let's Ride"}</NavLink>
