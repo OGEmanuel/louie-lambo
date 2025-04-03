@@ -81,7 +81,7 @@ const TierSelector = () => {
               <RibbonFirst className="hidden sm:block" />
               <RibbonSelectMobile className="sm:hidden" />
               <span className="text-left text-2xl transition-all hover:rotate-6 hover:skew-x-12 hover:scale-150">
-                {tiers[0]?.name}
+                {appContext.userTier?.name}
               </span>
             </span>
             <ArrowDown />

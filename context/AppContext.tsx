@@ -45,7 +45,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const [success, setSuccess] = useState<string>('');
   const [walletAddress, setWalletAddress] = useState<string>('');
   const [xrpBalance, setXrpBalance] = useState<number>(0);
-  const [tokenBalance, setTokenBalance] = useState<string>('0');
+  const [tokenBalance, setTokenBalance] = useState<string>('200000002');
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [poolXrpBalance, setPoolXrpBalance] = useState<string>('0');
   const [stakedWallets, setStakedWallets] = useState<number>(0);
@@ -106,9 +106,16 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     const tiersList = tiers;
 
     for (const tier of tiersList) {
+      console.log(Number(tokenBalance));
+      console.log(
+        Number(tokenBalance) <= Number(tier.maximumTokensHeld.toFixed(1)),
+      );
+      console.log(
+        Number(tokenBalance) >= Number(tier.minimumTokensHeld.toFixed(1)),
+      );
       if (
-        Number(tokenBalance) >= Number(tier.maximumTokensHeld.toFixed(1)) &&
-        Number(tokenBalance) <= Number(tier.minimumTokensHeld.toFixed(1))
+        Number(tokenBalance) <= Number(tier.maximumTokensHeld.toFixed(1)) &&
+        Number(tokenBalance) >= Number(tier.minimumTokensHeld.toFixed(1))
       ) {
         setValue(tier);
       }
@@ -351,7 +358,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
       setStakedWallets(data.stakedWallets);
       setXrpRewardsDistributed(Number(data.xrpRewardsDistributed.toFixed(2)));
       setXrpBalance(Number(data.userBalance.toFixed(2)));
-      setTokenBalance(Number(data.tokenBalance).toFixed(2));
+      // setTokenBalance(Number(data.tokenBalance).toFixed(2));
       setHolders(data.holders);
       setStakedSupply(data.stakedSupply);
     } catch (error) {

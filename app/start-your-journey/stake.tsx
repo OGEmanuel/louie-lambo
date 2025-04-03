@@ -95,7 +95,7 @@ const StakeForm = () => {
         return;
       }
       if (amount > maxAmount) {
-        toast.error('Maximum amount for tier not reached', {
+        toast.error('Maximum amount for tier exceeded', {
           position: 'bottom-right',
         });
       }
