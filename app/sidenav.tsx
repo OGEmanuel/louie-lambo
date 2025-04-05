@@ -27,8 +27,7 @@ import Tier4 from '@/public/images/tier4.jpg';
 import Tier5 from '@/public/images/tier5.jpg';
 import Tier6 from '@/public/images/tier6.jpg';
 import { AppContext } from '@/context/AppContext';
-import activeGecko from '@/public/images/active-gecko.png';
-import inactiveGecko from '@/public/images/inactive-gecko.png';
+import activeGecko from '@/public/images/active-gecko2.png';
 
 const dynaPuff = DynaPuff({
   variable: '--font-dyna-puff',
@@ -54,13 +53,16 @@ const Sidenav = () => {
                   src={activeGecko}
                   alt="active gecko"
                   fill
-                  className={cn(pathname !== '/' && 'hidden')}
+                  className={cn('scale-125', pathname !== '/' && 'hidden')}
                 />
                 <Image
-                  src={inactiveGecko}
+                  src={activeGecko}
                   alt="inactive gecko"
                   fill
-                  className={cn(pathname === '/' && 'hidden')}
+                  className={cn(
+                    'scale-90 opacity-60',
+                    pathname === '/' && 'hidden',
+                  )}
                 />
               </span>
               {/* <Active /> */}
@@ -83,13 +85,19 @@ const Sidenav = () => {
                   src={activeGecko}
                   alt="active gecko"
                   fill
-                  className={cn(pathname !== '/start-your-journey' && 'hidden')}
+                  className={cn(
+                    'scale-125',
+                    pathname !== '/start-your-journey' && 'hidden',
+                  )}
                 />
                 <Image
-                  src={inactiveGecko}
+                  src={activeGecko}
                   alt="inactive gecko"
                   fill
-                  className={cn(pathname === '/start-your-journey' && 'hidden')}
+                  className={cn(
+                    'scale-90 opacity-60',
+                    pathname === '/start-your-journey' && 'hidden',
+                  )}
                 />
               </span>
             </span>
@@ -111,13 +119,19 @@ const Sidenav = () => {
                   src={activeGecko}
                   alt="active gecko"
                   fill
-                  className={cn(pathname !== '/invest' && 'hidden')}
+                  className={cn(
+                    'scale-125',
+                    pathname !== '/invest' && 'hidden',
+                  )}
                 />
                 <Image
-                  src={inactiveGecko}
+                  src={activeGecko}
                   alt="inactive gecko"
                   fill
-                  className={cn(pathname === '/invest' && 'hidden')}
+                  className={cn(
+                    'scale-90 opacity-60',
+                    pathname === '/invest' && 'hidden',
+                  )}
                 />
               </span>
             </span>
@@ -139,13 +153,19 @@ const Sidenav = () => {
                   src={activeGecko}
                   alt="active gecko"
                   fill
-                  className={cn(pathname !== '/calculator' && 'hidden')}
+                  className={cn(
+                    'scale-125',
+                    pathname !== '/calculator' && 'hidden',
+                  )}
                 />
                 <Image
-                  src={inactiveGecko}
+                  src={activeGecko}
                   alt="inactive gecko"
                   fill
-                  className={cn(pathname === '/calculator' && 'hidden')}
+                  className={cn(
+                    'scale-90 opacity-60',
+                    pathname === '/calculator' && 'hidden',
+                  )}
                 />
               </span>
             </span>
