@@ -249,7 +249,10 @@ const WalletDialog = (props: {
             <button
               key={item.name}
               onClick={item.func}
-              className="flex cursor-pointer items-center gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] bg-[#FFFFFFF9] p-[1.13rem] dark:bg-[var(--color-lambo-black)] sm:p-7"
+              disabled={
+                item.name === 'Crossmark' || item.name === 'First ledger'
+              }
+              className="relative flex cursor-pointer items-center gap-5 rounded-[1.25rem] border border-[var(--color-stroke)] bg-[#FFFFFFF9] p-[1.13rem] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[var(--color-lambo-black)] sm:p-7"
             >
               <div className="rounded-xl border p-2 dark:border-[var(--color-stroke)]">
                 {item.icon}
@@ -257,6 +260,11 @@ const WalletDialog = (props: {
               <p className="text-lg text-[#505050] dark:text-white sm:text-2xl sm:leading-[1.38rem]">
                 {item.name}
               </p>
+              {item.name !== 'Xaman wallet' && (
+                <p className="absolute right-0 top-0 rounded-lg border border-transparent bg-[var(--color-lambo-black)] px-2 py-1 text-xs font-medium leading-[26px] text-[var(--color-lambo-green)] dark:border-[var(--color-lambo-green)]">
+                  Coming Soon!
+                </p>
+              )}
             </button>
           ))}
         </div>
